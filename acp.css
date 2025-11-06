@@ -21,7 +21,7 @@ body {
 }
 
 /* ==================================== */
-/* 02. Logo & Neon Effect               */
+/* 02. Logo Image Styles (အသစ်)       */
 /* ==================================== */
 .logo-container {
     text-align: center;
@@ -29,55 +29,24 @@ body {
     margin-top: 10px;
 }
 
-.reborn-text {
-    font-size: 3.5rem; /* REBORN စာသား အရွယ်အစား */
-    font-weight: 700;
-    letter-spacing: 2px;
+/* Logo Image ကို သတ်မှတ်ခြင်း */
+.reborn-logo-img {
+    /* ပုံရဲ့ နာမည်အတိုင်း ပြောင်းထားပါတယ် */
+    width: 250px; /* လိုအပ်သလို ချိန်ညှိနိုင်သည် */
+    height: auto;
     
-    /* Neon Green Effect */
-    color: #6dff77; /* Neon Green Color */
-    text-shadow: 
-        0 0 5px #6dff77,
-        0 0 10px #6dff77,
-        0 0 20px #6dff77,
-        0 0 40px #6dff77; /* Glow Effect */
-    
-    /* Fire Effect Animation (Optional) */
-    animation: neon-glow 1.5s ease-in-out infinite alternate;
+    /* ပုံမှာ Neon Effect ကို ထပ်ထည့်လိုပါက (Optional) */
+    filter: drop-shadow(0 0 10px #6dff7733) drop-shadow(0 0 20px #6dff7722);
 }
 
-.est-text {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.8rem;
-    letter-spacing: 4px;
-    margin-top: -15px;
-}
-
-/* Neon Glow Animation Keyframes */
-@keyframes neon-glow {
-    from {
-        text-shadow: 
-            0 0 5px #6dff77,
-            0 0 10px #6dff77,
-            0 0 20px #6dff77,
-            0 0 30px #6dff7799;
-    }
-    to {
-        text-shadow: 
-            0 0 10px #6dff77,
-            0 0 20px #6dff77,
-            0 0 30px #6dff77,
-            0 0 50px #6dff77aa;
-    }
-}
-
+/* ⚠️ ယခင်က Neon Text နဲ့ ပတ်သက်တဲ့ .reborn-text, @keyframes တွေကို ဖယ်ရှားထားပါတယ်။ */
 
 /* ==================================== */
 /* 03. Form & Input Styles              */
 /* ==================================== */
 .form-wrapper {
     position: relative;
-    min-height: 450px; /* Form နှစ်ခု နေရာယူရန် */
+    min-height: 450px;
 }
 
 .form {
@@ -91,7 +60,7 @@ body {
 .hidden-form {
     opacity: 0;
     transform: translateX(100%);
-    pointer-events: none; /* အလုပ်မလုပ်အောင် ပိတ်ထားခြင်း */
+    pointer-events: none;
 }
 
 .active-form {
@@ -137,7 +106,7 @@ input::placeholder {
 .forgot-password {
     display: block;
     text-align: right;
-    color: #c7a1ff; /* Purple link color */
+    color: #c7a1ff; 
     text-decoration: none;
     font-size: 0.9rem;
     margin-top: -15px;
@@ -172,7 +141,7 @@ button {
 
 /* Sign Up button (on Login Form) and default button (on Signup Form) */
 #showSignup, #signupForm button[type="submit"] {
-    background-color: #2a0a55; /* Darker Purple for Sign Up */
+    background-color: #2a0a55; 
     color: #fff;
     border: 1px solid #7d40f2;
 }
