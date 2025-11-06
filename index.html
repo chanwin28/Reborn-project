@@ -3,62 +3,79 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ACP Login & Signup</title>
-  <link rel="stylesheet" href="acp.css" />
+  <title>Reborn Login & Signup</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-
-    <!-- LOGIN FORM -->
-    <div class="form-box" id="login">
-      <div class="circle"></div>
-      <div class="circle small"></div>
-      <h1>Welcome!</h1>
-      <h2>Login</h2>
-
-      <form>
-        <label>Email</label>
-        <input type="email" placeholder="example123@gmail.com" required />
-
-        <label>Password</label>
-        <input type="password" placeholder="••••••••" required />
-
-        <a href="#" class="forgot">Forgot Password?</a>
-
-        <div class="btn-group">
-          <a href="#signup" class="btn light">Sign Up</a>
-          <button type="submit" class="btn purple">Log In</button>
+    <div class="form-box" id="formBox">
+      <h2 id="formTitle">Login</h2>
+      <form id="loginForm">
+        <div class="input-box">
+          <label>Email</label>
+          <input type="email" placeholder="Enter your email" required>
         </div>
+        <div class="input-box">
+          <label>Password</label>
+          <input type="password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="btn">Login</button>
       </form>
+
+      <p class="toggle-text">
+        Don't have an account?
+        <a href="#" id="toggleForm">Sign up</a>
+      </p>
     </div>
-
-    <!-- SIGNUP FORM -->
-    <div class="form-box hidden" id="signup">
-      <div class="circle"></div>
-      <div class="circle small"></div>
-      <h2>Sign Up</h2>
-
-      <form>
-        <label>Name</label>
-        <input type="text" placeholder="Enter your name" required />
-
-        <label>Email</label>
-        <input type="email" placeholder="example@gmail.com" required />
-
-        <label>Password</label>
-        <input type="password" placeholder="••••••••" required />
-
-        <label>Confirm Password</label>
-        <input type="password" placeholder="••••••••" required />
-
-        <button type="submit" class="btn purple full">Sign Up</button>
-
-        <p class="member">
-          I am already a member — <a href="#login">Login</a>
-        </p>
-      </form>
-    </div>
-
   </div>
+
+  <script>
+    const toggleForm = document.getElementById('toggleForm');
+    const formTitle = document.getElementById('formTitle');
+    const loginForm = document.getElementById('loginForm');
+    const formBox = document.getElementById('formBox');
+
+    let isLogin = true;
+
+    toggleForm.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (isLogin) {
+        formTitle.textContent = 'Sign Up';
+        loginForm.innerHTML = `
+          <div class="input-box">
+            <label>Full Name</label>
+            <input type="text" placeholder="Enter your name" required>
+          </div>
+          <div class="input-box">
+            <label>Email</label>
+            <input type="email" placeholder="Enter your email" required>
+          </div>
+          <div class="input-box">
+            <label>Password</label>
+            <input type="password" placeholder="Create a password" required>
+          </div>
+          <button type="submit" class="btn">Sign Up</button>
+        `;
+        toggleForm.textContent = 'Login';
+        toggleForm.previousSibling.textContent = 'Already have an account? ';
+      } else {
+        formTitle.textContent = 'Login';
+        loginForm.innerHTML = `
+          <div class="input-box">
+            <label>Email</label>
+            <input type="email" placeholder="Enter your email" required>
+          </div>
+          <div class="input-box">
+            <label>Password</label>
+            <input type="password" placeholder="Enter your password" required>
+          </div>
+          <button type="submit" class="btn">Login</button>
+        `;
+        toggleForm.textContent = 'Sign up';
+        toggleForm.previousSibling.textContent = "Don't have an account? ";
+      }
+      isLogin = !isLogin;
+    });
+  </script>
 </body>
 </html>
