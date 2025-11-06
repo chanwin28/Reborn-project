@@ -6,12 +6,15 @@ const showLoginButton = document.getElementById('showLogin');
 const loginMessage = document.getElementById('loginMessage');
 const signupMessage = document.getElementById('signupMessage');
 
-// Form ကူးပြောင်းတဲ့ Function
+// Server API URL ကို သတ်မှတ်ခြင်း (အဆင့် ၁ မှ)
+const BASE_URL = 'http://localhost:3000/api'; 
+// (Server က 3000 မှာ run နေတယ်လို့ ယူဆထားပါတယ်)
+
+// Form ကူးပြောင်းတဲ့ Function (ယခင်အတိုင်း)
 function switchForm(showForm, hideForm) {
     hideForm.classList.remove('active-form');
     hideForm.classList.add('hidden-form');
     
-    // Animation/Transition အတွက် အချိန်ယူပြီးမှ ပြောင်းပေးခြင်း
     setTimeout(() => {
         showForm.classList.remove('hidden-form');
         showForm.classList.add('active-form');
@@ -20,66 +23,132 @@ function switchForm(showForm, hideForm) {
 
 // Signup ကိုပြောင်းရန်
 showSignupButton.addEventListener('click', () => {
-    loginMessage.textContent = ''; // မက်ဆေ့ချ်ကို ရှင်းခြင်း
+    loginMessage.textContent = '';
     switchForm(signupForm, loginForm);
 });
 
 // Login ကိုပြောင်းရန်
 showLoginButton.addEventListener('click', () => {
-    signupMessage.textContent = ''; // မက်ဆေ့ချ်ကို ရှင်းခြင်း
+    signupMessage.textContent = '';
     switchForm(loginForm, signupForm);
 });
 
 
 // ====================================
-// Login လုပ်ဆောင်ချက်
+// 🚨 Password Strength Checker Function (အသစ်)
 // ====================================
-loginForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // Form က အလိုလို submit ဖြစ်တာကို တားဆီးခြင်း
-    
-    // User ရဲ့ အချက်အလက်များကို ရယူခြင်း
+function checkPasswordStrength(password) {
+    const minLength = 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+
+    if (password.length < minLength) {
+        return "❌ Password သည် အနည်းဆုံး ၈ လုံး ရှိရပါမည်။";
+    }
+    if (!hasUpperCase) {
+        return "❌ အနည်းဆုံး အက္ခရာအကြီး (A-Z) တစ်လုံး ပါရပါမည်။";
+    }
+    if (!hasLowerCase) {
+        return "❌ အနည်းဆုံး အက္ခရာအသေး (a-z) တစ်လုံး ပါရပါမည်။";
+    }
+    if (!hasNumber) {
+        return "❌ အနည်းဆုံး ဂဏန်း (0-9) တစ်လုံး ပါရပါမည်။";
+    }
+    if (!hasSpecialChar) {
+        return "❌ အနည်းဆုံး သင်္ကေတ (@, #, $) တစ်လုံး ပါရပါမည်။";
+    }
+
+    return null; // အားလုံး မှန်ကန်လျှင် null ပြန်ပေးမည်။
+}
+
+
+// ====================================
+// Login လုပ်ဆောင်ချက် (ယခင်အတိုင်း)
+// ====================================
+loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    loginMessage.textContent = '...စစ်ဆေးနေသည်...';
+    loginMessage.style.color = '#fff';
+
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
 
-    // ⚠️ Backend မပါတဲ့အတွက်၊ ဒီနေရာမှာ အခြေခံ စစ်ဆေးမှုလေး လုပ်ပေးထားပါတယ် 
-    // (အမှန်တကယ် Login လုပ်ဆောင်ချက်အတွက် Server Side Code လိုပါတယ်)
-    if (email === 'test@reborn.com' && password === '123456') {
-        loginMessage.textContent = '✅ Login အောင်မြင်ပါတယ်။ Welcome Back!';
-        loginMessage.style.color = '#6dff77';
-    } else {
-        loginMessage.textContent = '❌ Email သို့မဟုတ် Password မှားယွင်းနေပါတယ်။';
-        loginMessage.style.color = '#ff6d6d'; // အနီရောင် error
+    try {
+        const response = await fetch(`${BASE_URL}/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json(); 
+
+        if (data.success) {
+            loginMessage.textContent = `✅ ${data.message}`;
+            loginMessage.style.color = '#6dff77';
+        } else {
+            loginMessage.textContent = `❌ ${data.message}`;
+            loginMessage.style.color = '#ff6d6d';
+        }
+    } catch (error) {
+        console.error('Login Error:', error);
+        loginMessage.textContent = '❌ Server နဲ့ ချိတ်ဆက်မှု ပြဿနာရှိနေပါတယ်။';
+        loginMessage.style.color = '#ff6d6d';
     }
-    
-    // Log In ပြီးနောက် Form ကို ရှင်းလင်းခြင်း (Optional)
-    // loginForm.reset();
 });
 
 
 // ====================================
-// Signup လုပ်ဆောင်ချက်
+// SIGNUP လုပ်ဆောင်ချက် (Password စစ်ဆေးမှု ထပ်ထည့်ထားသည်)
 // ====================================
-signupForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // Form က အလိုလို submit ဖြစ်တာကို တားဆီးခြင်း
-    
+signupForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    signupMessage.textContent = '...မှတ်ပုံတင်နေသည်...';
+    signupMessage.style.color = '#fff';
+
     const username = document.getElementById('signupUsername').value;
     const email = document.getElementById('signupEmail').value;
     const password = document.getElementById('signupPassword').value;
+    
+    // 🚨 Password Strength စစ်ဆေးခြင်း
+    const strengthError = checkPasswordStrength(password);
+    if (strengthError) {
+        signupMessage.textContent = strengthError;
+        signupMessage.style.color = '#ff6d6d'; // အနီရောင် error ပြခြင်း
+        return; // Password မကောင်းရင် ဆက်မလုပ်တော့ဘူး
+    }
 
-    // ⚠️ Backend မပါတဲ့အတွက်၊ ဒီနေရာမှာ အောင်မြင်ကြောင်းသာ ပြသပေးထားပါတယ်
-    // (အမှန်တကယ် User ကို Register လုပ်ဖို့ Server Side Code လိုပါတယ်)
-    
-    // User ရဲ့ အချက်အလက်တွေကို Console မှာ ပြသခြင်း
-    console.log(`Signup Attempt: Username: ${username}, Email: ${email}, Password: ${password}`);
-    
-    signupMessage.textContent = `🎉 Signup အောင်မြင်ပါတယ်။ ${username} အနေနဲ့ Login ဝင်နိုင်ပါပြီ။`;
-    signupMessage.style.color = '#6dff77';
-    
-    // Signup ပြီးနောက် Login Form ကို ပြန်ပြောင်းခြင်း
-    setTimeout(() => {
-        signupForm.reset();
-        signupMessage.textContent = '';
-        switchForm(loginForm, signupForm);
-    }, 2000); // ၂ စက္ကန့်ကြာရင် Login ကို ပြန်ပြောင်းမယ်။
+    try {
+        const response = await fetch(`${BASE_URL}/signup`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, email, password }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            signupMessage.textContent = `🎉 ${data.message}`;
+            signupMessage.style.color = '#6dff77';
+            
+            setTimeout(() => {
+                signupForm.reset();
+                signupMessage.textContent = '';
+                switchForm(loginForm, signupForm);
+            }, 2000); 
+        } else {
+            signupMessage.textContent = `❌ ${data.message}`;
+            signupMessage.style.color = '#ff6d6d';
+        }
+
+    } catch (error) {
+        console.error('Signup Error:', error);
+        signupMessage.textContent = '❌ Server နဲ့ ချိတ်ဆက်မှု ပြဿနာရှိနေပါတယ်။';
+        signupMessage.style.color = '#ff6d6d';
+    }
 });
-
