@@ -3,162 +3,133 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Firebase Login & Signup</title>
+  <title>Reborn Login</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
-    body {
-      background: linear-gradient(135deg, #5f2c82, #49a09d);
-      display: flex; align-items: center; justify-content: center;
-      height: 100vh;
-    }
-    .container {
-      width: 350px; background: #121212; color: #fff;
-      border-radius: 20px; padding: 30px 25px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
-    }
-    h2 { text-align: left; margin-bottom: 25px; font-weight: 700; }
-    .input-group { margin-bottom: 15px; }
-    .input-group label { display: block; font-size: 14px; margin-bottom: 5px; opacity: 0.8; }
-    .input-group input {
-      width: 100%; padding: 10px; border: none; border-radius: 8px;
-      outline: none; background: #1f1f1f; color: white;
-    }
-    .btn {
-      width: 100%; padding: 10px; margin-top: 10px;
-      border: none; border-radius: 8px;
-      background: linear-gradient(90deg, #8a2be2, #4b6cb7);
-      color: white; font-weight: 600; cursor: pointer; transition: 0.3s;
-    }
-    .btn:hover { opacity: 0.8; }
-    .switch { text-align: center; margin-top: 10px; font-size: 13px; }
-    .switch a { color: #7b68ee; text-decoration: none; }
-    #signupForm { display: none; }
-    .forgot { font-size: 13px; text-align: right; margin-top: -5px; }
-    .forgot a { color: #7b68ee; text-decoration: none; }
+    body {font-family: Arial, sans-serif; background: linear-gradient(135deg, #2b1055, #7597de); color: #fff; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh;}
+    form {background:#00000070; padding:30px; border-radius:15px; width:300px; box-shadow:0 0 15px rgba(0,0,0,0.3);}
+    h2 {text-align:center; margin-bottom:15px;}
+    .input-group {margin-bottom:15px;}
+    label {display:block; margin-bottom:5px;}
+    input {width:100%; padding:10px; border:none; border-radius:8px;}
+    .btn {width:100%; padding:10px; background:#6a5acd; border:none; border-radius:8px; color:#fff; font-weight:bold;}
+    .btn:hover {background:#483d8b;}
+    .switch {text-align:center; margin-top:10px;}
+    a {color:#8ab4f8;}
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- LOGIN FORM -->
-    <form id="loginForm">
-      <h2>Welcome!<br>Login</h2>
-      <div class="input-group">
-        <label>Email</label>
-        <input id="loginEmail" type="email" placeholder="example123@gmail.com" required />
-      </div>
-      <div class="input-group">
-        <label>Password</label>
-        <input id="loginPassword" type="password" placeholder="••••••••" required />
-      </div>
-      <div class="forgot"><a href="#">Forgot Password?</a></div>
-      <button type="submit" class="btn">Log In</button>
-      <div class="switch">
-        Don’t have an account? <a href="#" onclick="showSignup()">Sign Up</a>
-      </div>
-    </form>
 
-    <!-- SIGNUP FORM -->
-    <form id="signupForm">
-      <h2>Sign Up</h2>
-      <div class="input-group">
-        <label>Name</label>
-        <input id="signupName" type="text" placeholder="Your name" required />
-      </div>
-      <div class="input-group">
-        <label>Email</label>
-        <input id="signupEmail" type="email" placeholder="example@gmail.com" required />
-      </div>
-      <div class="input-group">
-        <label>Password</label>
-        <input id="signupPassword" type="password" placeholder="Password" required />
-      </div>
-      <div class="input-group">
-        <label>Confirm Password</label>
-        <input id="signupConfirm" type="password" placeholder="Confirm Password" required />
-      </div>
-      <button type="submit" class="btn">Sign Up</button>
-      <div class="switch">
-        Already a member? <a href="#" onclick="showLogin()">Log In</a>
-      </div>
-    </form>
-  </div>
+  <!-- LOGIN FORM -->
+  <form id="loginForm">
+    <h2>Welcome! Login</h2>
+    <div class="input-group">
+      <label>Email</label>
+      <input id="loginEmail" type="email" placeholder="Enter email" required />
+    </div>
+    <div class="input-group">
+      <label>Password</label>
+      <input id="loginPassword" type="password" placeholder="Enter password" required />
+    </div>
+    <button type="submit" class="btn">Log In</button>
+    <div class="switch">
+      Don’t have an account? <a href="#" onclick="showSignup()">Sign Up</a>
+    </div>
+  </form>
 
-  <!-- Firebase SDK -->
+  <!-- SIGNUP FORM -->
+  <form id="signupForm" style="display:none;">
+    <h2>Sign Up</h2>
+    <div class="input-group">
+      <label>Name</label>
+      <input id="signupName" type="text" placeholder="Your name" required />
+    </div>
+    <div class="input-group">
+      <label>Email</label>
+      <input id="signupEmail" type="email" placeholder="example@gmail.com" required />
+    </div>
+    <div class="input-group">
+      <label>Password</label>
+      <input id="signupPassword" type="password" placeholder="Password" required />
+    </div>
+    <div class="input-group">
+      <label>Confirm Password</label>
+      <input id="signupConfirm" type="password" placeholder="Confirm Password" required />
+    </div>
+    <button type="submit" class="btn">Sign Up</button>
+    <div class="switch">
+      Already a member? <a href="#" onclick="showLogin()">Log In</a>
+    </div>
+  </form>
+
+  <!-- Firebase SDKs -->
   <script type="module">
-    // Import Firebase SDKs
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    // Import Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } 
-      from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+      from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
-    // ✅ Firebase Config (Replace with your Firebase project info)
+    // ✅ Your Firebase Config
     const firebaseConfig = {
-      apiKey: "AIzaSyCkTRy0nhb_mUOmoaGQZwouBzjC0WxhZoE",
-      authDomain: "plexiform-being-471915.firebaseapp.com",
-      projectId: "plexiform-being-471915",
-      storageBucket: "plexiform-being-471915.appspot.com",
-      messagingSenderId: "477134304630",
-      appId: "1:477134304630:web:a7af00f276dd163b4e4c44",
-      measurementId: "G-VDCF2TGMET"
+      apiKey: "AIzaSyCj15_tydN2OaAVJ4Zmk0g2iTzffkgOeAc",
+      authDomain: "reborn-2001.firebaseapp.com",
+      projectId: "reborn-2001",
+      storageBucket: "reborn-2001.appspot.com",
+      messagingSenderId: "583505835782",
+      appId: "1:583505835782:web:b40d48304237356c1e4e64",
+      measurementId: "G-Y8D3GH9BD0"
     };
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    const loginForm = document.getElementById('loginForm');
-    const signupForm = document.getElementById('signupForm');
-
-    // Switch between forms
-    window.showSignup = () => {
-      loginForm.style.display = 'none';
-      signupForm.style.display = 'block';
-    };
-    window.showLogin = () => {
-      signupForm.style.display = 'none';
-      loginForm.style.display = 'block';
-    };
-
-    // 🔹 SIGNUP
-    signupForm.addEventListener('submit', (e) => {
+    // ✅ Sign Up
+    const signupForm = document.getElementById("signupForm");
+    signupForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const name = document.getElementById('signupName').value;
-      const email = document.getElementById('signupEmail').value;
-      const password = document.getElementById('signupPassword').value;
-      const confirm = document.getElementById('signupConfirm').value;
+      const name = document.getElementById("signupName").value;
+      const email = document.getElementById("signupEmail").value;
+      const password = document.getElementById("signupPassword").value;
+      const confirm = document.getElementById("signupConfirm").value;
 
       if (password !== confirm) {
-        alert('❌ Passwords do not match!');
+        alert("Passwords do not match!");
         return;
       }
 
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          updateProfile(user, { displayName: name });
-          alert('🎉 Signup successful! Please login.');
-          showLogin();
-        })
-        .catch((error) => {
-          alert('⚠️ ' + error.message);
-        });
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(userCredential.user, { displayName: name });
+        alert("✅ Sign Up successful!");
+        showLogin();
+      } catch (error) {
+        alert("Error: " + error.message);
+      }
     });
 
-    // 🔹 LOGIN
-    loginForm.addEventListener('submit', (e) => {
+    // ✅ Log In
+    const loginForm = document.getElementById("loginForm");
+    loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
-
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          alert('✅ Welcome, ' + (user.displayName || user.email) + '!');
-        })
-        .catch((error) => {
-          alert('⚠️ ' + error.message);
-        });
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert("✅ Logged in successfully!");
+      } catch (error) {
+        alert("Error: " + error.message);
+      }
     });
+
+    // ✅ Switch forms
+    window.showSignup = function() {
+      document.getElementById("loginForm").style.display = "none";
+      document.getElementById("signupForm").style.display = "block";
+    };
+    window.showLogin = function() {
+      document.getElementById("signupForm").style.display = "none";
+      document.getElementById("loginForm").style.display = "block";
+    };
   </script>
 </body>
 </html>
