@@ -1,193 +1,148 @@
-const loginForm = document.getElementById('login-form');
-const signupForm = document.getElementById('signup-form');
-const toggleText = document.getElementById('toggle-text');
-const formTitle = document.getElementById('form-title');
-
-toggleText.addEventListener('click', () => {
-  const isLogin = !loginForm.classList.contains('hidden');
-  if (isLogin) {
-    loginForm.classList.add('hidden');
-    signupForm.classList.remove('hidden');
-    formTitle.textContent = 'Sign Up';
-    toggleText.innerHTML = 'Already have an account? <b>Login</b>';
-  } else {
-    signupForm.classList.add('hidden');
-    loginForm.classList.remove('hidden');
-    formTitle.textContent = 'Login';
-    toggleText.innerHTML = 'Don\'t have an account? <b>Sign up</b>';
-  }
-});
-
-loginForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const email = document.getElementById('login-email').value;
-  const password = document.getElementById('login-password').value;
-
-  alert(`Welcome back, ${email}! 🧡`);
-  loginForm.reset();
-});
-
-signupForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const name = document.getElementById('signup-name').value;
-  const email = document.getElementById('signup-email').value;
-
-  alert(`Welcome ${name}! Your account for ACP has been created 🎉`);
-  signupForm.reset();
-
-  signupForm.classList.add('hidden');
-  loginForm.classList.remove('hidden');
-  formTitle.textContent = 'Login';
-  toggleText.innerHTML = 'Don\'t have an account? <b>Sign up</b>';
-});
-/* --- 1. Toggle Buttons (Login/Sign Up အပေါ်ဆုံးခလုတ်) --- */
-.toggle-buttons {
-    display: flex;
-    width: 100%;
-    margin-bottom: 25px;
-    background-color: var(--light-gray);
-    padding: 5px;
-    border-radius: 15px;
-    /* အတွင်းဘက် နစ်ဝင်နေတဲ့ Neumorphic Effect */
-    box-shadow: inset 5px 5px 10px var(--dark-shadow),
-                inset -5px -5px 10px var(--light-shadow);
+* {
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
-.toggle-buttons button {
-    flex-grow: 1;
-    border: none;
-    padding: 10px 0;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    background-color: transparent;
-    transition: all 0.3s ease;
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #6a00f4, #8e2de2);
 }
 
-.toggle-buttons button.active {
-    /* Login နှိပ်ထားရင် အပြာရောင်၊ Sign Up နှိပ်ထားရင် ခရမ်းရောင် ဖြစ်စေရန် */
-    background: linear-gradient(to right, var(--main-blue), var(--purple)); 
-    color: var(--white);
-    /* ခလုတ်ကြွတက်နေတဲ့ Effect */
-    box-shadow: 3px 3px 6px var(--dark-shadow), 
-                -3px -3px 6px var(--light-shadow);
+.container {
+  position: relative;
+  width: 360px;
+  min-height: 520px;
+  background: #0f0f0f;
+  border-radius: 40px;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+  padding: 40px 30px;
+  color: #fff;
 }
 
-/* --- 2. Form Styling (Login/Sign Up Forms) --- */
-.form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0 10px;
-    transition: all 0.4s ease-in-out;
-    /* မပေါ်သေးရင် ဖျောက်ထားရန် */
-    max-height: 0;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(20px);
+.form-box {
+  position: relative;
+  width: 100%;
+  transition: all 0.5s ease;
 }
 
-.form.active-form {
-    /* ပေါ်လာရင် */
-    max-height: 500px; /* နေရာယူမှု ပြန်ပေးရန် */
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+.form-box.hidden {
+  display: none;
 }
 
-.form h1 {
-    font-size: 24px;
-    margin-bottom: 30px;
-    color: #333;
+h1 {
+  font-size: 18px;
+  color: #bbb;
+  margin: 0;
 }
 
-.input-group {
-    width: 100%;
-    margin-bottom: 20px;
+h2 {
+  font-size: 28px;
+  margin: 5px 0 25px;
 }
 
-.input-group input {
-    width: 100%;
-    padding: 15px 20px;
-    border: none;
-    border-radius: 10px;
-    background-color: var(--light-gray);
-    font-size: 16px;
-    color: #333;
-    /* Input နစ်ဝင်နေတဲ့ Neumorphic Effect */
-    box-shadow: inset 3px 3px 7px var(--dark-shadow),
-                inset -3px -3px 7px var(--light-shadow);
-    outline: none;
-    box-sizing: border-box;
+label {
+  font-size: 14px;
+  color: #aaa;
+  display: block;
+  margin-bottom: 6px;
 }
 
-.submit-btn {
-    width: 100%;
-    border: none;
-    padding: 15px;
-    border-radius: 20px;
-    font-size: 16px;
-    font-weight: bold;
-    color: var(--white);
-    /* ခလုတ်အရောင် */
-    background: linear-gradient(to right, var(--main-blue), var(--purple)); 
-    cursor: pointer;
-    margin-top: 15px;
-    /* ခလုတ်ကြွတက်နေတဲ့ Effect */
-    box-shadow: 5px 5px 10px var(--dark-shadow), 
-                -5px -5px 10px var(--light-shadow);
-    transition: all 0.3s ease;
+input {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #555;
+  color: white;
+  font-size: 15px;
+  margin-bottom: 20px;
+  outline: none;
 }
 
-.submit-btn:active {
-    /* နှိပ်လိုက်ရင် နစ်ဝင်သွားတဲ့ Effect */
-    box-shadow: inset 2px 2px 5px var(--dark-shadow),
-                inset -2px -2px 5px var(--light-shadow);
-    transform: scale(0.98);
+.forgot {
+  font-size: 13px;
+  color: #7a5cff;
+  text-decoration: none;
+  display: block;
+  text-align: right;
+  margin-bottom: 25px;
 }
 
-/* --- 3. Social Media Icons --- */
-.continue-text {
-    margin: 20px 0 15px 0;
-    font-size: 14px;
-    color: #555;
+.forgot:hover {
+  text-decoration: underline;
 }
 
-.social-icons a {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin: 0 10px;
-    font-size: 18px;
-    color: #555;
-    text-decoration: none;
-    background-color: var(--light-gray);
-    /* Icon တွေ ကြွတက်နေတဲ့ Effect */
-    box-shadow: 3px 3px 6px var(--dark-shadow), 
-                -3px -3px 6px var(--light-shadow);
-    transition: all 0.3s ease;
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-.social-icons a:hover {
-    color: var(--main-blue);
-    /* နှိပ်လိုက်ရင် နစ်ဝင်သွားတဲ့ Effect */
-    box-shadow: inset 2px 2px 5px var(--dark-shadow),
-                inset -2px -2px 5px var(--light-shadow);
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: 0.3s;
 }
 
-#to-login-link {
-    color: var(--main-blue);
-    font-weight: bold;
-    cursor: pointer;
+.btn.light {
+  background: #fff;
+  color: #7a00ff;
 }
 
-.designer-info {
-    margin-top: 20px;
-    font-size: 10px;
-    color: #777;
+.btn.purple {
+  background: linear-gradient(90deg, #7a00ff, #b100ff);
+  color: #fff;
 }
 
+.btn.full {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.member {
+  text-align: center;
+  color: #aaa;
+  font-size: 13px;
+  margin-top: 20px;
+}
+
+.member a {
+  color: #7a5cff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.member a:hover {
+  text-decoration: underline;
+}
+
+.circle {
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 120px;
+  height: 120px;
+  background: #7a00ff;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.circle.small {
+  width: 60px;
+  height: 60px;
+  top: 20px;
+  right: 60px;
+  background: #b06fff;
+}
