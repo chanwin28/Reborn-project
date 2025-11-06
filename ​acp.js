@@ -1,40 +1,42 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loginPanel = document.getElementById('login-form');
     const signupPanel = document.getElementById('signup-form');
-    const showSignupLink = document.getElementById('show-signup');
-    const showLoginLink = document.getElementById('show-login');
+    // Login Form မှ Sign Up Button
+    const showSignupBtn = document.getElementById('show-signup-btn'); 
+    // Sign Up Form မှ Log In Link
+    const showLoginLink = document.getElementById('show-login-link'); 
 
     // Function to switch forms
     const switchForm = (showPanel, hidePanel) => {
+        // 1. Hide current panel with fade out
         hidePanel.classList.remove('active');
-        // A small delay for the fade-out effect
+        hidePanel.style.opacity = '0';
+        
+        // 2. Wait for the fade out transition to complete (0.5s)
         setTimeout(() => {
-            showPanel.classList.add('active');
-        }, 10); // minimal delay
+            hidePanel.style.display = 'none';
+            showPanel.style.display = 'block';
+            
+            // 3. Show new panel with fade in
+            setTimeout(() => {
+                showPanel.classList.add('active');
+                showPanel.style.opacity = '1';
+            }, 10);
+        }, 500);
     };
 
-    // Event listener for showing Sign Up
-    if (showSignupLink) {
-        showSignupLink.addEventListener('click', (e) => {
+    // Event Listeners for switching
+    if (showSignupBtn) {
+        showSignupBtn.addEventListener('click', (e) => {
             e.preventDefault();
             switchForm(signupPanel, loginPanel);
         });
     }
 
-    // Event listener for showing Login
     if (showLoginLink) {
         showLoginLink.addEventListener('click', (e) => {
             e.preventDefault();
             switchForm(loginPanel, signupPanel);
         });
     }
-
-    // You can add form validation logic here later if needed.
-    // Example:
-    // const loginForm = loginPanel.querySelector('form');
-    // loginForm.addEventListener('submit', (e) => {
-    //     e.preventDefault();
-    //     alert('Login attempt...');
-    //     // Add actual login logic (e.g., fetch API)
-    // });
 });
