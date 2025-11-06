@@ -1,11 +1,10 @@
-/* Custom CSS Variables */
+/* Custom Variables */
 :root {
-    --bg-color: #1a1a1a;        /* Soft Black / Dark Gray */
-    --card-bg: #242424;         /* Slightly Lighter Card Background */
-    --text-color: #f0f0f0;      /* Off-White Text */
-    --input-border: #444;       /* Thin Gray Border */
-    --input-focus: #1e90ff;     /* Electric Blue Accent (Focus/Button) */
-    --social-bg: #333;          /* Social Button Background */
+    --bg-color: #0d0d16;        
+    --text-color: #f0f0f0;      
+    --input-border: #444;
+    --accent-primary: #6a5acd;  /* Purple Accent */
+    --accent-secondary: #5849b3; /* Slightly darker purple for contrast */
     --font-family: 'Inter', sans-serif;
 }
 
@@ -18,43 +17,48 @@
 
 body {
     font-family: var(--font-family);
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    background-color: #000; /* Use pure black for the outside area */
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    padding: 20px;
 }
 
-/* Card Styling */
-.auth-card {
-    background-color: var(--card-bg);
-    padding: 40px 30px;
-    border-radius: 12px;
+/* Main Mobile/App Container (Simulates Phone Screen) */
+.app-container {
+    background-color: var(--bg-color);
     width: 100%;
-    max-width: 400px; /* Mobile-first approach, max-width for desktop */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    text-align: center;
-}
-
-/* Typography */
-.logo {
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 25px;
+    max-width: 400px; /* Standard mobile width */
+    height: 800px; /* Standard mobile height */
+    border-radius: 40px; /* Rounded Phone Corners */
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    position: relative;
+    overflow: hidden; /* Hide bubbles outside the container */
     color: var(--text-color);
 }
 
-.title {
-    font-size: 1.8rem;
-    font-weight: 600;
-    margin-bottom: 30px;
+/* Floating Bubbles Background */
+.bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    filter: blur(10px);
+    opacity: 0.8;
 }
 
-/* Input Fields - Minimalist Look */
+.bubble-lg { top: -80px; left: -80px; width: 160px; height: 160px; background: var(--accent-secondary); }
+.bubble-md { top: 10px; left: 10px; width: 60px; height: 60px; }
+.bubble-sm { top: 30px; right: 20px; width: 30px; height: 30px; }
+
+/* Text Styling */
+.welcome-text { font-size: 1.2rem; font-weight: 400; color: #fff; margin-bottom: 5px; }
+.title { font-size: 3rem; font-weight: 800; margin-bottom: 50px; line-height: 1; }
+
+/* Input Fields */
 .input-group {
-    margin-bottom: 20px;
+    position: relative;
+    margin-bottom: 30px;
 }
 
 .input-group input {
@@ -64,50 +68,100 @@ body {
     color: var(--text-color);
     background: transparent;
     border: none;
-    border-bottom: 2px solid var(--input-border); /* Thin line at the bottom */
+    border-bottom: 1px solid var(--input-border); /* Thinner line for sleek look */
     outline: none;
+    padding-left: 0px; /* Icon မပါရင် 0px ထားပါ */
     transition: border-bottom-color 0.3s ease;
 }
 
-.input-group input:focus {
-    border-bottom-color: var(--input-focus); /* Accent color on focus */
+/* Icon (Since your image has icons or a placeholder style) */
+.input-group .icon {
+    position: absolute;
+    right: 0;
+    top: 15px;
+    color: var(--text-color); /* Icon color */
+    font-size: 1rem;
+    display: none; /* Hide if not using Font Awesome */
 }
 
-/* Primary Button (CTA) */
+.input-group input:focus {
+    border-bottom-color: var(--accent-primary);
+}
+
+/* Link */
+.forgot-link {
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: block;
+    text-align: right;
+    margin-bottom: 40px;
+}
+
+/* Buttons */
 .btn {
-    width: 100%;
     padding: 12px 20px;
     border: none;
-    border-radius: 8px;
+    border-radius: 20px; /* Highly rounded corners */
     font-size: 16px;
     cursor: pointer;
     font-weight: 600;
     transition: background-color 0.3s ease;
 }
 
+/* Side-by-Side Buttons (Login Form) */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+
+.button-group .btn {
+    width: 48%; /* Adjust width for side-by-side */
+}
+
 .btn-primary {
-    background-color: var(--input-focus); /* Electric Blue Accent */
+    background-color: var(--accent-primary);
     color: #fff;
-    margin-top: 15px;
-    margin-bottom: 15px;
 }
 
-.btn-primary:hover {
-    background-color: #156edb; /* Slightly darker blue on hover */
+.btn-secondary {
+    background-color: transparent;
+    color: var(--accent-primary);
+    border: 1px solid var(--accent-primary);
 }
 
-/* Links & Secondary Text */
-.forgot-link, .toggle-text a {
-    color: var(--input-focus);
-    text-decoration: none;
+/* Sign Up Button (Full Width) */
+.btn-primary.full-width {
+    width: 100%;
+    margin-top: 30px;
+}
+
+/* Toggle Text (Sign Up Form) */
+.toggle-text {
+    margin-top: 20px;
     font-size: 0.9rem;
-    display: block;
-    margin-top: 10px;
+    color: #fff;
+    text-align: center;
 }
 
-.forgot-link {
-    text-align: right;
-    margin-bottom: 25px;
+.toggle-text a {
+     color: var(--accent-primary);
+     text-decoration: none;
+     font-weight: 600;
+}
+
+/* Form Panel Toggling */
+.form-panel {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    padding-top: 50px; /* Spacing below bubbles */
+}
+
+#login-form.active {
+    display: block;
+    opacity: 1;
 }
 
 .toggle-text {
@@ -148,3 +202,4 @@ body {
     display: block;
     opacity: 1;
 }
+
