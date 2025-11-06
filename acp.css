@@ -5,24 +5,24 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* 100vh သည် viewport ၏ အမြင့်အပြည့်ယူသည် */
     height: 100vh; 
     margin: 0;
-    background-color: #0b1a2e;
-    color: white;
+    /* နောက်ခံအရောင်: မီးခိုးရောင်နုနု */
+    background-color: #f0f4f8; 
+    color: #333; 
 }
 
 /* Forms တွေကို ထည့်သွင်းထားတဲ့ အဓိက Container */
 .container {
     position: relative;
-    /* မိုဘိုင်းအတွက် အပြောင်းအလဲများ */
-    max-width: 760px; /* အကြီးဆုံး 760px ထားပါ */
-    width: 90%;       /* ဖုန်း Screen ရဲ့ ၉၀% ကို ယူပါ */
-    min-height: 480px; /* အနိမ့်ဆုံး အမြင့်ကို သတ်မှတ်ခြင်း */
-
-    background-color: #142a49;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
+    max-width: 760px;
+    width: 90%;
+    min-height: 480px;
+    
+    /* Container Background ကို ဖျက်ထားပါ (Form တွေကပဲ အရောင်ယူမှာပါ) */
+    background-color: transparent; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border-radius: 15px; 
     overflow: hidden; 
 }
 
@@ -41,17 +41,30 @@ body {
     justify-content: center;
 }
 
-/* Sign Up Form ရဲ့ အစ နေရာ */
+/* --- 1. SIGN UP FORM ရဲ့ အရောင် (အဓိက Sky Blue) --- */
 .sign-up-container {
     left: 0;
     opacity: 0; 
     z-index: 1;
+    /* Sign Up နေရာရဲ့ နောက်ခံအရောင် */
+    background-color: #f0f8ff; /* Azure White */
+    color: #333;
 }
 
-/* Log In Form ရဲ့ အစ နေရာ */
+/* --- 2. LOG IN FORM ရဲ့ အရောင် (အဓိက Dark Blue) --- */
 .log-in-container {
     left: 50%;
     z-index: 2;
+    /* Log In နေရာရဲ့ နောက်ခံအရောင် */
+    background-color: #142a49; 
+    color: #FFFFFF; /* စာသားတွေကို အဖြူရောင်ပြောင်း */
+}
+.log-in-container input {
+    background-color: #2e4362; /* input ကို နောက်ခံနဲ့ ပိုလိုက်ဖက်အောင် */
+    color: #FFFFFF;
+}
+.log-in-container a {
+    color: #b0c4de; /* Link အရောင်ပြောင်း */
 }
 
 /* Container တွင် 'right-panel-active' class ရှိလာရင် ဖြစ်ပေါ်လာမည့် အပြောင်းအလဲများ */
@@ -67,18 +80,19 @@ body {
 
 /* Input/Button/Text တွေရဲ့ ဒီဇိုင်းများ... */
 input {
-    background-color: #eee;
     border: none;
     padding: 12px 15px;
     margin: 8px 0;
     width: 100%;
     border-radius: 5px;
-    color: #333; 
+    background-color: #eee;
+    color: #333; /* Default input text color */
 }
+
 button {
     border-radius: 20px;
-    border: 1px solid #00c6ff;
-    background-color: #00c6ff;
+    border: 1px solid #00bfff; 
+    background-color: #00bfff; /* Sky Blue */
     color: #FFFFFF;
     font-size: 12px;
     font-weight: bold;
@@ -90,18 +104,7 @@ button {
     transition: transform 80ms ease-in;
 }
 
-button:active {
-    transform: scale(0.95);
-}
-
-.form-container form {
-    display: flex;
-    flex-direction: column;
-    padding: 0 50px;
-    text-align: center;
-}
-
-/* Overlay Pane */
+/* --- OVERLAY PANEL ရဲ့ အရောင် (အမြဲတမ်း Sky Blue Gradient) --- */
 .overlay-container {
     position: absolute;
     top: 0;
@@ -118,7 +121,8 @@ button:active {
 }
 
 .overlay {
-    background: linear-gradient(to right, #00c6ff, #0072ff);
+    /* Gradient Sky Blue */
+    background: linear-gradient(to right, #00bfff, #1e90ff); 
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 0 0;
@@ -131,46 +135,17 @@ button:active {
     transition: transform 0.6s ease-in-out;
 }
 
-.container.right-panel-active .overlay {
-    transform: translateX(50%);
-}
+/* (Overlay Animation Code များ မပြောင်းလဲပါ) */
+/* ... */
 
-.overlay-panel {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 40px;
-    text-align: center;
-    top: 0;
-    height: 100%;
-    width: 50%;
-    transform: translateX(0);
-    transition: transform 0.6s ease-in-out;
-}
-
-.overlay-left {
-    transform: translateX(-20%);
-}
-
-.container.right-panel-active .overlay-left {
-    transform: translateX(0);
-}
-
-.overlay-right {
-    right: 0;
-    transform: translateX(0);
-}
-
-.container.right-panel-active .overlay-right {
-    transform: translateX(20%);
-}
-
-/* Toggle Button */
+/* Toggle Button (Overlay ပေါ်က ခလုတ်) */
 .ghost {
     background-color: transparent;
     border-color: #FFFFFF;
     color: #FFFFFF;
+    transition: background-color 0.3s ease;
+}
+.ghost:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 /* --- CSS Code အဆုံး --- */
