@@ -3,62 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login & Sign Up Toggle</title>
+    <title>Neumorphic Login & Sign Up</title>
     
     <link rel="stylesheet" href="acp.css"> 
 </head>
 <body>
 
-<div class="container" id="container">
+<div class="container" id="main-container">
 
-    <div class="form-container sign-up-container">
-        <form action="#">
-            <h1>Create Account</h1>
-            <input type="text" placeholder="Name" />
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <button>Sign Up</button>
-        </form>
+    <div class="toggle-buttons">
+        <button id="login-btn" class="active">Login</button>
+        <button id="signup-btn">Sign Up</button>
     </div>
 
-    <div class="form-container log-in-container">
-        <form action="#">
-            <h1>Sign In</h1>
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <a href="#" style="color: #b0c4de; font-size: 12px; margin: 10px 0;">Forgot your password?</a>
-            <button>Log In</button>
-        </form>
-    </div>
-
-    <div class="overlay-container">
-        <div class="overlay">
-            <div class="overlay-panel overlay-left">
-                <h1>Welcome Back!</h1>
-                <p>To keep connected with us please login with your personal info</p>
-                <button class="ghost" id="logIn">Sign In</button>
-            </div>
-            <div class="overlay-panel overlay-right">
-                <h1>Hello, Friend!</h1>
-                <p>Enter your personal details and start journey with us</p>
-                <button class="ghost" id="signUp">Sign Up</button>
-            </div>
+    <form id="login-form" class="form active-form" action="#">
+        <h1>Login</h1>
+        <div class="input-group">
+            <input type="text" placeholder="Username" required>
         </div>
+        <div class="input-group">
+            <input type="password" placeholder="Password" required>
+        </div>
+        <button type="submit" class="submit-btn">Login</button>
+        <p class="continue-text">Or continue with:</p>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-google"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+    </form>
+
+    <form id="signup-form" class="form" action="#">
+        <h1>Sign Up</h1>
+        <div class="input-group">
+            <input type="text" placeholder="Username" required>
+        </div>
+        <div class="input-group">
+            <input type="email" placeholder="Email" required>
+        </div>
+        <div class="input-group">
+            <input type="password" placeholder="Password" required>
+        </div>
+        <button type="submit" class="submit-btn">Register</button>
+        <p class="continue-text">Already have an account? <span id="to-login-link">Login</span></p>
+    </form>
+
+    <div class="designer-info">
+        <p>Designer : Amir Hasan</p>
     </div>
 </div>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
 <script>
-    const signUpButton = document.getElementById('signUp');
-    const logInButton = document.getElementById('logIn');
-    const container = document.getElementById('container');
+    const loginBtn = document.getElementById('login-btn');
+    const signupBtn = document.getElementById('signup-btn');
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    const toLoginLink = document.getElementById('to-login-link'); // Sign Up Form အောက်က Link
 
-    signUpButton.addEventListener('click', () => {
-        container.classList.add("right-panel-active");
-    });
+    // Function to switch to Login form
+    function showLoginForm() {
+        loginBtn.classList.add('active');
+        signupBtn.classList.remove('active');
+        loginForm.classList.add('active-form');
+        signupForm.classList.remove('active-form');
+    }
 
-    logInButton.addEventListener('click', () => {
-        container.classList.remove("right-panel-active");
-    });
+    // Function to switch to Sign Up form
+    function showSignupForm() {
+        loginBtn.classList.remove('active');
+        signupBtn.classList.add('active');
+        loginForm.classList.remove('active-form');
+        signupForm.classList.add('active-form');
+    }
+
+    loginBtn.addEventListener('click', showLoginForm);
+    signupBtn.addEventListener('click', showSignupForm);
+    toLoginLink.addEventListener('click', showLoginForm); // Sign Up ကနေ Login ကို ပြန်သွားဖို့
 </script>
 
 </body>
