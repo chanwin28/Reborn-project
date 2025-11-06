@@ -123,14 +123,14 @@
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
       from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-    // 🚨 IMPORTANT: Firebase Configuration (from your image)
+    // 🚨 IMPORTANT: Firebase Configuration (Updated from your Console image)
     const firebaseConfig = {
-      apiKey: "AIzaSyCj15_tydN2OaAVJ4Zmk0g2Yc7eGiCMn6A", 
+      apiKey: "AIzaSyCj15_tydN2OaAVJ4Zmk0g2u0qNblkL7CTY", // 🔑 Updated Key
       authDomain: "reborn-2001.firebaseapp.com",
       projectId: "reborn-2001",
-      storageBucket: "reborn-2001.appspot.com",
+      storageBucket: "reborn-2001.firebasestorage.app", // 💡 Note: Changed from appspot.com to firebasestorage.app as per your image.
       messagingSenderId: "583505835782",
-      appId: "1:583505835782:web:b40d4804239708b9b3c8f7",
+      appId: "1:583505835782:web:b43e0e4302375a559fb4d087", // ✅ Updated App ID
       measurementId: "G-Y8D3GH9BD0"
     };
 
@@ -143,7 +143,6 @@
         await signInWithEmailAndPassword(auth, email, password);
         alert("✅ Login successful!");
       } catch (error) {
-        // Displays Firebase Error messages
         alert("❌ Login failed: " + error.message);
       }
     }
@@ -210,11 +209,7 @@
     }
 
     // Initial state check (for Signup form showing first)
-    if(signupTab.classList.contains("active")) {
-        activateSignup();
-    } else {
-        activateLogin();
-    }
+    activateSignup(); // Start with the Signup form active
 
     loginTab.addEventListener("click", activateLogin);
     signupTab.addEventListener("click", activateSignup);
