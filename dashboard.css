@@ -27,14 +27,14 @@ header {
     margin-bottom: 30px;
 }
 
-.reborn-title {
-    font-size: 3rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: #6dff77; /* Neon Green Color */
-    text-shadow: 
-        0 0 5px #6dff77,
-        0 0 10px #6dff77; /* Glow Effect */
+/* Logo Image ကို သတ်မှတ်ခြင်း */
+.reborn-logo-dash {
+    /* ပုံအမည်ကို သင့်ရဲ့ '17623338398468.jpg' ဖြင့် အစားထိုးထားသည် */
+    width: 150px; /* Dashboard မှာ အနည်းငယ် သေးနိုင်သည် */
+    height: auto;
+    margin-bottom: 5px;
+    /* Neon Glow Effect */
+    filter: drop-shadow(0 0 8px #6dff7733) drop-shadow(0 0 15px #6dff7722);
 }
 
 .est-text {
@@ -44,17 +44,18 @@ header {
     margin-top: -15px;
 }
 
+/* ⚠️ ယခင်က .reborn-title ကို ဖယ်ရှားထားပါတယ်။ */
+
 /* ==================================== */
 /* Profile Card & Neon Border */
 /* ==================================== */
 .profile-card {
-    background-color: #1a0833; /* Slightly lighter dark purple */
+    background-color: #1a0833;
     padding: 30px 20px;
     border-radius: 15px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     margin-bottom: 40px;
     position: relative;
-    /* Neon Border Effect */
     border: 1px solid rgba(125, 64, 242, 0.5); 
     box-shadow: 0 0 15px #7d40f255;
 }
@@ -92,7 +93,7 @@ header {
     margin: 20px 0 30px 0;
     border: none;
     border-radius: 8px;
-    background-color: #7d40f2; /* Purple Color */
+    background-color: #7d40f2; 
     color: #fff;
     font-size: 1.1rem;
     font-weight: 600;
@@ -103,7 +104,7 @@ header {
 .logout-btn {
     padding: 10px 30px;
     background: transparent;
-    border: 1px solid #ff6d6d; /* Red/Error Color */
+    border: 1px solid #ff6d6d; 
     color: #ff6d6d;
     border-radius: 30px;
     font-size: 0.9rem;
