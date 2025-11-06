@@ -1,0 +1,130 @@
+/* ==================================== */
+/* General Styles (Login နဲ့ တူအောင်) */
+/* ==================================== */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #0d001a; /* Dark Purple Background */
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.dashboard-container {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+/* ==================================== */
+/* Header & Title Styles */
+/* ==================================== */
+header {
+    margin-bottom: 30px;
+}
+
+.reborn-title {
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #6dff77; /* Neon Green Color */
+    text-shadow: 
+        0 0 5px #6dff77,
+        0 0 10px #6dff77; /* Glow Effect */
+}
+
+.est-text {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+    letter-spacing: 4px;
+    margin-top: -15px;
+}
+
+/* ==================================== */
+/* Profile Card & Neon Border */
+/* ==================================== */
+.profile-card {
+    background-color: #1a0833; /* Slightly lighter dark purple */
+    padding: 30px 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    margin-bottom: 40px;
+    position: relative;
+    /* Neon Border Effect */
+    border: 1px solid rgba(125, 64, 242, 0.5); 
+    box-shadow: 0 0 15px #7d40f255;
+}
+
+.profile-card h2 {
+    font-size: 1.8rem;
+    color: #fff;
+    margin-top: 0;
+}
+
+.user-details {
+    text-align: left;
+    margin: 20px 0;
+    padding-top: 15px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+.user-details p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.status-active {
+    color: #6dff77;
+    font-weight: 600;
+}
+
+/* ==================================== */
+/* Button Styles */
+/* ==================================== */
+.core-feature-btn {
+    width: 100%;
+    padding: 15px;
+    margin: 20px 0 30px 0;
+    border: none;
+    border-radius: 8px;
+    background-color: #7d40f2; /* Purple Color */
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.logout-btn {
+    padding: 10px 30px;
+    background: transparent;
+    border: 1px solid #ff6d6d; /* Red/Error Color */
+    color: #ff6d6d;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #ff6d6d;
+    color: #fff;
+}
+
+.core-feature-btn:hover {
+    transform: translateY(-2px);
+    background-color: #6432c9;
+}
+
+/* ==================================== */
+/* Footer */
+/* ==================================== */
+footer {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+}

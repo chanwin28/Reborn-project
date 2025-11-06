@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reborn Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        
+        <header>
+            <h1 class="reborn-title">REBORN</h1>
+            <p class="est-text">DASHBOARD</p>
+        </header>
+
+        <div class="profile-card neon-border">
+            <h2 id="welcomeMessage">Hello, Reborn User!</h2>
+            <p>Welcome to your personal control panel.</p>
+            
+            <div class="user-details">
+                <p>Email: <span id="userEmail">Loading...</span></p>
+                <p>Status: <span class="status-active">ACTIVE</span></p>
+            </div>
+            
+            <button class="core-feature-btn">
+                ✨ Start Your Journey
+            </button>
+
+            <button id="logoutBtn" class="logout-btn">
+                Log Out
+            </button>
+        </div>
+        
+        <footer>
+            <p>&copy; 2024 Reborn Project. All rights reserved.</p>
+        </footer>
+
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
