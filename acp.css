@@ -1,0 +1,176 @@
+/* --- CSS Code အားလုံးကို ဤနေရာတွင် ထည့်သွင်းပါ --- */
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* 100vh သည် viewport ၏ အမြင့်အပြည့်ယူသည် */
+    height: 100vh; 
+    margin: 0;
+    background-color: #0b1a2e;
+    color: white;
+}
+
+/* Forms တွေကို ထည့်သွင်းထားတဲ့ အဓိက Container */
+.container {
+    position: relative;
+    /* မိုဘိုင်းအတွက် အပြောင်းအလဲများ */
+    max-width: 760px; /* အကြီးဆုံး 760px ထားပါ */
+    width: 90%;       /* ဖုန်း Screen ရဲ့ ၉၀% ကို ယူပါ */
+    min-height: 480px; /* အနိမ့်ဆုံး အမြင့်ကို သတ်မှတ်ခြင်း */
+
+    background-color: #142a49;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    overflow: hidden; 
+}
+
+/* Form နှစ်ခုလုံးရဲ့ အခြေခံ စတိုင် */
+.form-container {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+    padding: 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Sign Up Form ရဲ့ အစ နေရာ */
+.sign-up-container {
+    left: 0;
+    opacity: 0; 
+    z-index: 1;
+}
+
+/* Log In Form ရဲ့ အစ နေရာ */
+.log-in-container {
+    left: 50%;
+    z-index: 2;
+}
+
+/* Container တွင် 'right-panel-active' class ရှိလာရင် ဖြစ်ပေါ်လာမည့် အပြောင်းအလဲများ */
+.container.right-panel-active .log-in-container {
+    transform: translateX(-100%);
+}
+
+.container.right-panel-active .sign-up-container {
+    transform: translateX(100%);
+    opacity: 1; 
+    z-index: 5;
+}
+
+/* Input/Button/Text တွေရဲ့ ဒီဇိုင်းများ... */
+input {
+    background-color: #eee;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
+    border-radius: 5px;
+    color: #333; 
+}
+button {
+    border-radius: 20px;
+    border: 1px solid #00c6ff;
+    background-color: #00c6ff;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: transform 80ms ease-in;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    padding: 0 50px;
+    text-align: center;
+}
+
+/* Overlay Pane */
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.container.right-panel-active .overlay-container {
+    transform: translateX(-100%);
+}
+
+.overlay {
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0 0;
+    color: #FFFFFF;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.container.right-panel-active .overlay {
+    transform: translateX(50%);
+}
+
+.overlay-panel {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    text-align: center;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay-left {
+    transform: translateX(-20%);
+}
+
+.container.right-panel-active .overlay-left {
+    transform: translateX(0);
+}
+
+.overlay-right {
+    right: 0;
+    transform: translateX(0);
+}
+
+.container.right-panel-active .overlay-right {
+    transform: translateX(20%);
+}
+
+/* Toggle Button */
+.ghost {
+    background-color: transparent;
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+}
+/* --- CSS Code အဆုံး --- */

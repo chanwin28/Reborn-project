@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Sign Up Toggle</title>
+    
+    <link rel="stylesheet" href="acp.css"> 
+</head>
+<body>
+
+<div class="container" id="container">
+
+    <div class="form-container sign-up-container">
+        <form action="#">
+            <h1>အကောင့်သစ် ဖွင့်မည်</h1>
+            <input type="text" placeholder="အမည်" />
+            <input type="email" placeholder="အီးမေးလ်" />
+            <input type="password" placeholder="လျှို့ဝှက်နံပါတ်" />
+            <button>အကောင့်ဖွင့်မည်</button>
+        </form>
+    </div>
+
+    <div class="form-container log-in-container">
+        <form action="#">
+            <h1>ဝင်ရောက်မည်</h1>
+            <input type="email" placeholder="အီးမေးလ်" />
+            <input type="password" placeholder="လျှို့ဝှက်နံပါတ်" />
+            <a href="#" style="color: #666; font-size: 12px; margin: 10px 0;">လျှို့ဝှက်နံပါတ် မေ့နေပါသလား?</a>
+            <button>ဝင်ရောက်မည်</button>
+        </form>
+    </div>
+
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-left">
+                <h1>ပြန်လည် ကြိုဆိုပါတယ်!</h1>
+                <p>ဆက်သွယ်ရန်အတွက် သင့်ကိုယ်ရေးအချက်အလက်များကို ထည့်သွင်းပါ။</p>
+                <button class="ghost" id="logIn">ဝင်ရောက်ရန်</button>
+            </div>
+            <div class="overlay-panel overlay-right">
+                <h1>Hello, သူငယ်ချင်း!</h1>
+                <p>ကျွန်တော်တို့ရဲ့ ဝက်ဘ်ဆိုက်ကို ဆက်သွယ်အသုံးပြုရန်အတွက် အကောင့်ဖွင့်ပါ။</p>
+                <button class="ghost" id="signUp">အကောင့်ဖွင့်ရန်</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const signUpButton = document.getElementById('signUp');
+    const logInButton = document.getElementById('logIn');
+    const container = document.getElementById('container');
+
+    signUpButton.addEventListener('click', () => {
+        container.classList.add("right-panel-active");
+    });
+
+    logInButton.addEventListener('click', () => {
+        container.classList.remove("right-panel-active");
+    });
+</script>
+
+</body>
+</html>
