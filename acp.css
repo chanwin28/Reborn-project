@@ -1,40 +1,45 @@
-/* --- CSS Code အားလုံးကို ဤနေရာတွင် ထည့်သွင်းပါ --- */
+const loginForm = document.getElementById('login-form');
+const signupForm = document.getElementById('signup-form');
+const toggleText = document.getElementById('toggle-text');
+const formTitle = document.getElementById('form-title');
 
-:root {
-    --white: #F0F0F0; /* အဖြူနီးပါး */
-    --light-gray: #E0E0E0; /* Neumorphic Base Color */
-    --main-blue: #4A90E2; /* Primary Blue for Buttons */
-    --purple: #8B5CF6; /* Secondary Color for Sign Up Button */
-    --dark-shadow: #B0B0B0;
-    --light-shadow: #FFFFFF;
-}
+toggleText.addEventListener('click', () => {
+  const isLogin = !loginForm.classList.contains('hidden');
+  if (isLogin) {
+    loginForm.classList.add('hidden');
+    signupForm.classList.remove('hidden');
+    formTitle.textContent = 'Sign Up';
+    toggleText.innerHTML = 'Already have an account? <b>Login</b>';
+  } else {
+    signupForm.classList.add('hidden');
+    loginForm.classList.remove('hidden');
+    formTitle.textContent = 'Login';
+    toggleText.innerHTML = 'Don\'t have an account? <b>Sign up</b>';
+  }
+});
 
-body {
-    font-family: 'Arial', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    /* Neumorphic နောက်ခံအရောင် (မီးခိုးနု) */
-    background-color: var(--light-gray);
-    color: #333;
-    overflow: hidden;
-}
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const email = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
 
-.container {
-    max-width: 400px;
-    width: 90%;
-    padding: 20px 30px;
-    border-radius: 20px;
-    background-color: var(--light-gray);
-    /* Neumorphic Effect (အပြင်ဘက် Shadow) */
-    box-shadow: 10px 10px 20px var(--dark-shadow), 
-                -10px -10px 20px var(--light-shadow);
-    text-align: center;
-    position: relative;
-}
+  alert(`Welcome back, ${email}! 🧡`);
+  loginForm.reset();
+});
 
+signupForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name = document.getElementById('signup-name').value;
+  const email = document.getElementById('signup-email').value;
+
+  alert(`Welcome ${name}! Your account for ACP has been created 🎉`);
+  signupForm.reset();
+
+  signupForm.classList.add('hidden');
+  loginForm.classList.remove('hidden');
+  formTitle.textContent = 'Login';
+  toggleText.innerHTML = 'Don\'t have an account? <b>Sign up</b>';
+});
 /* --- 1. Toggle Buttons (Login/Sign Up အပေါ်ဆုံးခလုတ်) --- */
 .toggle-buttons {
     display: flex;
@@ -185,3 +190,4 @@ body {
     font-size: 10px;
     color: #777;
 }
+
