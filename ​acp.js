@@ -82,3 +82,4 @@ signupForm.addEventListener('submit', (e) => {
         switchForm(loginForm, signupForm);
     }, 2000); // ၂ စက္ကန့်ကြာရင် Login ကို ပြန်ပြောင်းမယ်။
 });
+
