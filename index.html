@@ -1,82 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reborn Login & Signup</title>
-  <link rel="stylesheet" href="acp.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACP Login & Signup</title>
+  <link rel="stylesheet" href="acp.css">
 </head>
 <body>
   <div class="container">
-    <div class="form-box" id="formBox">
-      <h2 id="formTitle">Login</h2>
-      <form id="loginForm">
-        <div class="input-box">
-          <label>Email</label>
-          <input type="email" placeholder="Enter your email" required>
+    <div class="form-box">
+      <input type="checkbox" id="flip">
+      <div class="forms">
+        <!-- Login Form -->
+        <div class="form login">
+          <h2>Login</h2>
+          <form>
+            <div class="input-box">
+              <label>Email</label>
+              <input type="email" placeholder="Enter your email" required>
+            </div>
+            <div class="input-box">
+              <label>Password</label>
+              <input type="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="btn">Login</button>
+            <p class="toggle-text">Don’t have an account? 
+              <label for="flip" class="switch">Sign up</label>
+            </p>
+          </form>
         </div>
-        <div class="input-box">
-          <label>Password</label>
-          <input type="password" placeholder="Enter your password" required>
-        </div>
-        <button type="submit" class="btn">Login</button>
-      </form>
 
-      <p class="toggle-text">
-        Don't have an account?
-        <a href="#" id="toggleForm">Sign up</a>
-      </p>
+        <!-- Signup Form -->
+        <div class="form signup">
+          <h2>Sign Up</h2>
+          <form>
+            <div class="input-box">
+              <label>Name</label>
+              <input type="text" placeholder="Enter your name" required>
+            </div>
+            <div class="input-box">
+              <label>Email</label>
+              <input type="email" placeholder="Enter your email" required>
+            </div>
+            <div class="input-box">
+              <label>Password</label>
+              <input type="password" placeholder="Create a password" required>
+            </div>
+            <div class="input-box">
+              <label>Confirm Password</label>
+              <input type="password" placeholder="Confirm your password" required>
+            </div>
+            <button type="submit" class="btn">Sign Up</button>
+            <p class="toggle-text">Already have an account?
+              <label for="flip" class="switch">Login</label>
+            </p>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
-
-  <script>
-    const toggleForm = document.getElementById('toggleForm');
-    const formTitle = document.getElementById('formTitle');
-    const loginForm = document.getElementById('loginForm');
-    const formBox = document.getElementById('formBox');
-
-    let isLogin = true;
-
-    toggleForm.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (isLogin) {
-        formTitle.textContent = 'Sign Up';
-        loginForm.innerHTML = `
-          <div class="input-box">
-            <label>Full Name</label>
-            <input type="text" placeholder="Enter your name" required>
-          </div>
-          <div class="input-box">
-            <label>Email</label>
-            <input type="email" placeholder="Enter your email" required>
-          </div>
-          <div class="input-box">
-            <label>Password</label>
-            <input type="password" placeholder="Create a password" required>
-          </div>
-          <button type="submit" class="btn">Sign Up</button>
-        `;
-        toggleForm.textContent = 'Login';
-        toggleForm.previousSibling.textContent = 'Already have an account? ';
-      } else {
-        formTitle.textContent = 'Login';
-        loginForm.innerHTML = `
-          <div class="input-box">
-            <label>Email</label>
-            <input type="email" placeholder="Enter your email" required>
-          </div>
-          <div class="input-box">
-            <label>Password</label>
-            <input type="password" placeholder="Enter your password" required>
-          </div>
-          <button type="submit" class="btn">Login</button>
-        `;
-        toggleForm.textContent = 'Sign up';
-        toggleForm.previousSibling.textContent = "Don't have an account? ";
-      }
-      isLogin = !isLogin;
-    });
-  </script>
 </body>
 </html>
-
