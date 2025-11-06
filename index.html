@@ -1,135 +1,286 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reborn Login</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Reborn — Login / Signup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
   <style>
-    body {font-family: Arial, sans-serif; background: linear-gradient(135deg, #2b1055, #7597de); color: #fff; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh;}
-    form {background:#00000070; padding:30px; border-radius:15px; width:300px; box-shadow:0 0 15px rgba(0,0,0,0.3);}
-    h2 {text-align:center; margin-bottom:15px;}
-    .input-group {margin-bottom:15px;}
-    label {display:block; margin-bottom:5px;}
-    input {width:100%; padding:10px; border:none; border-radius:8px;}
-    .btn {width:100%; padding:10px; background:#6a5acd; border:none; border-radius:8px; color:#fff; font-weight:bold;}
-    .btn:hover {background:#483d8b;}
-    .switch {text-align:center; margin-top:10px;}
-    a {color:#8ab4f8;}
+    :root{
+      --bg1:#0f1724;
+      --card:#0e0f12;
+      --muted:#9aa0a6;
+      --accent1:#7b61ff;
+      --accent2:#5ad0d6;
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;color:#fff; background:linear-gradient(180deg,#071024 0%, #0b1230 45%, #071826 100%);}
+    /* center container like phone */
+    .phone {
+      width: 380px;
+      max-width:94%;
+      margin:30px auto;
+      border-radius:36px;
+      padding:26px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+      box-shadow: 0 14px 40px rgba(2,6,23,0.6), inset 0 2px 20px rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.03);
+      overflow:hidden;
+    }
+
+    .hero {
+      height:110px;
+      border-radius:18px;
+      background: radial-gradient(600px 300px at 0% 0%, rgba(123,97,255,0.95), rgba(91,62,197,0.9) 30%, transparent 60%),
+                  radial-gradient(500px 200px at 100% 0%, rgba(90,208,214,0.22), transparent 30%);
+      padding:20px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:flex-start;
+      margin-bottom:20px;
+    }
+    .hero h1{font-size:22px;margin:0;line-height:1;color:#fff;font-weight:700}
+    .hero p{margin:6px 0 0 0;color:rgba(255,255,255,0.8);font-size:13px}
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+      padding:18px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .tabs {display:flex; gap:8px; margin-bottom:12px;}
+    .tab {flex:1; text-align:center; padding:10px 8px; border-radius:12px; cursor:pointer; font-weight:600}
+    .tab.active {background: linear-gradient(90deg,var(--accent1), var(--accent2)); color:#fff; box-shadow:0 6px 18px rgba(86,65,255,0.18)}
+
+    form {margin-top:8px;}
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    input[type="text"], input[type="email"], input[type="password"]{
+      width:100%; padding:12px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.04);
+      background:rgba(255,255,255,0.02); color:#fff; outline:none; font-size:14px;
+    }
+    .field {margin-bottom:12px}
+
+    .small {font-size:12px;color:rgba(255,255,255,0.7); margin-top:6px; text-align:right}
+    .btn {
+      width:100%; padding:12px; border-radius:12px; border:none; cursor:pointer;
+      background:linear-gradient(90deg,var(--accent1),var(--accent2)); color:#fff; font-weight:700; font-size:15px;
+      box-shadow:0 10px 24px rgba(88,64,255,0.12);
+    }
+    .btn.secondary {
+      background:transparent; border:1px solid rgba(255,255,255,0.06); color:rgba(255,255,255,0.9); font-weight:600;
+    }
+
+    .muted {color:var(--muted); font-size:13px; text-align:center; margin-top:12px}
+    .link{color:#a9b7ff; cursor:pointer; text-decoration:underline}
+
+    /* tiny toggle show password */
+    .pw-row{display:flex; gap:8px; align-items:center}
+    .pw-toggle {background:transparent;border:none;color:#9fb0ff; cursor:pointer; font-weight:600}
+
+    /* responsive */
+    @media (max-width:420px){
+      .phone{padding:16px;border-radius:18px}
+      .hero{height:96px;padding:14px}
+    }
   </style>
 </head>
 <body>
+  <main class="phone">
+    <section class="hero">
+      <div>
+        <h1 id="headline">Welcome!</h1>
+        <p id="subhead">Please sign in to continue</p>
+      </div>
+    </section>
 
-  <!-- LOGIN FORM -->
-  <form id="loginForm">
-    <h2>Welcome! Login</h2>
-    <div class="input-group">
-      <label>Email</label>
-      <input id="loginEmail" type="email" placeholder="Enter email" required />
-    </div>
-    <div class="input-group">
-      <label>Password</label>
-      <input id="loginPassword" type="password" placeholder="Enter password" required />
-    </div>
-    <button type="submit" class="btn">Log In</button>
-    <div class="switch">
-      Don’t have an account? <a href="#" onclick="showSignup()">Sign Up</a>
-    </div>
-  </form>
+    <section class="card">
+      <div class="tabs">
+        <div id="tab-login" class="tab active">Login</div>
+        <div id="tab-signup" class="tab">Sign Up</div>
+      </div>
 
-  <!-- SIGNUP FORM -->
-  <form id="signupForm" style="display:none;">
-    <h2>Sign Up</h2>
-    <div class="input-group">
-      <label>Name</label>
-      <input id="signupName" type="text" placeholder="Your name" required />
-    </div>
-    <div class="input-group">
-      <label>Email</label>
-      <input id="signupEmail" type="email" placeholder="example@gmail.com" required />
-    </div>
-    <div class="input-group">
-      <label>Password</label>
-      <input id="signupPassword" type="password" placeholder="Password" required />
-    </div>
-    <div class="input-group">
-      <label>Confirm Password</label>
-      <input id="signupConfirm" type="password" placeholder="Confirm Password" required />
-    </div>
-    <button type="submit" class="btn">Sign Up</button>
-    <div class="switch">
-      Already a member? <a href="#" onclick="showLogin()">Log In</a>
-    </div>
-  </form>
+      <!-- LOGIN FORM -->
+      <form id="loginForm">
+        <div class="field">
+          <label for="loginEmail">Email</label>
+          <input id="loginEmail" type="email" placeholder="you@example.com" required />
+        </div>
 
-  <!-- Firebase SDKs -->
+        <div class="field">
+          <label for="loginPassword">Password</label>
+          <div class="pw-row">
+            <input id="loginPassword" type="password" placeholder="••••••••" required />
+            <button type="button" id="toggleLoginPw" class="pw-toggle">Show</button>
+          </div>
+        </div>
+
+        <div class="small"><span class="link" id="forgotBtn">Forgot Password?</span></div>
+
+        <div style="margin-top:14px">
+          <button class="btn" type="submit">Log In</button>
+        </div>
+
+        <div class="muted">Don't have an account? <span class="link" onclick="showSignupTab()">Sign Up</span></div>
+      </form>
+
+      <!-- SIGNUP FORM -->
+      <form id="signupForm" style="display:none">
+        <div class="field">
+          <label for="signupName">Full name</label>
+          <input id="signupName" type="text" placeholder="Your name" required />
+        </div>
+
+        <div class="field">
+          <label for="signupEmail">Email</label>
+          <input id="signupEmail" type="email" placeholder="you@example.com" required />
+        </div>
+
+        <div class="field">
+          <label for="signupPassword">Password</label>
+          <div class="pw-row">
+            <input id="signupPassword" type="password" placeholder="Min 6 characters" required />
+            <button type="button" id="toggleSignupPw" class="pw-toggle">Show</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="signupConfirm">Confirm password</label>
+          <input id="signupConfirm" type="password" placeholder="Confirm password" required />
+        </div>
+
+        <div style="margin-top:8px">
+          <button class="btn" id="signupBtn" type="submit">Sign Up</button>
+        </div>
+
+        <div class="muted">Already a member? <span class="link" onclick="showLoginTab()">Log In</span></div>
+      </form>
+    </section>
+  </main>
+
+  <!-- Firebase + JS -->
   <script type="module">
-    // Import Firebase SDK
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } 
-      from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    // --- Firebase modular SDK imports ---
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updateProfile } 
+      from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-    // ✅ Your Firebase Config
+    // <-- REPLACE WITH YOUR FIREBASE CONFIG (from Firebase Console: Project Settings -> Your apps -> SDK snippet) -->
     const firebaseConfig = {
-      apiKey: "AIzaSyCj15_tydN2OaAVJ4Zmk0g2iTzffkgOeAc",
-      authDomain: "reborn-2001.firebaseapp.com",
-      projectId: "reborn-2001",
-      storageBucket: "reborn-2001.appspot.com",
-      messagingSenderId: "583505835782",
-      appId: "1:583505835782:web:b40d48304237356c1e4e64",
-      measurementId: "G-Y8D3GH9BD0"
+      apiKey: "YOUR_API_KEY_HERE",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
     };
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // ✅ Sign Up
-    const signupForm = document.getElementById("signupForm");
-    signupForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const name = document.getElementById("signupName").value;
-      const email = document.getElementById("signupEmail").value;
-      const password = document.getElementById("signupPassword").value;
-      const confirm = document.getElementById("signupConfirm").value;
+    // --- UI elements
+    const tabLogin = document.getElementById('tab-login');
+    const tabSignup = document.getElementById('tab-signup');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
 
-      if (password !== confirm) {
-        alert("Passwords do not match!");
-        return;
-      }
+    const headline = document.getElementById('headline');
+    const subhead = document.getElementById('subhead');
 
+    tabLogin.addEventListener('click', () => { showLoginTab(); });
+    tabSignup.addEventListener('click', () => { showSignupTab(); });
+
+    function activateTab(tab){
+      tabLogin.classList.remove('active');
+      tabSignup.classList.remove('active');
+      tab.classList.add('active');
+    }
+    function showSignupTab(){
+      activateTab(tabSignup);
+      loginForm.style.display='none';
+      signupForm.style.display='block';
+      headline.textContent='Hello, Sign Up!';
+      subhead.textContent='Create a free account';
+    }
+    function showLoginTab(){
+      activateTab(tabLogin);
+      loginForm.style.display='block';
+      signupForm.style.display='none';
+      headline.textContent='Welcome!';
+      subhead.textContent='Please sign in to continue';
+    }
+    window.showSignupTab = showSignupTab;
+    window.showLoginTab = showLoginTab;
+
+    // --- password toggles
+    document.getElementById('toggleLoginPw').addEventListener('click', () => {
+      const f = document.getElementById('loginPassword');
+      f.type = f.type === 'password' ? 'text' : 'password';
+      document.getElementById('toggleLoginPw').textContent = f.type === 'password' ? 'Show' : 'Hide';
+    });
+    document.getElementById('toggleSignupPw').addEventListener('click', () => {
+      const f = document.getElementById('signupPassword');
+      f.type = f.type === 'password' ? 'text' : 'password';
+      document.getElementById('toggleSignupPw').textContent = f.type === 'password' ? 'Show' : 'Hide';
+    });
+
+    // --- Forgot password handler (simple)
+    document.getElementById('forgotBtn').addEventListener('click', async () => {
+      const email = prompt('Enter your email to reset password:');
+      if (!email) return;
       try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        await updateProfile(userCredential.user, { displayName: name });
-        alert("✅ Sign Up successful!");
-        showLogin();
-      } catch (error) {
-        alert("Error: " + error.message);
+        await sendPasswordResetEmail(auth, email);
+        alert('Password reset email sent (check inbox).');
+      } catch (err) {
+        alert('Error: ' + err.message);
       }
     });
 
-    // ✅ Log In
-    const loginForm = document.getElementById("loginForm");
-    loginForm.addEventListener("submit", async (e) => {
+    // --- SIGNUP handler (Firebase Email/Password)
+    signupForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = document.getElementById("loginEmail").value;
-      const password = document.getElementById("loginPassword").value;
+      const name = document.getElementById('signupName').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const pw = document.getElementById('signupPassword').value;
+      const confirm = document.getElementById('signupConfirm').value;
+      if (pw.length < 6) { alert('Password must be at least 6 characters'); return; }
+      if (pw !== confirm) { alert('Passwords do not match'); return; }
       try {
-        await signInWithEmailAndPassword(auth, email, password);
-        alert("✅ Logged in successfully!");
-      } catch (error) {
-        alert("Error: " + error.message);
+        const userCred = await createUserWithEmailAndPassword(auth, email, pw);
+        // optional: set displayName
+        try { await updateProfile(userCred.user, { displayName: name }); } catch(e){/*ignore*/ }
+        alert('Signup successful — you can now log in!');
+        showLoginTab();
+      } catch (err) {
+        alert('Error: ' + err.message);
       }
     });
 
-    // ✅ Switch forms
-    window.showSignup = function() {
-      document.getElementById("loginForm").style.display = "none";
-      document.getElementById("signupForm").style.display = "block";
-    };
-    window.showLogin = function() {
-      document.getElementById("signupForm").style.display = "none";
-      document.getElementById("loginForm").style.display = "block";
-    };
+    // --- LOGIN handler (Firebase Email/Password)
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const pw = document.getElementById('loginPassword').value;
+      try {
+        const userCred = await signInWithEmailAndPassword(auth, email, pw);
+        const name = userCred.user.displayName || userCred.user.email;
+        alert('Welcome, ' + name + ' ✅');
+        // optional: redirect to dashboard
+        // window.location.href = '/dashboard.html';
+      } catch (err) {
+        alert('Login error: ' + err.message);
+      }
+    });
+
+    /* --- IMPORTANT NOTES (quick) ---
+     1) Replace firebaseConfig values with the ones from your Firebase Console (Project settings → Your apps → SDK).
+     2) Make sure "Email/Password" sign-in is enabled (Firebase Console → Authentication → Sign-in method).
+     3) Add your domain to Authorized domains (Authentication → Settings → Authorized domains) — e.g. yourname.github.io
+     4) If you host on GitHub Pages, use https://yourname.github.io/yourrepo/ and add the base domain (yourname.github.io).
+    */
   </script>
 </body>
 </html>
