@@ -1,61 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="my">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reborn Login</title>
-  <link rel="stylesheet" href="acp.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimalist Dark Login</title>
+    <link rel="stylesheet" href="acp.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <div class="forms">
-      <!-- LOGIN FORM -->
-      <div class="form login">
-        <h2>Welcome!<br><span>Login</span></h2>
-        <form>
-          <div class="input-box">
-            <input type="email" placeholder="example123@gmail.com" required />
-            <i class="icon">📧</i>
-          </div>
-          <div class="input-box">
-            <input type="password" placeholder="Password" required />
-            <i class="icon">🔒</i>
-          </div>
-          <div class="forgot">
-            <a href="#">Forgot Password?</a>
-          </div>
-          <div class="buttons">
-            <button type="button" class="signup-toggle">Sign Up</button>
-            <button type="submit" class="login-btn">Log In</button>
-          </div>
-        </form>
-      </div>
 
-      <!-- SIGN UP FORM -->
-      <div class="form signup">
-        <h2>Sign up</h2>
-        <form>
-          <div class="input-box">
-            <input type="text" placeholder="Name" required />
-          </div>
-          <div class="input-box">
-            <input type="email" placeholder="example@gmail.com" required />
-          </div>
-          <div class="input-box">
-            <input type="password" placeholder="Password" required />
-          </div>
-          <div class="input-box">
-            <input type="password" placeholder="Confirm Password" required />
-          </div>
-          <div class="buttons">
-            <button type="submit" class="signup-btn">Sign Up</button>
-          </div>
-          <p class="toggle-login">I am already a member</p>
-        </form>
-      </div>
+    <div class="container">
+        <div class="auth-card">
+            <h1 class="logo">ACP</h1>
+            
+            <div id="login-form" class="form-panel active">
+                <h2 class="title">Log In</h2>
+                <form>
+                    <div class="input-group">
+                        <input type="email" placeholder="Email Address" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" placeholder="Password" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Log In</button>
+                    
+                    <a href="#" class="forgot-link">Forgot Password?</a>
+                </form>
+
+                <p class="toggle-text">
+                    Don't have an account? 
+                    <a href="#" id="show-signup">Sign Up</a>
+                </p>
+            </div>
+
+            <div id="signup-form" class="form-panel">
+                <h2 class="title">Sign Up</h2>
+                <form>
+                    <div class="input-group">
+                        <input type="text" placeholder="Full Name" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" placeholder="Email Address" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" placeholder="Create Password" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                </form>
+
+                <p class="toggle-text">
+                    Already have an account? 
+                    <a href="#" id="show-login">Log In</a>
+                </p>
+            </div>
+            
+            <div class="social-login">
+                <p>— OR —</p>
+                <button class="btn btn-social btn-google">Continue with Google</button>
+                <button class="btn btn-social btn-apple">Continue with Apple</button>
+            </div>
+            
+        </div>
     </div>
-  </div>
 
-  <script src="acp.js"></script>
+    <script src="acp.js"></script>
 </body>
 </html>
