@@ -7,8 +7,8 @@ body {
     align-items: center;
     height: 100vh; 
     margin: 0;
-    /* နောက်ခံအရောင်: မီးခိုးရောင်နုနု */
-    background-color: #f0f4f8; 
+    /* နောက်ခံအရောင်: လေပြာနုနုရောင် */
+    background-color: #e6f7ff; /* Light Sky Blue */
     color: #333; 
 }
 
@@ -19,8 +19,7 @@ body {
     width: 90%;
     min-height: 480px;
     
-    /* Container Background ကို ဖျက်ထားပါ (Form တွေကပဲ အရောင်ယူမှာပါ) */
-    background-color: transparent; 
+    background-color: #FFFFFF; /* Container ကို အဖြူရောင်ထားခြင်း */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     border-radius: 15px; 
     overflow: hidden; 
@@ -39,32 +38,23 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    
+    /* Form နောက်ခံကို အဖြူရောင် ထားလိုက်ပါ (ဒါမှ အရောင်တစ်ရောင်တည်း ဖြစ်သွားမှာပါ) */
+    background-color: #FFFFFF; 
+    color: #333; /* စာသားတွေကို မဲနက်အောင်ထားခြင်း */
 }
 
-/* --- 1. SIGN UP FORM ရဲ့ အရောင် (အဓိက Sky Blue) --- */
+/* Sign Up Form ရဲ့ အစ နေရာ */
 .sign-up-container {
     left: 0;
     opacity: 0; 
     z-index: 1;
-    /* Sign Up နေရာရဲ့ နောက်ခံအရောင် */
-    background-color: #f0f8ff; /* Azure White */
-    color: #333;
 }
 
-/* --- 2. LOG IN FORM ရဲ့ အရောင် (အဓိက Dark Blue) --- */
+/* Log In Form ရဲ့ အစ နေရာ */
 .log-in-container {
     left: 50%;
     z-index: 2;
-    /* Log In နေရာရဲ့ နောက်ခံအရောင် */
-    background-color: #142a49; 
-    color: #FFFFFF; /* စာသားတွေကို အဖြူရောင်ပြောင်း */
-}
-.log-in-container input {
-    background-color: #2e4362; /* input ကို နောက်ခံနဲ့ ပိုလိုက်ဖက်အောင် */
-    color: #FFFFFF;
-}
-.log-in-container a {
-    color: #b0c4de; /* Link အရောင်ပြောင်း */
 }
 
 /* Container တွင် 'right-panel-active' class ရှိလာရင် ဖြစ်ပေါ်လာမည့် အပြောင်းအလဲများ */
@@ -80,19 +70,21 @@ body {
 
 /* Input/Button/Text တွေရဲ့ ဒီဇိုင်းများ... */
 input {
+    background-color: #eee;
     border: none;
     padding: 12px 15px;
     margin: 8px 0;
     width: 100%;
     border-radius: 5px;
-    background-color: #eee;
-    color: #333; /* Default input text color */
+    color: #333;
 }
 
 button {
     border-radius: 20px;
+    /* အဓိက ခလုတ်အရောင်: Deep Sky Blue */
     border: 1px solid #00bfff; 
-    background-color: #00bfff; /* Sky Blue */
+    background-color: #00bfff;
+    
     color: #FFFFFF;
     font-size: 12px;
     font-weight: bold;
@@ -104,7 +96,7 @@ button {
     transition: transform 80ms ease-in;
 }
 
-/* --- OVERLAY PANEL ရဲ့ အရောင် (အမြဲတမ်း Sky Blue Gradient) --- */
+/* --- OVERLAY PANEL ရဲ့ အရောင် (Sky Blue Gradient) --- */
 .overlay-container {
     position: absolute;
     top: 0;
@@ -121,8 +113,8 @@ button {
 }
 
 .overlay {
-    /* Gradient Sky Blue */
-    background: linear-gradient(to right, #00bfff, #1e90ff); 
+    /* Overlay Background: Gradient Sky Blue */
+    background: linear-gradient(to right, #00bfff, #1e90ff); /* Deep Sky Blue to Dodger Blue */
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 0 0;
@@ -135,8 +127,36 @@ button {
     transition: transform 0.6s ease-in-out;
 }
 
+.container.right-panel-active .overlay {
+    transform: translateX(50%);
+}
+
+.overlay-panel {
+    /* Overlay ပေါ်က စာသား/ခလုတ် အရောင် */
+    color: #FFFFFF; 
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    text-align: center;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
 /* (Overlay Animation Code များ မပြောင်းလဲပါ) */
 /* ... */
+
+/* Log In Form ထဲက Forgot password link အရောင်ကို ပြန်ပြင်ခြင်း */
+.log-in-container a {
+    color: #333; /* Dark color for white background */
+    font-size: 12px; 
+    margin: 10px 0;
+}
 
 /* Toggle Button (Overlay ပေါ်က ခလုတ်) */
 .ghost {
@@ -144,8 +164,5 @@ button {
     border-color: #FFFFFF;
     color: #FFFFFF;
     transition: background-color 0.3s ease;
-}
-.ghost:hover {
-    background-color: rgba(255, 255, 255, 0.1);
 }
 /* --- CSS Code အဆုံး --- */
