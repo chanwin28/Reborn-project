@@ -1,86 +1,190 @@
 /* --- CSS Code အားလုံးကို ဤနေရာတွင် ထည့်သွင်းပါ --- */
 
+:root {
+    --white: #F0F0F0; /* အဖြူနီးပါး */
+    --light-gray: #E0E0E0; /* Neumorphic Base Color */
+    --main-blue: #4A90E2; /* Primary Blue for Buttons */
+    --purple: #8B5CF6; /* Secondary Color for Sign Up Button */
+    --dark-shadow: #B0B0B0;
+    --light-shadow: #FFFFFF;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; 
+    height: 100vh;
     margin: 0;
-    /* နောက်ခံအရောင်: လေပြာနုနုရောင် */
-    background-color: #e6f7ff; /* Light Sky Blue */
-    color: #333; 
+    /* Neumorphic နောက်ခံအရောင် (မီးခိုးနု) */
+    background-color: var(--light-gray);
+    color: #333;
+    overflow: hidden;
 }
 
-/* Forms တွေကို ထည့်သွင်းထားတဲ့ အဓိက Container */
 .container {
-    position: relative;
-    max-width: 760px;
+    max-width: 400px;
     width: 90%;
-    min-height: 480px;
-    
-    background-color: #FFFFFF; /* Container ကို အဖြူရောင်ထားခြင်း */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    border-radius: 15px; 
-    overflow: hidden; 
+    padding: 20px 30px;
+    border-radius: 20px;
+    background-color: var(--light-gray);
+    /* Neumorphic Effect (အပြင်ဘက် Shadow) */
+    box-shadow: 10px 10px 20px var(--dark-shadow), 
+                -10px -10px 20px var(--light-shadow);
+    text-align: center;
+    position: relative;
 }
 
-/* Form နှစ်ခုလုံးရဲ့ အခြေခံ စတိုင် */
-.form-container {
-    position: absolute;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    transition: all 0.6s ease-in-out;
-    padding: 40px;
-    box-sizing: border-box;
+/* --- 1. Toggle Buttons (Login/Sign Up အပေါ်ဆုံးခလုတ်) --- */
+.toggle-buttons {
+    display: flex;
+    width: 100%;
+    margin-bottom: 25px;
+    background-color: var(--light-gray);
+    padding: 5px;
+    border-radius: 15px;
+    /* အတွင်းဘက် နစ်ဝင်နေတဲ့ Neumorphic Effect */
+    box-shadow: inset 5px 5px 10px var(--dark-shadow),
+                inset -5px -5px 10px var(--light-shadow);
+}
+
+.toggle-buttons button {
+    flex-grow: 1;
+    border: none;
+    padding: 10px 0;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.toggle-buttons button.active {
+    /* Login နှိပ်ထားရင် အပြာရောင်၊ Sign Up နှိပ်ထားရင် ခရမ်းရောင် ဖြစ်စေရန် */
+    background: linear-gradient(to right, var(--main-blue), var(--purple)); 
+    color: var(--white);
+    /* ခလုတ်ကြွတက်နေတဲ့ Effect */
+    box-shadow: 3px 3px 6px var(--dark-shadow), 
+                -3px -3px 6px var(--light-shadow);
+}
+
+/* --- 2. Form Styling (Login/Sign Up Forms) --- */
+.form {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    
-    /* Form နောက်ခံကို အဖြူရောင် ထားလိုက်ပါ (ဒါမှ အရောင်တစ်ရောင်တည်း ဖြစ်သွားမှာပါ) */
-    background-color: #FFFFFF; 
-    color: #333; /* စာသားတွေကို မဲနက်အောင်ထားခြင်း */
+    padding: 0 10px;
+    transition: all 0.4s ease-in-out;
+    /* မပေါ်သေးရင် ဖျောက်ထားရန် */
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
 }
 
-/* Sign Up Form ရဲ့ အစ နေရာ */
-.sign-up-container {
-    left: 0;
-    opacity: 0; 
-    z-index: 1;
+.form.active-form {
+    /* ပေါ်လာရင် */
+    max-height: 500px; /* နေရာယူမှု ပြန်ပေးရန် */
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
-/* Log In Form ရဲ့ အစ နေရာ */
-.log-in-container {
-    left: 50%;
-    z-index: 2;
-}
-
-/* Container တွင် 'right-panel-active' class ရှိလာရင် ဖြစ်ပေါ်လာမည့် အပြောင်းအလဲများ */
-.container.right-panel-active .log-in-container {
-    transform: translateX(-100%);
-}
-
-.container.right-panel-active .sign-up-container {
-    transform: translateX(100%);
-    opacity: 1; 
-    z-index: 5;
-}
-
-/* Input/Button/Text တွေရဲ့ ဒီဇိုင်းများ... */
-input {
-    background-color: #eee;
-    border: none;
-    padding: 12px 15px;
-    margin: 8px 0;
-    width: 100%;
-    border-radius: 5px;
+.form h1 {
+    font-size: 24px;
+    margin-bottom: 30px;
     color: #333;
 }
 
-button {
+.input-group {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--light-gray);
+    font-size: 16px;
+    color: #333;
+    /* Input နစ်ဝင်နေတဲ့ Neumorphic Effect */
+    box-shadow: inset 3px 3px 7px var(--dark-shadow),
+                inset -3px -3px 7px var(--light-shadow);
+    outline: none;
+    box-sizing: border-box;
+}
+
+.submit-btn {
+    width: 100%;
+    border: none;
+    padding: 15px;
     border-radius: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--white);
+    /* ခလုတ်အရောင် */
+    background: linear-gradient(to right, var(--main-blue), var(--purple)); 
+    cursor: pointer;
+    margin-top: 15px;
+    /* ခလုတ်ကြွတက်နေတဲ့ Effect */
+    box-shadow: 5px 5px 10px var(--dark-shadow), 
+                -5px -5px 10px var(--light-shadow);
+    transition: all 0.3s ease;
+}
+
+.submit-btn:active {
+    /* နှိပ်လိုက်ရင် နစ်ဝင်သွားတဲ့ Effect */
+    box-shadow: inset 2px 2px 5px var(--dark-shadow),
+                inset -2px -2px 5px var(--light-shadow);
+    transform: scale(0.98);
+}
+
+/* --- 3. Social Media Icons --- */
+.continue-text {
+    margin: 20px 0 15px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.social-icons a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 10px;
+    font-size: 18px;
+    color: #555;
+    text-decoration: none;
+    background-color: var(--light-gray);
+    /* Icon တွေ ကြွတက်နေတဲ့ Effect */
+    box-shadow: 3px 3px 6px var(--dark-shadow), 
+                -3px -3px 6px var(--light-shadow);
+    transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+    color: var(--main-blue);
+    /* နှိပ်လိုက်ရင် နစ်ဝင်သွားတဲ့ Effect */
+    box-shadow: inset 2px 2px 5px var(--dark-shadow),
+                inset -2px -2px 5px var(--light-shadow);
+}
+
+#to-login-link {
+    color: var(--main-blue);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.designer-info {
+    margin-top: 20px;
+    font-size: 10px;
+    color: #777;
+}
     /* အဓိက ခလုတ်အရောင်: Deep Sky Blue */
     border: 1px solid #00bfff; 
     background-color: #00bfff;
@@ -166,3 +270,4 @@ button {
     transition: background-color 0.3s ease;
 }
 /* --- CSS Code အဆုံး --- */
+
