@@ -1,11 +1,10 @@
 /* --- CSS Code အားလုံးကို ဤနေရာတွင် ထည့်သွင်းပါ --- */
 
 :root {
-    /* ... အခြားအရောင်များကို မပြောင်းလဲပါ ... */
-    --white: #F0F0F0;
-    --light-gray: #E0E0E0;
-    --main-blue: #4A90E2; 
-    --purple: #8B5CF6; 
+    --white: #F0F0F0; /* အဖြူနီးပါး */
+    --light-gray: #E0E0E0; /* Neumorphic Base Color */
+    --main-blue: #4A90E2; /* Primary Blue for Buttons */
+    --purple: #8B5CF6; /* Secondary Color for Sign Up Button */
     --dark-shadow: #B0B0B0;
     --light-shadow: #FFFFFF;
 }
@@ -17,16 +16,9 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    
-    /* === 🚀 GALAXY BACKGROUND CODE START === */
-    background-image: url('https://images.unsplash.com/photo-1508214751196-c67059738c82?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTF8fGVufDB8fHx8fA%3D%3D');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed; /* Scroll လုပ်ရင် နောက်ခံက ငြိမ်နေဖို့ */
-    /* === GALAXY BACKGROUND CODE END === */
-    
-    /* စာသားအရောင်ကို နောက်ခံနက်ရင် မြင်ရအောင် အဖြူနီးနီး ပြောင်းလိုက်ပါမယ် */
-    color: var(--white); 
+    /* Neumorphic နောက်ခံအရောင် (မီးခိုးနု) */
+    background-color: var(--light-gray);
+    color: #333;
     overflow: hidden;
 }
 
@@ -35,46 +27,99 @@ body {
     width: 90%;
     padding: 20px 30px;
     border-radius: 20px;
-    /* Container ကို နောက်ခံနဲ့ ပိုလိုက်ဖက်အောင် အနက်နီးပါး အရောင်ဖျော့ဖျော့ ထားခြင်း */
-    background-color: rgba(255, 255, 255, 0.1); 
-    /* Shadow တွေကို ဖျော့လိုက်ပါ (အမှောင်နောက်ခံအတွက်) */
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.1); 
-    backdrop-filter: blur(5px); /* မှန် Effect လေး ထည့်ခြင်း */
+    background-color: var(--light-gray);
+    /* Neumorphic Effect (အပြင်ဘက် Shadow) */
+    box-shadow: 10px 10px 20px var(--dark-shadow), 
+                -10px -10px 20px var(--light-shadow);
     text-align: center;
     position: relative;
-    /* Container ထဲက စာသားတွေကို အဖြူရောင် ထားခြင်း */
-    color: var(--white);
 }
 
-/* ... အခြား CSS Code များ ဆက်လက် ရှိနေမည် ... */
+/* --- 1. Toggle Buttons (Login/Sign Up အပေါ်ဆုံးခလုတ်) --- */
+.toggle-buttons {
+    display: flex;
+    width: 100%;
+    margin-bottom: 25px;
+    background-color: var(--light-gray);
+    padding: 5px;
+    border-radius: 15px;
+    /* အတွင်းဘက် နစ်ဝင်နေတဲ့ Neumorphic Effect */
+    box-shadow: inset 5px 5px 10px var(--dark-shadow),
+                inset -5px -5px 10px var(--light-shadow);
+}
 
-/* Input တွေကို နောက်ခံနဲ့ လိုက်အောင် ပြင်ပါ */
-.input-group input {
-    background-color: rgba(255, 255, 255, 0.15); /* အကြည်ရောင်နုနု */
+.toggle-buttons button {
+    flex-grow: 1;
+    border: none;
+    padding: 10px 0;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.toggle-buttons button.active {
+    /* Login နှိပ်ထားရင် အပြာရောင်၊ Sign Up နှိပ်ထားရင် ခရမ်းရောင် ဖြစ်စေရန် */
+    background: linear-gradient(to right, var(--main-blue), var(--purple)); 
     color: var(--white);
-    /* Input Shadow တွေကို ပြင်ဆင်ပါ */
-    box-shadow: inset 3px 3px 7px rgba(0, 0, 0, 0.5),
-                inset -3px -3px 7px rgba(255, 255, 255, 0.1);
+    /* ခလုတ်ကြွတက်နေတဲ့ Effect */
+    box-shadow: 3px 3px 6px var(--dark-shadow), 
+                -3px -3px 6px var(--light-shadow);
+}
+
+/* --- 2. Form Styling (Login/Sign Up Forms) --- */
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    transition: all 0.4s ease-in-out;
+    /* မပေါ်သေးရင် ဖျောက်ထားရန် */
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+}
+
+.form.active-form {
+    /* ပေါ်လာရင် */
+    max-height: 500px; /* နေရာယူမှု ပြန်ပေးရန် */
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 .form h1 {
-    color: var(--white); /* ခေါင်းစဉ်ကို အဖြူရောင် ထားခြင်း */
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #333;
 }
 
-/* Social Icons တွေကိုလည်း အမှောင်နောက်ခံနဲ့ လိုက်အောင် ပြင်ပါ */
-.social-icons a {
-    color: var(--white);
-    background-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5), 
-                -3px -3px 6px rgba(255, 255, 255, 0.1);
+.input-group {
+    width: 100%;
+    margin-bottom: 20px;
 }
 
-.social-icons a:hover {
-    color: var(--purple);
+.input-group input {
+    width: 100%;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--light-gray);
+    font-size: 16px;
+    color: #333;
+    /* Input နစ်ဝင်နေတဲ့ Neumorphic Effect */
+    box-shadow: inset 3px 3px 7px var(--dark-shadow),
+                inset -3px -3px 7px var(--light-shadow);
+    outline: none;
+    box-sizing: border-box;
 }
 
-/* Designer info ဖျက်လိုက်လို့ ဒီ code ကို မလိုတော့ပါဘူး။ */
-/* .designer-info { display: none; } */ 
+.submit-btn {
+    width: 100%;
+    border: none;
     padding: 15px;
     border-radius: 20px;
     font-size: 16px;
@@ -140,90 +185,3 @@ body {
     font-size: 10px;
     color: #777;
 }
-    /* အဓိက ခလုတ်အရောင်: Deep Sky Blue */
-    border: 1px solid #00bfff; 
-    background-color: #00bfff;
-    
-    color: #FFFFFF;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 12px 45px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: transform 80ms ease-in;
-}
-
-/* --- OVERLAY PANEL ရဲ့ အရောင် (Sky Blue Gradient) --- */
-.overlay-container {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-    transition: transform 0.6s ease-in-out;
-    z-index: 100;
-}
-
-.container.right-panel-active .overlay-container {
-    transform: translateX(-100%);
-}
-
-.overlay {
-    /* Overlay Background: Gradient Sky Blue */
-    background: linear-gradient(to right, #00bfff, #1e90ff); /* Deep Sky Blue to Dodger Blue */
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: 0 0;
-    color: #FFFFFF;
-    position: relative;
-    left: -100%;
-    height: 100%;
-    width: 200%;
-    transform: translateX(0);
-    transition: transform 0.6s ease-in-out;
-}
-
-.container.right-panel-active .overlay {
-    transform: translateX(50%);
-}
-
-.overlay-panel {
-    /* Overlay ပေါ်က စာသား/ခလုတ် အရောင် */
-    color: #FFFFFF; 
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 40px;
-    text-align: center;
-    top: 0;
-    height: 100%;
-    width: 50%;
-    transform: translateX(0);
-    transition: transform 0.6s ease-in-out;
-}
-
-/* (Overlay Animation Code များ မပြောင်းလဲပါ) */
-/* ... */
-
-/* Log In Form ထဲက Forgot password link အရောင်ကို ပြန်ပြင်ခြင်း */
-.log-in-container a {
-    color: #333; /* Dark color for white background */
-    font-size: 12px; 
-    margin: 10px 0;
-}
-
-/* Toggle Button (Overlay ပေါ်က ခလုတ်) */
-.ghost {
-    background-color: transparent;
-    border-color: #FFFFFF;
-    color: #FFFFFF;
-    transition: background-color 0.3s ease;
-}
-/* --- CSS Code အဆုံး --- */
-
-
