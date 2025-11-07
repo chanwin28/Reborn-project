@@ -1,48 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reborn Dashboard</title>
-    <link rel="stylesheet" href="dashboard.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reborn Dashboard</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #3a86ff, #00b4d8);
+      color: white;
+      text-align: center;
+      padding-top: 100px;
+    }
+    h1 {
+      font-size: 2rem;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      background: #ff4d4d;
+      border-radius: 10px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #e63946;
+    }
+  </style>
 </head>
 <body>
-    <div class="dashboard-container">
-        
-        <header>
-    <img src="17623338398468.jpg" alt="Reborn Logo" class="reborn-logo-dash">
-    <p class="est-text">DASHBOARD</p>
-</header>
+  <h1>🎉 Welcome to Reborn Dashboard 🎉</h1>
+  <p>You have successfully logged in using Supabase Auth!</p>
+  <button id="logoutBtn">Logout</button>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://YOUR-PROJECT-REF.supabase.co";
+    const SUPABASE_ANON_KEY = "YOUR-ANON-KEY";
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-
-        <div class="profile-card neon-border">
-            <h2 id="welcomeMessage">Hello, Reborn User!</h2>
-            <p>Welcome to your personal control panel.</p>
-            
-            <div class="user-details">
-                <p>Email: <span id="userEmail">Loading...</span></p>
-                <p>Status: <span class="status-active">ACTIVE</span></p>
-            </div>
-            
-            <button class="core-feature-btn">
-                ✨ Start Your Journey
-            </button>
-
-            <button id="logoutBtn" class="logout-btn">
-                Log Out
-            </button>
-        </div>
-        
-        <footer>
-            <p>&copy; 2024 Reborn Project. All rights reserved.</p>
-        </footer>
-
-    </div>
-
-    <script src="dashboard.js"></script>
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      alert("👋 Logged out!");
+      window.location.href = "index.html";
+    });
+  </script>
 </body>
 </html>
-
-
