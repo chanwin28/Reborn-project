@@ -3,17 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔥 Reborn Chat (Fixed)</title>
+<title>🔥 Reborn Chat</title>
 <style>
   body {
     background: #0d0d0d;
     color: #fff;
     font-family: "Poppins", sans-serif;
-    margin: 0;
-    padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 0;
   }
   header {
     display: flex;
@@ -69,33 +68,13 @@
     gap: 5px;
     margin-top: 10px;
   }
-  input {
+  input, select {
     flex: 1;
     padding: 10px;
     border-radius: 10px;
     border: none;
     background: #222;
     color: #fff;
-  }
-  select {
-    width: 100%;
-    margin: 10px 0;
-    padding: 8px;
-    border-radius: 10px;
-    border: none;
-    background: #222;
-    color: #fff;
-  }
-  .profile {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 600px;
-    margin-top: 10px;
-  }
-  .profile input {
-    width: 45%;
   }
 </style>
 </head>
@@ -105,11 +84,6 @@
   <h1>🔥 Reborn Chat</h1>
   <button id="logoutBtn">Logout</button>
 </header>
-
-<div class="profile">
-  <input id="displayName" type="text" placeholder="Enter name">
-  <input id="avatarInput" type="text" placeholder="Image URL (optional)">
-</div>
 
 <div class="chat-container">
   <select id="chatMode">
@@ -127,103 +101,97 @@
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-const supabaseUrl = 'https://okwkibbvaonqolcnnhjr.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rd2tpYmJ2YW9ucW9sY25uaGpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzQzNDIsImV4cCI6MjA3ODA1MDM0Mn0.wMENc8uiJFFC5lOYKrjZbump72us7hkaKH00DelAwrs';
-const supabase = createClient(supabaseUrl, supabaseKey);
+// 🟢 Supabase config
+const supabaseUrl = 'https://okwkibbvaonqolcnnhjr.supabase.co'
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rd2tpYmJ2YW9ucW9sY25uaGpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzQzNDIsImV4cCI6MjA3ODA1MDM0Mn0.wMENc8uiJFFC5lOYKrjZbump72us7hkaKH00DelAwrs'
+const supabase = createClient(supabaseUrl, supabaseKey)
 
-const chatBox = document.getElementById("chatBox");
-const messageInput = document.getElementById("messageInput");
-const sendBtn = document.getElementById("sendBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-const receiverInput = document.getElementById("receiverInput");
-const chatMode = document.getElementById("chatMode");
-const displayName = document.getElementById("displayName");
-const avatarInput = document.getElementById("avatarInput");
+// 🟣 DOM elements
+const chatBox = document.getElementById("chatBox")
+const messageInput = document.getElementById("messageInput")
+const sendBtn = document.getElementById("sendBtn")
+const logoutBtn = document.getElementById("logoutBtn")
+const receiverInput = document.getElementById("receiverInput")
+const chatMode = document.getElementById("chatMode")
 
-const userEmail = localStorage.getItem("email") || prompt("Enter your email:");
-localStorage.setItem("email", userEmail);
-displayName.value = localStorage.getItem("name") || userEmail.split("@")[0];
-avatarInput.value = localStorage.getItem("avatar") || "";
-
-displayName.addEventListener("change", () => {
-  localStorage.setItem("name", displayName.value);
-});
-avatarInput.addEventListener("change", () => {
-  localStorage.setItem("avatar", avatarInput.value);
-});
+// 🟠 User info
+const userEmail = localStorage.getItem("email") || prompt("Enter your email:")
+localStorage.setItem("email", userEmail)
 
 async function loadMessages() {
   const { data, error } = await supabase
     .from("messages")
     .select("*")
-    .order("created_at", { ascending: true });
+    .order("created_at", { ascending: true })
 
   if (error) {
-    console.error(error);
-    return;
+    console.error(error)
+    return
   }
 
-  chatBox.innerHTML = "";
+  chatBox.innerHTML = ""
   data.forEach(msg => {
     if (chatMode.value === "group" || msg.receiver === userEmail || msg.sender === userEmail) {
-      displayMessage(msg);
+      displayMessage(msg)
     }
-  });
+  })
 }
 
+// 🟢 Show message function
 function displayMessage(msg) {
-  const div = document.createElement("div");
-  div.className = "msg " + (msg.sender === userEmail ? "me" : "other");
+  const div = document.createElement("div")
+  div.className = "msg " + (msg.sender === userEmail ? "me" : "other")
 
-  const img = document.createElement("img");
-  img.src = msg.avatar_url || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+  const img = document.createElement("img")
+  img.src = msg.avatar_url || "https://cdn-icons-png.flaticon.com/512/149/149071.png"
 
-  const text = document.createElement("span");
-  text.textContent = `${msg.sender_name || msg.sender}: ${msg.content}`;
+  const text = document.createElement("span")
+  text.textContent = `${msg.sender}: ${msg.content}`
 
-  div.appendChild(img);
-  div.appendChild(text);
-  chatBox.appendChild(div);
-  chatBox.scrollTop = chatBox.scrollHeight;
+  div.appendChild(img)
+  div.appendChild(text)
+  chatBox.appendChild(div)
+  chatBox.scrollTop = chatBox.scrollHeight
 }
 
-sendBtn.onclick = async () => {
-  const content = messageInput.value.trim();
-  if (!content) return;
+// 🟢 Send message (Button + Enter key)
+async function sendMessage() {
+  const content = messageInput.value.trim()
+  if (!content) return
 
-  const receiver = chatMode.value === "private" ? receiverInput.value.trim() : "group";
+  const receiver = chatMode.value === "private" ? receiverInput.value.trim() : "group"
 
-  const { error } = await supabase.from("messages").insert([{
-    sender: userEmail,
-    sender_name: localStorage.getItem("name"),
-    avatar_url: localStorage.getItem("avatar"),
-    receiver,
-    content
-  }]);
-  if (error) console.error(error);
-  messageInput.value = "";
-};
+  const { error } = await supabase.from("messages").insert([
+    { sender: userEmail, receiver, content }
+  ])
+  if (error) console.error(error)
+  messageInput.value = ""
+}
 
+sendBtn.onclick = sendMessage
+messageInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") sendMessage()
+})
+
+// 🟣 Realtime updates
 supabase
   .channel('realtime:messages')
   .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
-    const msg = payload.new;
+    const msg = payload.new
     if (chatMode.value === "group" || msg.receiver === userEmail || msg.sender === userEmail) {
-      displayMessage(msg);
+      displayMessage(msg)
     }
   })
-  .subscribe();
+  .subscribe()
 
-chatMode.addEventListener("change", () => {
-  loadMessages();
-});
-
+// 🟠 Logout
 logoutBtn.onclick = () => {
-  localStorage.clear();
-  location.reload();
-};
+  localStorage.clear()
+  location.reload()
+}
 
-loadMessages();
+// Load messages initially
+loadMessages()
 </script>
 
 </body>
