@@ -1,220 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>🔥 Reborn Chat</title>
+
+<!-- Font & Style -->
 <style>
   body {
-    background: #0d0d0d;
-    color: #fff;
     font-family: "Poppins", sans-serif;
+    background: #0f0f0f;
+    color: white;
+    margin: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin: 0;
+    height: 100vh;
   }
+
   header {
     display: flex;
     justify-content: space-between;
-    width: 100%;
-    max-width: 600px;
-    padding: 15px;
-    background: #111;
+    align-items: center;
+    background: #1a1a1a;
+    padding: 10px 20px;
   }
-  h1 { color: #00ffd0; margin: 0; }
-  button {
-    background: #00ffbf;
+
+  h1 {
+    color: #00ffc3;
+    font-size: 1.3em;
+  }
+
+  #logoutBtn {
+    background: #00ffc3;
+    color: #000;
     border: none;
-    padding: 8px 14px;
-    border-radius: 10px;
-    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 8px;
     cursor: pointer;
   }
-  .chat-container {
-    width: 100%;
-    max-width: 600px;
-    background: #1b1b1b;
-    border-radius: 12px;
-    margin-top: 20px;
-    padding: 10px;
+
+  .container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
   }
-  .chat-box {
-    height: 420px;
+
+  .user-list {
+    width: 30%;
+    background: #141414;
+    padding: 10px;
+    border-right: 2px solid #222;
     overflow-y: auto;
+  }
+
+  .chat-area {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
     background: #000;
-    border-radius: 10px;
-    padding: 10px;
   }
-  .msg {
-    margin: 6px 0;
-    padding: 8px 10px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    word-break: break-word;
-  }
-  .msg img {
-    max-width: 200px;
-    border-radius: 10px;
-  }
-  .me { background: #00ffb333; text-align: right; }
-  .other { background: #333; }
-  .input-area {
-    display: flex;
-    gap: 5px;
-    margin-top: 10px;
-  }
-  input, select {
+
+  .chat-box {
     flex: 1;
     padding: 10px;
-    border-radius: 10px;
-    border: none;
+    overflow-y: auto;
+  }
+
+  .message {
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 70%;
+  }
+
+  .me {
+    background: #00ffc3;
+    color: #000;
+    align-self: flex-end;
+  }
+
+  .other {
+    background: #2c2c2c;
+    align-self: flex-start;
+  }
+
+  .input-area {
+    display: flex;
+    border-top: 1px solid #222;
+    padding: 8px;
+    background: #111;
+  }
+
+  input {
+    flex: 1;
     background: #222;
-    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    color: white;
+    margin-right: 8px;
+  }
+
+  button {
+    background: #00ffc3;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  button:hover {
+    background: #00cca0;
   }
 </style>
 </head>
 <body>
-
 <header>
   <h1>🔥 Reborn Chat</h1>
   <button id="logoutBtn">Logout</button>
 </header>
 
-<div class="chat-container">
-  <select id="chatMode">
-    <option value="group">🌍 Group Chat</option>
-    <option value="private">💬 Private Chat</option>
-  </select>
-  <input type="text" id="receiverInput" placeholder="Receiver email (for private)">
-  <div class="chat-box" id="chatBox"></div>
+<div class="container">
+  <div class="user-list" id="userList">
+    <h3>👥 Users</h3>
+  </div>
 
-  <div class="input-area">
-    <input id="messageInput" type="text" placeholder="Type message...">
-    <input id="fileInput" type="file" accept="image/*">
-    <button id="sendBtn">Send</button>
+  <div class="chat-area">
+    <div class="chat-box" id="chatBox"></div>
+    <div class="input-area">
+      <input id="messageInput" type="text" placeholder="Type a message..." />
+      <button id="sendBtn">Send</button>
+    </div>
   </div>
 </div>
 
+<!-- Supabase SDK -->
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-// 🟢 Supabase config
+// 🔑 Supabase setup
 const supabaseUrl = 'https://okwkibbvaonqolcnnhjr.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rd2tpYmJ2YW9ucW9sY25uaGpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzQzNDIsImV4cCI6MjA3ODA1MDM0Mn0.wMENc8uiJFFC5lOYKrjZbump72us7hkaKH00DelAwrs'
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....(your_key_here)'
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-// 🟣 DOM elements
 const chatBox = document.getElementById("chatBox")
 const messageInput = document.getElementById("messageInput")
-const fileInput = document.getElementById("fileInput")
 const sendBtn = document.getElementById("sendBtn")
 const logoutBtn = document.getElementById("logoutBtn")
-const receiverInput = document.getElementById("receiverInput")
-const chatMode = document.getElementById("chatMode")
+const userList = document.getElementById("userList")
 
-// 🟠 User info
-const userEmail = localStorage.getItem("email") || prompt("Enter your email:")
-localStorage.setItem("email", userEmail)
+const userEmail = localStorage.getItem("email") || "guest@example.com"
+let currentReceiver = null
 
-// Load messages
+// 🧑 Fetch users
+async function loadUsers() {
+  const { data, error } = await supabase.from("profiles").select("email")
+  if (!error && data) {
+    userList.innerHTML = "<h3>👥 Users</h3>"
+    data.forEach(u => {
+      if (u.email !== userEmail) {
+        const div = document.createElement("div")
+        div.textContent = u.email
+        div.style.padding = "8px"
+        div.style.cursor = "pointer"
+        div.onclick = () => openChat(u.email)
+        userList.appendChild(div)
+      }
+    })
+  }
+}
+
+// 💬 Open Chat
+async function openChat(receiverEmail) {
+  currentReceiver = receiverEmail
+  chatBox.innerHTML = ""
+  loadMessages()
+}
+
+// 💌 Send Message
+sendBtn.onclick = async () => {
+  const text = messageInput.value.trim()
+  if (!text || !currentReceiver) return
+  messageInput.value = ""
+  await supabase.from("messages").insert({
+    sender: userEmail,
+    receiver: currentReceiver,
+    content: text,
+  })
+  loadMessages()
+}
+
+// 🔁 Load Messages
 async function loadMessages() {
-  const { data, error } = await supabase
+  if (!currentReceiver) return
+  const { data } = await supabase
     .from("messages")
     .select("*")
+    .or(`and(sender.eq.${userEmail},receiver.eq.${currentReceiver}),and(sender.eq.${currentReceiver},receiver.eq.${userEmail})`)
     .order("created_at", { ascending: true })
-
-  if (error) return console.error(error)
 
   chatBox.innerHTML = ""
   data.forEach(msg => {
-    if (chatMode.value === "group" || msg.receiver === userEmail || msg.sender === userEmail) {
-      displayMessage(msg)
-    }
+    const div = document.createElement("div")
+    div.classList.add("message")
+    div.classList.add(msg.sender === userEmail ? "me" : "other")
+    div.textContent = msg.content
+    chatBox.appendChild(div)
   })
-}
-
-// Show message
-function displayMessage(msg) {
-  const div = document.createElement("div")
-  div.className = "msg " + (msg.sender === userEmail ? "me" : "other")
-  if (msg.image_url) {
-    const img = document.createElement("img")
-    img.src = msg.image_url
-    div.appendChild(img)
-  }
-  if (msg.content) {
-    const text = document.createElement("div")
-    text.textContent = `${msg.sender}: ${msg.content}`
-    div.appendChild(text)
-  }
-  chatBox.appendChild(div)
   chatBox.scrollTop = chatBox.scrollHeight
 }
 
-// Upload image to Supabase Storage
-async function uploadImage(file) {
-  const fileName = `${Date.now()}_${file.name}`
-  const { data, error } = await supabase.storage
-    .from("chat_uploads")
-    .upload(fileName, file)
-  if (error) {
-    alert("Upload failed: " + error.message)
-    return null
-  }
-  const { data: publicUrl } = supabase.storage.from("chat_uploads").getPublicUrl(fileName)
-  return publicUrl.publicUrl
+// 🚪 Logout
+logoutBtn.onclick = () => {
+  localStorage.clear()
+  window.location.href = "index.html"
 }
 
-// Send message
-async function sendMessage() {
-  const content = messageInput.value.trim()
-  const file = fileInput.files[0]
-  let imageUrl = null
-
-  if (file) {
-    imageUrl = await uploadImage(file)
-    fileInput.value = ""
-  }
-
-  if (!content && !imageUrl) return
-
-  const receiver = chatMode.value === "private" ? receiverInput.value.trim() : "group"
-
-  const { error } = await supabase.from("messages").insert([
-    { sender: userEmail, receiver, content, image_url: imageUrl }
-  ])
-  if (error) console.error(error)
-
-  messageInput.value = ""
-}
-
-// Button + Enter send
-sendBtn.onclick = sendMessage
-messageInput.addEventListener("keypress", e => {
-  if (e.key === "Enter") sendMessage()
-})
-
-// Realtime listener
+// Realtime listen
 supabase
-  .channel('realtime:messages')
-  .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
-    const msg = payload.new
-    if (chatMode.value === "group" || msg.receiver === userEmail || msg.sender === userEmail) {
-      displayMessage(msg)
-    }
+  .channel('public:messages')
+  .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, payload => {
+    loadMessages()
   })
   .subscribe()
 
-// Logout
-logoutBtn.onclick = () => {
-  localStorage.clear()
-  location.reload()
-}
-
-loadMessages()
+loadUsers()
 </script>
-
 </body>
 </html>
