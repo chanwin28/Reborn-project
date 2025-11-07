@@ -3,55 +3,70 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔥 Reborn Dashboard</title>
+<title>🔥 Reborn Chat</title>
 <style>
   body {
-    background: #111;
+    background: #0d0d0d;
     color: #fff;
     font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px;
   }
   header {
     display: flex;
     justify-content: space-between;
     width: 100%;
     max-width: 600px;
-    align-items: center;
+    padding: 15px;
+    background: #111;
   }
-  h1 { color: #00ffd0; }
+  h1 { color: #00ffd0; margin: 0; }
   button {
-    background: #00ffc3;
+    background: #00ffbf;
     border: none;
-    padding: 8px 16px;
+    padding: 8px 14px;
     border-radius: 10px;
-    cursor: pointer;
     font-weight: bold;
+    cursor: pointer;
   }
   .chat-container {
     width: 100%;
     max-width: 600px;
+    background: #1b1b1b;
+    border-radius: 12px;
     margin-top: 20px;
-    background: #1a1a1a;
-    border-radius: 15px;
-    padding: 15px;
+    padding: 10px;
   }
   .chat-box {
-    background: #000;
-    padding: 10px;
-    height: 400px;
+    height: 420px;
     overflow-y: auto;
+    background: #000;
     border-radius: 10px;
-    margin-bottom: 10px;
+    padding: 10px;
   }
+  .msg {
+    margin: 6px 0;
+    padding: 8px 10px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+  }
+  .msg img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  .me { background: #00ffb333; justify-content: flex-end; }
+  .me img { order: 2; margin-left: 10px; margin-right: 0; }
+  .other { background: #333; }
   .input-area {
     display: flex;
     gap: 5px;
+    margin-top: 10px;
   }
   input {
     flex: 1;
@@ -61,111 +76,142 @@
     background: #222;
     color: #fff;
   }
-  .msg {
-    margin: 5px 0;
+  select {
+    width: 100%;
+    margin: 10px 0;
     padding: 8px;
     border-radius: 10px;
+    border: none;
+    background: #222;
+    color: #fff;
   }
-  .me { background: #00ffb333; text-align: right; }
-  .other { background: #444; text-align: left; }
+  .profile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 10px;
+  }
+  .profile input {
+    width: 45%;
+  }
 </style>
 </head>
 <body>
-  <header>
-    <h1>🔥 Reborn Dashboard</h1>
-    <button id="logoutBtn">Logout</button>
-  </header>
 
-  <div class="chat-container">
-    <div>
-      <select id="chatMode">
-        <option value="group">🌍 Group Chat</option>
-        <option value="private">💬 Private Chat</option>
-      </select>
-      <input type="text" id="receiverInput" placeholder="Enter receiver name (for private)">
-    </div>
+<header>
+  <h1>🔥 Reborn Chat</h1>
+  <button id="logoutBtn">Logout</button>
+</header>
 
-    <div class="chat-box" id="chatBox"></div>
+<div class="profile">
+  <input id="displayName" type="text" placeholder="Enter name">
+  <input id="avatarInput" type="text" placeholder="Image URL (optional)">
+</div>
 
-    <div class="input-area">
-      <input id="messageInput" type="text" placeholder="Type a message..." />
-      <button id="sendBtn">Send</button>
-    </div>
+<div class="chat-container">
+  <select id="chatMode">
+    <option value="group">🌍 Group Chat</option>
+    <option value="private">💬 Private Chat</option>
+  </select>
+  <input type="text" id="receiverInput" placeholder="Receiver email (for private)">
+  <div class="chat-box" id="chatBox"></div>
+  <div class="input-area">
+    <input id="messageInput" type="text" placeholder="Type message...">
+    <button id="sendBtn">Send</button>
   </div>
+</div>
 
-  <!-- Supabase JS SDK -->
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-    // 🗝️ Supabase setup
-    const supabaseUrl = 'https://okwkibbvaonqolcnnhjr.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rd2tpYmJ2YW9ucW9sY25uaGpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzQzNDIsImV4cCI6MjA3ODA1MDM0Mn0.wMENc8uiJFFC5lOYKrjZbump72us7hkaKH00DelAwrs';
-    const supabase = createClient(supabaseUrl, supabaseKey);
+const supabaseUrl = 'https://okwkibbvaonqolcnnhjr.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rd2tpYmJ2YW9ucW9sY25uaGpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzQzNDIsImV4cCI6MjA3ODA1MDM0Mn0.wMENc8uiJFFC5lOYKrjZbump72us7hkaKH00DelAwrs';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // UI elements
-    const chatBox = document.getElementById("chatBox");
-    const messageInput = document.getElementById("messageInput");
-    const sendBtn = document.getElementById("sendBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const receiverInput = document.getElementById("receiverInput");
-    const chatMode = document.getElementById("chatMode");
+const chatBox = document.getElementById("chatBox");
+const messageInput = document.getElementById("messageInput");
+const sendBtn = document.getElementById("sendBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const receiverInput = document.getElementById("receiverInput");
+const chatMode = document.getElementById("chatMode");
+const displayName = document.getElementById("displayName");
+const avatarInput = document.getElementById("avatarInput");
 
-    const userEmail = localStorage.getItem("email") || prompt("Enter your username/email:");
-    localStorage.setItem("email", userEmail);
+const userEmail = localStorage.getItem("email") || prompt("Enter your email:");
+localStorage.setItem("email", userEmail);
+displayName.value = localStorage.getItem("name") || userEmail.split("@")[0];
+avatarInput.value = localStorage.getItem("avatar") || "";
 
-    // Load messages
-    async function loadMessages() {
-      chatBox.innerHTML = "";
-      const mode = chatMode.value;
-      const { data, error } = await supabase.from("messages").select("*").order("created_at", { ascending: true });
-      if (error) return console.error(error);
+displayName.addEventListener("change", () => {
+  localStorage.setItem("name", displayName.value);
+});
+avatarInput.addEventListener("change", () => {
+  localStorage.setItem("avatar", avatarInput.value);
+});
 
-      data.forEach(msg => {
-        if (mode === "group" || msg.receiver === userEmail || msg.sender === userEmail) {
-          displayMessage(msg);
-        }
-      });
+async function loadMessages() {
+  chatBox.innerHTML = "";
+  const { data, error } = await supabase.from("messages").select("*").order("created_at", { ascending: true });
+  if (error) console.error(error);
+
+  data.forEach(msg => {
+    if (chatMode.value === "group" || msg.receiver === userEmail || msg.sender === userEmail) {
+      displayMessage(msg);
     }
+  });
+}
 
-    // Display message
-    function displayMessage(msg) {
-      const div = document.createElement("div");
-      div.className = "msg " + (msg.sender === userEmail ? "me" : "other");
-      div.textContent = `${msg.sender}: ${msg.content}`;
-      chatBox.appendChild(div);
-      chatBox.scrollTop = chatBox.scrollHeight;
+function displayMessage(msg) {
+  const div = document.createElement("div");
+  div.className = "msg " + (msg.sender === userEmail ? "me" : "other");
+
+  const img = document.createElement("img");
+  img.src = msg.avatar_url || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+
+  const text = document.createElement("span");
+  text.textContent = `${msg.sender_name || msg.sender}: ${msg.content}`;
+
+  div.appendChild(img);
+  div.appendChild(text);
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+sendBtn.onclick = async () => {
+  const content = messageInput.value.trim();
+  if (!content) return;
+  const receiver = chatMode.value === "private" ? receiverInput.value.trim() : "group";
+
+  const { error } = await supabase.from("messages").insert([{
+    sender: userEmail,
+    sender_name: localStorage.getItem("name"),
+    avatar_url: localStorage.getItem("avatar"),
+    receiver,
+    content
+  }]);
+  if (error) console.error(error);
+  messageInput.value = "";
+};
+
+supabase.channel('public:messages')
+  .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
+    const msg = payload.new;
+    if (chatMode.value === "group" || msg.receiver === userEmail || msg.sender === userEmail) {
+      displayMessage(msg);
     }
+  })
+  .subscribe();
 
-    // Send message
-    sendBtn.onclick = async () => {
-      const content = messageInput.value.trim();
-      if (!content) return;
-      const receiver = chatMode.value === "private" ? receiverInput.value.trim() : "group";
-      if (chatMode.value === "private" && !receiver) return alert("Enter receiver name!");
+chatMode.onchange = loadMessages;
+loadMessages();
 
-      const { error } = await supabase.from("messages").insert([{ sender: userEmail, receiver, content }]);
-      if (error) console.error(error);
-      messageInput.value = "";
-    };
+logoutBtn.onclick = () => {
+  localStorage.clear();
+  location.reload();
+};
+</script>
 
-    // Listen realtime
-    supabase.channel('public:messages')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
-        const msg = payload.new;
-        const mode = chatMode.value;
-        if (mode === "group" || msg.receiver === userEmail || msg.sender === userEmail) {
-          displayMessage(msg);
-        }
-      })
-      .subscribe();
-
-    chatMode.onchange = loadMessages;
-    loadMessages();
-
-    logoutBtn.onclick = () => {
-      localStorage.removeItem("email");
-      location.reload();
-    };
-  </script>
 </body>
 </html>
