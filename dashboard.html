@@ -1,112 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🔥 Reborn Dashboard</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.1/dist/umd/supabase.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔥 Reborn Dashboard</title>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1a2a6c, #fdbb2d);
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #333;
+    color: white;
+    padding: 15px 20px;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 20px;
+  }
+  .chat-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    overflow-y: auto;
+    background: #fff;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+  .chat-box {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+  }
+  .input-area {
+    display: flex;
+    padding: 10px;
+    background: #fafafa;
+    border-top: 1px solid #ddd;
+  }
+  input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+  }
+  button {
+    padding: 10px 15px;
+    margin-left: 8px;
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 10px;
+  }
+  button:hover {
+    background: #0056b3;
+  }
+  .msg {
+    margin: 6px 0;
+    padding: 8px 12px;
+    border-radius: 10px;
+    max-width: 75%;
+    display: inline-block;
+    word-wrap: break-word;
+  }
+  .mine {
+    background: #dcf8c6;
+    align-self: flex-end;
+  }
+  .other {
+    background: #f1f0f0;
+    align-self: flex-start;
+  }
+</style>
 </head>
-<body class="bg-gradient-to-br from-blue-600 to-purple-600 h-screen flex flex-col text-white">
-
-  <!-- Header -->
-  <header class="flex justify-between items-center p-4 bg-black bg-opacity-30">
-    <h1 class="text-2xl font-bold">🔥 Reborn Dashboard</h1>
-    <button id="logout" class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600">Logout</button>
+<body>
+  <header>
+    <h1>🔥 Reborn Dashboard</h1>
+    <button id="logoutBtn">Logout</button>
   </header>
 
-  <!-- Chat Area -->
-  <main class="flex-1 flex flex-col justify-between p-4">
-    <div id="chatBox" class="flex-1 overflow-y-auto bg-white bg-opacity-10 rounded-lg p-3 mb-3"></div>
-    <div class="flex space-x-2">
-      <input id="messageInput" type="text" placeholder="Type a message..." class="flex-1 px-4 py-2 rounded-lg text-black">
-      <button id="sendBtn" class="bg-green-500 px-4 py-2 rounded-lg hover:bg-green-600">Send</button>
+  <div class="chat-container">
+    <div class="chat-box" id="chatBox"></div>
+
+    <div class="input-area">
+      <input id="messageInput" type="text" placeholder="Type a message..." />
+      <button id="sendBtn">Send</button>
     </div>
-  </main>
+  </div>
 
-  <script>
-    // 🧠 Supabase Config (ချစ်ဘော့စ်ရဲ့ project ကိုဖြည့်ပါ)
-    const SUPABASE_URL = "https://YOUR-PROJECT-URL.supabase.co";
-    const SUPABASE_ANON_KEY = "YOUR-ANON-KEY";
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  // 🗝️ Supabase Setup
+  const supabaseUrl = 'https://okwkibbvaonqolcnnhjr.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rd2tpYmJ2YW9ucW9sY25uaGpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzQzNDIsImV4cCI6MjA3ODA1MDM0Mn0.wMENc8uiJFFC5lOYKrjZbump72us7hkaKH00DelAwrs';
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // 🌟 Current user info
-    const currentUser = JSON.parse(localStorage.getItem("user"));
-    if (!currentUser) window.location.href = "index.html";
+  // 🎯 HTML Elements
+  const chatBox = document.getElementById("chatBox");
+  const messageInput = document.getElementById("messageInput");
+  const sendBtn = document.getElementById("sendBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
 
-    const chatBox = document.getElementById("chatBox");
-    const messageInput = document.getElementById("messageInput");
-    const sendBtn = document.getElementById("sendBtn");
-    const logoutBtn = document.getElementById("logout");
+  // 🧑 User Email (from login)
+  let userEmail = localStorage.getItem("email");
+  if (!userEmail) {
+    userEmail = prompt("Enter your name or email:");
+    localStorage.setItem("email", userEmail);
+  }
 
-    // Default Channel ID (for now)
-    const defaultChannel = "global-room";
-
-    // 📡 Load messages
-    async function loadMessages() {
-      const { data, error } = await supabaseClient
-        .from("chat_messages")
-        .select("*")
-        .eq("channel_id", defaultChannel)
-        .order("created_at", { ascending: true });
-
-      if (!error && data) {
-        chatBox.innerHTML = "";
-        data.forEach(msg => {
-          const bubble = document.createElement("div");
-          const isMine = msg.sender_id === currentUser.id;
-          bubble.className = isMine
-            ? "text-right mb-2"
-            : "text-left mb-2";
-          bubble.innerHTML = `
-            <div class="${isMine ? 'bg-green-500' : 'bg-gray-500'} inline-block px-3 py-2 rounded-lg">
-              <b>${isMine ? "You" : msg.sender_id}</b>: ${msg.content}
-            </div>`;
-          chatBox.appendChild(bubble);
-        });
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }
+  // 📨 Load previous messages
+  async function loadMessages() {
+    const { data, error } = await supabase.from("chat_messages").select("*").order("created_at", { ascending: true });
+    if (error) console.error("Error loading messages:", error);
+    else {
+      chatBox.innerHTML = "";
+      data.forEach(msg => displayMessage(msg));
     }
+  }
 
-    // ✉️ Send message
-    sendBtn.onclick = async () => {
-      const content = messageInput.value.trim();
-      if (!content) return;
+  // 💬 Display message
+  function displayMessage(msg) {
+    const div = document.createElement("div");
+    div.classList.add("msg");
+    div.classList.add(msg.sender === userEmail ? "mine" : "other");
+    div.textContent = `${msg.sender}: ${msg.message}`;
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
 
-      const { error } = await supabaseClient
-        .from("chat_messages")
-        .insert({
-          channel_id: defaultChannel,
-          sender_id: currentUser.id,
-          content
-        });
+  // 🚀 Send new message
+  sendBtn.addEventListener("click", async () => {
+    const text = messageInput.value.trim();
+    if (text === "") return;
+    const { error } = await supabase.from("chat_messages").insert([{ sender: userEmail, message: text }]);
+    if (error) alert("Error sending: " + error.message);
+    else messageInput.value = "";
+  });
 
-      if (!error) {
-        messageInput.value = "";
-      }
-    };
+  // 🔄 Real-time updates
+  supabase
+    .channel("public:chat_messages")
+    .on("postgres_changes", { event: "INSERT", schema: "public", table: "chat_messages" }, (payload) => {
+      displayMessage(payload.new);
+    })
+    .subscribe();
 
-    // 🔄 Realtime listener
-    supabaseClient
-      .channel("chat_room")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "chat_messages" },
-        payload => {
-          loadMessages();
-        }
-      )
-      .subscribe();
+  // 🚪 Logout
+  logoutBtn.addEventListener("click", async () => {
+    await supabase.auth.signOut();
+    localStorage.removeItem("email");
+    window.location.href = "index.html";
+  });
 
-    // 🚪 Logout
-    logoutBtn.onclick = () => {
-      localStorage.removeItem("user");
-      window.location.href = "index.html";
-    };
-
-    // 🔥 Initialize
-    loadMessages();
-  </script>
+  // Load all old messages
+  loadMessages();
+</script>
 </body>
 </html>
