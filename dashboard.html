@@ -1,3 +1,4 @@
+<!-- dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,12 +8,14 @@
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #3a86ff, #00b4d8);
+      background: linear-gradient(135deg, #007bff, #00b4d8);
       color: white;
       text-align: center;
       padding-top: 100px;
     }
-    h1 { font-size: 2rem; }
+    h1 {
+      font-size: 2rem;
+    }
     button {
       margin-top: 20px;
       padding: 10px 20px;
@@ -23,19 +26,21 @@
       font-size: 16px;
       cursor: pointer;
     }
-    button:hover { background: #e63946; }
+    button:hover {
+      background: #e63946;
+    }
   </style>
 </head>
 <body>
   <h1>🎉 Welcome to Reborn Dashboard 🎉</h1>
-  <p>You have successfully logged in using Supabase Auth!</p>
+  <p>You are successfully logged in!</p>
   <button id="logoutBtn">Logout</button>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = "https://okwkibbvaonqolcnnhjr.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rd2tpYmJ2YW9ucW9sY25uaGpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzQzNDIsImV4cCI6MjA3ODA1MDM0Mn0.wMENc8uiJFFC5lOYKrjZbump72us7hkaKH00DelAwrs";
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     document.getElementById("logoutBtn").addEventListener("click", async () => {
       await supabase.auth.signOut();
