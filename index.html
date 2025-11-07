@@ -1,93 +1,186 @@
 <!DOCTYPE html>
-<html lang="my">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reborn Login / Signup</title>
+  <title>Reborn Auth</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #00c9a7, #92fe9d);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
       margin: 0;
+      background: linear-gradient(135deg, #0048ff, #0af);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #333;
     }
-    .container {
-      background: white;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-      width: 300px;
+    .card {
+      background: #fff;
+      width: 350px;
+      border-radius: 25px;
+      padding: 40px 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
       text-align: center;
+      transition: all 0.3s;
     }
-    input {
+    h2 {
+      color: #0048ff;
+      margin-bottom: 20px;
+    }
+    .input-group {
+      position: relative;
+      margin-bottom: 15px;
+    }
+    .input-group input {
       width: 100%;
-      padding: 10px;
-      margin: 10px 0;
+      padding: 12px 40px 12px 15px;
+      border-radius: 12px;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      outline: none;
+      font-size: 14px;
+      transition: 0.3s;
     }
-    button {
+    .input-group input:focus {
+      border-color: #0048ff;
+    }
+    .input-group span {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      font-size: 18px;
+      color: #aaa;
+    }
+    .btn {
       width: 100%;
-      padding: 10px;
-      background: #00c9a7;
+      padding: 12px;
       border: none;
+      border-radius: 12px;
+      background: #0048ff;
       color: white;
-      font-weight: bold;
-      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
       cursor: pointer;
       transition: 0.3s;
     }
-    button:hover { background: #05a88f; }
-    .toggle { margin-top: 15px; cursor: pointer; color: #007bff; }
+    .btn:hover {
+      background: #0036c9;
+    }
+    .links {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #555;
+    }
+    .links a {
+      color: #0048ff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .remember {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 15px;
+      color: #555;
+    }
+    .checkbox {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+    #message {
+      color: red;
+      font-size: 13px;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2 id="title">Login</h2>
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Password" />
-    <button id="actionBtn">Login</button>
-    <p class="toggle" id="toggle">Don’t have an account? Signup</p>
+  <div class="card">
+    <h2 id="title">Welcome Back, Log In!</h2>
+    <div class="input-group" id="username-group" style="display:none;">
+      <input type="text" id="username" placeholder="Enter Username" />
+      <span>👤</span>
+    </div>
+    <div class="input-group">
+      <input type="email" id="email" placeholder="Enter Email Address" />
+      <span>📧</span>
+    </div>
+    <div class="input-group">
+      <input type="password" id="password" placeholder="Enter Password" />
+      <span>🔒</span>
+    </div>
+
+    <div class="remember" id="login-remember">
+      <label><input type="checkbox" /> Remember me</label>
+      <a href="#">Forgot password?</a>
+    </div>
+
+    <div class="checkbox" id="signup-terms" style="display:none;">
+      <input type="checkbox" id="terms" />
+      <label for="terms">I accept the policy and terms</label>
+    </div>
+
+    <button class="btn" id="actionBtn">Log In</button>
+    <div class="links">
+      <span id="toggle">Not a member yet? <a href="#">Sign Up</a></span>
+    </div>
     <p id="message"></p>
   </div>
 
   <script>
     const SUPABASE_URL = "https://okwkibbvaonqolcnnhjr.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rd2tpYmJ2YW9ucW9sY25uaGpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzQzNDIsImV4cCI6MjA3ODA1MDM0Mn0.wMENc8uiJFFC5lOYKrjZbump72us7hkaKH00DelAwrs";
-
+    const SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rd2tpYmJ2YW9ucW9sY25uaGpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzQzNDIsImV4cCI6MjA3ODA1MDM0Mn0.wMENc8uiJFFC5lOYKrjZbump72us7hkaKH00DelAwrs";
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     let isLogin = true;
 
-    document.getElementById("toggle").addEventListener("click", () => {
+    document.getElementById("toggle").addEventListener("click", (e) => {
+      e.preventDefault();
       isLogin = !isLogin;
-      document.getElementById("title").innerText = isLogin ? "Login" : "Signup";
-      document.getElementById("actionBtn").innerText = isLogin ? "Login" : "Signup";
-      document.getElementById("toggle").innerText = isLogin
-        ? "Don’t have an account? Signup"
-        : "Already have an account? Login";
+
+      document.getElementById("title").innerText = isLogin
+        ? "Welcome Back, Log In!"
+        : "Hello, Sign Up!";
+      document.getElementById("actionBtn").innerText = isLogin ? "Log In" : "Sign Up";
+      document.getElementById("toggle").innerHTML = isLogin
+        ? `Not a member yet? <a href="#">Sign Up</a>`
+        : `Already have an account? <a href="#">Log In</a>`;
+
+      document.getElementById("username-group").style.display = isLogin ? "none" : "block";
+      document.getElementById("login-remember").style.display = isLogin ? "flex" : "none";
+      document.getElementById("signup-terms").style.display = isLogin ? "none" : "flex";
       document.getElementById("message").innerText = "";
     });
 
     document.getElementById("actionBtn").addEventListener("click", async () => {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
-      let res;
+      const username = document.getElementById("username").value;
+      const msg = document.getElementById("message");
 
-      if (isLogin) {
-        res = await supabase.auth.signInWithPassword({ email, password });
-      } else {
-        res = await supabase.auth.signUp({ email, password });
+      if (!email || !password || (!isLogin && !username)) {
+        msg.innerText = "❌ Please fill all required fields.";
+        return;
       }
 
-      if (res.error) {
-        document.getElementById("message").innerText = "❌ " + res.error.message;
-      } else {
-        document.getElementById("message").innerText = "✅ Success!";
-      }
+      let { data, error } = isLogin
+        ? await supabase.auth.signInWithPassword({ email, password })
+        : await supabase.auth.signUp({
+            email,
+            password,
+            options: { data: { username } },
+          });
+
+      msg.style.color = error ? "red" : "green";
+      msg.innerText = error ? "❌ " + error.message : "✅ Success!";
     });
   </script>
 </body>
