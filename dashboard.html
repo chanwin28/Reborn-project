@@ -3,115 +3,96 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>🔥 Reborn Chat</title>
-
-<!-- Font & Style -->
+<title>🔥 Reborn Chat (Telegram Style)</title>
 <style>
   body {
-    font-family: "Poppins", sans-serif;
-    background: #0f0f0f;
-    color: white;
+    background-color: #0d0d0d;
+    color: #e6e6e6;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     display: flex;
     flex-direction: column;
     height: 100vh;
   }
-
   header {
+    background-color: #1c1c1c;
+    padding: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #1a1a1a;
-    padding: 10px 20px;
   }
-
   h1 {
-    color: #00ffc3;
-    font-size: 1.3em;
+    color: #00ffc8;
+    font-weight: bold;
   }
-
-  #logoutBtn {
-    background: #00ffc3;
+  button {
+    background-color: #00ffc8;
     color: #000;
     border: none;
     padding: 8px 15px;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
+    font-weight: 600;
   }
-
-  .container {
+  .chat-container {
     display: flex;
-    flex: 1;
+    flex-grow: 1;
     overflow: hidden;
   }
-
-  .user-list {
-    width: 30%;
-    background: #141414;
+  .users {
+    width: 25%;
+    background-color: #1a1a1a;
     padding: 10px;
-    border-right: 2px solid #222;
     overflow-y: auto;
   }
-
-  .chat-area {
-    width: 70%;
+  .users h2 {
+    color: #00ffc8;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  .chat-box {
+    flex-grow: 1;
+    background-color: #0d0d0d;
     display: flex;
     flex-direction: column;
-    background: #000;
   }
-
-  .chat-box {
-    flex: 1;
-    padding: 10px;
+  #messages {
+    flex-grow: 1;
     overflow-y: auto;
+    padding: 15px;
   }
-
   .message {
     margin: 8px 0;
-    padding: 10px;
-    border-radius: 8px;
     max-width: 70%;
+    padding: 10px;
+    border-radius: 12px;
+    word-wrap: break-word;
   }
-
   .me {
-    background: #00ffc3;
+    background-color: #00ffc8;
     color: #000;
     align-self: flex-end;
   }
-
   .other {
-    background: #2c2c2c;
+    background-color: #2a2a2a;
+    color: #fff;
     align-self: flex-start;
   }
-
   .input-area {
     display: flex;
-    border-top: 1px solid #222;
-    padding: 8px;
-    background: #111;
-  }
-
-  input {
-    flex: 1;
-    background: #222;
-    border: none;
+    background-color: #1c1c1c;
     padding: 10px;
-    border-radius: 8px;
-    color: white;
-    margin-right: 8px;
   }
-
-  button {
-    background: #00ffc3;
+  #messageInput {
+    flex-grow: 1;
+    padding: 10px;
+    border-radius: 10px;
     border: none;
-    padding: 10px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
+    background-color: #2a2a2a;
+    color: #fff;
   }
-
-  button:hover {
-    background: #00cca0;
+  #sendBtn {
+    margin-left: 10px;
   }
 </style>
 </head>
@@ -121,13 +102,13 @@
   <button id="logoutBtn">Logout</button>
 </header>
 
-<div class="container">
-  <div class="user-list" id="userList">
-    <h3>👥 Users</h3>
+<div class="chat-container">
+  <div class="users">
+    <h2>👥 Users</h2>
   </div>
 
-  <div class="chat-area">
-    <div class="chat-box" id="chatBox"></div>
+  <div class="chat-box">
+    <div id="messages"></div>
     <div class="input-area">
       <input id="messageInput" type="text" placeholder="Type a message..." />
       <button id="sendBtn">Send</button>
@@ -135,97 +116,60 @@
   </div>
 </div>
 
-<!-- Supabase SDK -->
 <script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-// 🔑 Supabase setup
-const supabaseUrl = 'https://okwkibbvaonqolcnnhjr.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....(your_key_here)'
-const supabase = createClient(supabaseUrl, supabaseKey)
+  // ✅ Supabase Setup
+  const supabaseUrl = 'https://okwkibbvaonqolcnnhjr.supabase.co'
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgyYmJiYjAwLTkxMzItNDI5Mi05MzZhLTc5NjE5ZjU5N2M2MyIsImlhdCI6MTY5OTQ3MzE4OSwiZXhwIjoxOTExMDI5MTg5fQ.nSpEcGxZxS0fMTOSj3_jxU6k_N4j5IRd3OaUTu_1T6U'
+  const supabase = createClient(supabaseUrl, supabaseKey)
 
-const chatBox = document.getElementById("chatBox")
-const messageInput = document.getElementById("messageInput")
-const sendBtn = document.getElementById("sendBtn")
-const logoutBtn = document.getElementById("logoutBtn")
-const userList = document.getElementById("userList")
+  const messagesDiv = document.getElementById('messages')
+  const messageInput = document.getElementById('messageInput')
+  const sendBtn = document.getElementById('sendBtn')
 
-const userEmail = localStorage.getItem("email") || "guest@example.com"
-let currentReceiver = null
+  const userEmail = localStorage.getItem("email") || "guest@example.com"
 
-// 🧑 Fetch users
-async function loadUsers() {
-  const { data, error } = await supabase.from("profiles").select("email")
-  if (!error && data) {
-    userList.innerHTML = "<h3>👥 Users</h3>"
-    data.forEach(u => {
-      if (u.email !== userEmail) {
-        const div = document.createElement("div")
-        div.textContent = u.email
-        div.style.padding = "8px"
-        div.style.cursor = "pointer"
-        div.onclick = () => openChat(u.email)
-        userList.appendChild(div)
-      }
+  // ✅ Load all messages
+  async function loadMessages() {
+    const { data, error } = await supabase
+      .from('messages')
+      .select('*')
+      .order('id', { ascending: true })
+
+    if (error) {
+      console.error(error)
+      return
+    }
+
+    messagesDiv.innerHTML = ''
+    data.forEach(msg => {
+      const div = document.createElement('div')
+      div.classList.add('message')
+      div.classList.add(msg.user === userEmail ? 'me' : 'other')
+      div.textContent = `${msg.user}: ${msg.content}`
+      messagesDiv.appendChild(div)
     })
+    messagesDiv.scrollTop = messagesDiv.scrollHeight
   }
-}
 
-// 💬 Open Chat
-async function openChat(receiverEmail) {
-  currentReceiver = receiverEmail
-  chatBox.innerHTML = ""
-  loadMessages()
-}
-
-// 💌 Send Message
-sendBtn.onclick = async () => {
-  const text = messageInput.value.trim()
-  if (!text || !currentReceiver) return
-  messageInput.value = ""
-  await supabase.from("messages").insert({
-    sender: userEmail,
-    receiver: currentReceiver,
-    content: text,
-  })
-  loadMessages()
-}
-
-// 🔁 Load Messages
-async function loadMessages() {
-  if (!currentReceiver) return
-  const { data } = await supabase
-    .from("messages")
-    .select("*")
-    .or(`and(sender.eq.${userEmail},receiver.eq.${currentReceiver}),and(sender.eq.${currentReceiver},receiver.eq.${userEmail})`)
-    .order("created_at", { ascending: true })
-
-  chatBox.innerHTML = ""
-  data.forEach(msg => {
-    const div = document.createElement("div")
-    div.classList.add("message")
-    div.classList.add(msg.sender === userEmail ? "me" : "other")
-    div.textContent = msg.content
-    chatBox.appendChild(div)
-  })
-  chatBox.scrollTop = chatBox.scrollHeight
-}
-
-// 🚪 Logout
-logoutBtn.onclick = () => {
-  localStorage.clear()
-  window.location.href = "index.html"
-}
-
-// Realtime listen
-supabase
-  .channel('public:messages')
-  .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, payload => {
+  // ✅ Send message
+  sendBtn.addEventListener('click', async () => {
+    const text = messageInput.value.trim()
+    if (!text) return
+    const { error } = await supabase.from('messages').insert([{ user: userEmail, content: text }])
+    if (error) console.error(error)
+    messageInput.value = ''
     loadMessages()
   })
-  .subscribe()
 
-loadUsers()
+  // ✅ Realtime message listening
+  supabase
+    .channel('realtime:messages')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, loadMessages)
+    .subscribe()
+
+  loadMessages()
 </script>
 </body>
 </html>
