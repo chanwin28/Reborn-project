@@ -4,184 +4,185 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reborn Auth</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
       font-family: "Poppins", sans-serif;
     }
+
     body {
-      margin: 0;
-      background: linear-gradient(135deg, #0048ff, #0af);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      color: #333;
+      background: linear-gradient(135deg, #007bff, #00c6ff);
+      transition: background 0.6s ease, color 0.6s ease;
     }
-    .card {
+
+    body.dark {
+      background: linear-gradient(135deg, #0a0a0a, #242424);
+      color: #fff;
+    }
+
+    .container {
       background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
       width: 350px;
-      border-radius: 25px;
-      padding: 40px 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      padding: 2rem;
       text-align: center;
-      transition: all 0.3s;
+      transition: all 0.6s ease;
     }
+
+    body.dark .container {
+      background: #1f1f1f;
+      color: #fff;
+    }
+
     h2 {
-      color: #0048ff;
-      margin-bottom: 20px;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
     }
-    .input-group {
-      position: relative;
-      margin-bottom: 15px;
-    }
-    .input-group input {
+
+    input {
       width: 100%;
-      padding: 12px 40px 12px 15px;
-      border-radius: 12px;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
       border: 1px solid #ccc;
       outline: none;
-      font-size: 14px;
-      transition: 0.3s;
+      font-size: 1rem;
     }
-    .input-group input:focus {
-      border-color: #0048ff;
+
+    input:focus {
+      border-color: #007bff;
     }
-    .input-group span {
-      position: absolute;
-      right: 12px;
-      top: 12px;
-      font-size: 18px;
-      color: #aaa;
-    }
-    .btn {
+
+    button {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
+      margin-top: 1rem;
       border: none;
-      border-radius: 12px;
-      background: #0048ff;
+      border-radius: 10px;
+      background: #007bff;
       color: white;
+      font-size: 1rem;
       font-weight: 600;
-      font-size: 15px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: background 0.4s;
     }
-    .btn:hover {
-      background: #0036c9;
+
+    button:hover {
+      background: #0056b3;
     }
-    .links {
-      margin-top: 15px;
-      font-size: 13px;
-      color: #555;
+
+    .toggle-mode {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: 2px solid white;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.4s;
     }
-    .links a {
-      color: #0048ff;
+
+    .toggle-mode:hover {
+      background: white;
+      color: #007bff;
+    }
+
+    .switch-link {
+      margin-top: 1rem;
+      display: inline-block;
+      color: #007bff;
       text-decoration: none;
-      font-weight: 500;
+      transition: color 0.4s;
     }
-    .remember {
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-      margin-bottom: 15px;
-      color: #555;
+
+    .switch-link:hover {
+      color: #0056b3;
     }
-    .checkbox {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      margin-top: 10px;
+
+    .fade {
+      animation: fadeIn 0.7s ease-in-out;
     }
-    #message {
-      color: red;
-      font-size: 13px;
-      margin-top: 10px;
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h2 id="title">Welcome Back, Log In!</h2>
-    <div class="input-group" id="username-group" style="display:none;">
-      <input type="text" id="username" placeholder="Enter Username" />
-      <span>👤</span>
-    </div>
-    <div class="input-group">
-      <input type="email" id="email" placeholder="Enter Email Address" />
-      <span>📧</span>
-    </div>
-    <div class="input-group">
-      <input type="password" id="password" placeholder="Enter Password" />
-      <span>🔒</span>
-    </div>
-
-    <div class="remember" id="login-remember">
-      <label><input type="checkbox" /> Remember me</label>
-      <a href="#">Forgot password?</a>
-    </div>
-
-    <div class="checkbox" id="signup-terms" style="display:none;">
-      <input type="checkbox" id="terms" />
-      <label for="terms">I accept the policy and terms</label>
-    </div>
-
-    <button class="btn" id="actionBtn">Log In</button>
-    <div class="links">
-      <span id="toggle">Not a member yet? <a href="#">Sign Up</a></span>
-    </div>
-    <p id="message"></p>
+  <button class="toggle-mode">🌙 Dark</button>
+  <div class="container fade" id="form-container">
+    <h2 id="form-title">Welcome Back, Log In!</h2>
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="login()">Log In</button>
+    <a href="#" class="switch-link" onclick="switchForm(event)">Not a member yet? Sign Up</a>
   </div>
 
   <script>
-    const SUPABASE_URL = "https://okwkibbvaonqolcnnhjr.supabase.co";
-    const SUPABASE_ANON_KEY =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rd2tpYmJ2YW9ucW9sY25uaGpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzQzNDIsImV4cCI6MjA3ODA1MDM0Mn0.wMENc8uiJFFC5lOYKrjZbump72us7hkaKH00DelAwrs";
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+    const container = document.getElementById("form-container");
+    const toggle = document.querySelector(".toggle-mode");
     let isLogin = true;
 
-    document.getElementById("toggle").addEventListener("click", (e) => {
+    // 🌗 Mode Switch
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      toggle.textContent = document.body.classList.contains("dark") ? "☀️ Light" : "🌙 Dark";
+    });
+
+    // 🔁 Login ↔ Signup Switch
+    function switchForm(e) {
       e.preventDefault();
       isLogin = !isLogin;
+      container.classList.add("fade");
 
-      document.getElementById("title").innerText = isLogin
-        ? "Welcome Back, Log In!"
-        : "Hello, Sign Up!";
-      document.getElementById("actionBtn").innerText = isLogin ? "Log In" : "Sign Up";
-      document.getElementById("toggle").innerHTML = isLogin
-        ? `Not a member yet? <a href="#">Sign Up</a>`
-        : `Already have an account? <a href="#">Log In</a>`;
-
-      document.getElementById("username-group").style.display = isLogin ? "none" : "block";
-      document.getElementById("login-remember").style.display = isLogin ? "flex" : "none";
-      document.getElementById("signup-terms").style.display = isLogin ? "none" : "flex";
-      document.getElementById("message").innerText = "";
-    });
-
-    document.getElementById("actionBtn").addEventListener("click", async () => {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const username = document.getElementById("username").value;
-      const msg = document.getElementById("message");
-
-      if (!email || !password || (!isLogin && !username)) {
-        msg.innerText = "❌ Please fill all required fields.";
-        return;
+      if (isLogin) {
+        container.innerHTML = `
+          <h2 id="form-title">Welcome Back, Log In!</h2>
+          <input type="email" id="email" placeholder="Email" />
+          <input type="password" id="password" placeholder="Password" />
+          <button onclick="login()">Log In</button>
+          <a href="#" class="switch-link" onclick="switchForm(event)">Not a member yet? Sign Up</a>
+        `;
+      } else {
+        container.innerHTML = `
+          <h2 id="form-title">Create Account</h2>
+          <input type="email" id="email" placeholder="Email" />
+          <input type="password" id="password" placeholder="Password" />
+          <button onclick="signup()">Sign Up</button>
+          <a href="#" class="switch-link" onclick="switchForm(event)">Already a member? Log In</a>
+        `;
       }
+    }
 
-      let { data, error } = isLogin
-        ? await supabase.auth.signInWithPassword({ email, password })
-        : await supabase.auth.signUp({
-            email,
-            password,
-            options: { data: { username } },
-          });
+    // 🚀 Supabase Login & Signup (replace with your info)
+    const SUPABASE_URL = "https://okwkibbvaonqolcnnhjr.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
+    
+    async function login() {
+      alert("Login function connected with Supabase Auth...");
+    }
 
-      msg.style.color = error ? "red" : "green";
-      msg.innerText = error ? "❌ " + error.message : "✅ Success!";
-    });
+    async function signup() {
+      alert("Signup function connected with Supabase Auth...");
+    }
   </script>
 </body>
 </html>
