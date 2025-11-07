@@ -4,185 +4,102 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reborn Auth</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
-
     body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #007bff, #3a86ff);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background: linear-gradient(135deg, #007bff, #00c6ff);
-      transition: background 0.6s ease, color 0.6s ease;
+      margin: 0;
     }
 
-    body.dark {
-      background: linear-gradient(135deg, #0a0a0a, #242424);
-      color: #fff;
-    }
-
-    .container {
-      background: #fff;
+    .login-container {
+      background: white;
       border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      padding: 40px;
       width: 350px;
-      padding: 2rem;
       text-align: center;
-      transition: all 0.6s ease;
     }
 
-    body.dark .container {
-      background: #1f1f1f;
-      color: #fff;
-    }
-
-    h2 {
-      margin-bottom: 1.5rem;
-      font-weight: 600;
+    .login-container h2 {
+      margin-bottom: 20px;
+      color: #333;
     }
 
     input {
-      width: 100%;
+      width: 90%;
       padding: 10px;
       margin: 10px 0;
-      border-radius: 10px;
       border: 1px solid #ccc;
-      outline: none;
-      font-size: 1rem;
-    }
-
-    input:focus {
-      border-color: #007bff;
+      border-radius: 8px;
     }
 
     button {
       width: 100%;
-      padding: 10px;
-      margin-top: 1rem;
+      padding: 12px;
       border: none;
-      border-radius: 10px;
       background: #007bff;
       color: white;
-      font-size: 1rem;
-      font-weight: 600;
+      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
-      transition: background 0.4s;
+      transition: 0.3s;
     }
 
     button:hover {
       background: #0056b3;
     }
 
-    .toggle-mode {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: transparent;
-      border: 2px solid white;
-      color: white;
-      padding: 8px 15px;
-      border-radius: 50px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: all 0.4s;
+    .footer-text {
+      margin-top: 15px;
+      font-size: 14px;
     }
 
-    .toggle-mode:hover {
-      background: white;
-      color: #007bff;
-    }
-
-    .switch-link {
-      margin-top: 1rem;
-      display: inline-block;
+    .footer-text a {
       color: #007bff;
       text-decoration: none;
-      transition: color 0.4s;
-    }
-
-    .switch-link:hover {
-      color: #0056b3;
-    }
-
-    .fade {
-      animation: fadeIn 0.7s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
   </style>
 </head>
 <body>
-  <button class="toggle-mode">🌙 Dark</button>
-  <div class="container fade" id="form-container">
-    <h2 id="form-title">Welcome Back, Log In!</h2>
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Password" />
-    <button onclick="login()">Log In</button>
-    <a href="#" class="switch-link" onclick="switchForm(event)">Not a member yet? Sign Up</a>
+  <div class="login-container">
+    <h2>Welcome Back, Log In!</h2>
+    <input type="email" id="email" placeholder="Enter your email" required />
+    <input type="password" id="password" placeholder="Enter your password" required />
+    <button id="loginBtn">Log In</button>
+    <p class="footer-text">
+      Not a member yet? <a href="signup.html">Sign Up</a>
+    </p>
   </div>
 
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const container = document.getElementById("form-container");
-    const toggle = document.querySelector(".toggle-mode");
-    let isLogin = true;
+    // ✅ Replace with your own Supabase project credentials
+    const SUPABASE_URL = "https://YOUR-PROJECT-REF.supabase.co";
+    const SUPABASE_ANON_KEY = "YOUR-ANON-KEY";
 
-    // 🌗 Mode Switch
-    toggle.addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-      toggle.textContent = document.body.classList.contains("dark") ? "☀️ Light" : "🌙 Dark";
-    });
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // 🔁 Login ↔ Signup Switch
-    function switchForm(e) {
-      e.preventDefault();
-      isLogin = !isLogin;
-      container.classList.add("fade");
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-      if (isLogin) {
-        container.innerHTML = `
-          <h2 id="form-title">Welcome Back, Log In!</h2>
-          <input type="email" id="email" placeholder="Email" />
-          <input type="password" id="password" placeholder="Password" />
-          <button onclick="login()">Log In</button>
-          <a href="#" class="switch-link" onclick="switchForm(event)">Not a member yet? Sign Up</a>
-        `;
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        alert("❌ Login failed: " + error.message);
       } else {
-        container.innerHTML = `
-          <h2 id="form-title">Create Account</h2>
-          <input type="email" id="email" placeholder="Email" />
-          <input type="password" id="password" placeholder="Password" />
-          <button onclick="signup()">Sign Up</button>
-          <a href="#" class="switch-link" onclick="switchForm(event)">Already a member? Log In</a>
-        `;
+        alert("✅ Login success!");
+        window.location.href = "dashboard.html"; // redirect to dashboard
       }
-    }
-
-    // 🚀 Supabase Login & Signup (replace with your info)
-    const SUPABASE_URL = "https://okwkibbvaonqolcnnhjr.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
-    
-    async function login() {
-      alert("Login function connected with Supabase Auth...");
-    }
-
-    async function signup() {
-      alert("Signup function connected with Supabase Auth...");
-    }
+    });
   </script>
 </body>
 </html>
