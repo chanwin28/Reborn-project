@@ -3,43 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reborn Auth</title>
+  <title>Reborn Login</title>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #007bff, #3a86ff);
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
     }
-    .login-container {
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-      padding: 40px;
+    .container {
+      background: #fff;
+      border-radius: 25px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
       width: 350px;
+      padding: 40px;
       text-align: center;
     }
-    .login-container h2 {
-      margin-bottom: 20px;
+    h2 {
       color: #333;
+      margin-bottom: 25px;
     }
     input {
-      width: 90%;
-      padding: 10px;
+      width: 100%;
+      padding: 12px;
       margin: 10px 0;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 10px;
+      font-size: 14px;
     }
     button {
       width: 100%;
       padding: 12px;
       border: none;
       background: #007bff;
-      color: white;
-      border-radius: 8px;
+      color: #fff;
+      font-weight: bold;
+      border-radius: 10px;
       font-size: 16px;
       cursor: pointer;
       transition: 0.3s;
@@ -47,41 +49,43 @@
     button:hover {
       background: #0056b3;
     }
-    .footer-text {
-      margin-top: 15px;
+    .footer {
+      margin-top: 20px;
       font-size: 14px;
     }
-    .footer-text a {
+    .footer a {
       color: #007bff;
       text-decoration: none;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="login-container">
-    <h2>Welcome Back, Log In!</h2>
-    <input type="email" id="email" placeholder="Enter your email" required />
-    <input type="password" id="password" placeholder="Enter your password" required />
+  <div class="container">
+    <h2>Welcome Back,<br> <span style="color:#007bff">Log In!</span></h2>
+    <input type="email" id="email" placeholder="Enter Email Address" required />
+    <input type="password" id="password" placeholder="Enter Password" required />
     <button id="loginBtn">Log In</button>
-    <p class="footer-text">
+    <div class="footer">
       Not a member yet? <a href="signup.html">Sign Up</a>
-    </p>
+    </div>
   </div>
 
-  <!-- ✅ Supabase CDN v2 -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
-
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = "https://okwkibbvaonqolcnnhjr.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
-
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rd2tpYmJ2YW9ucW9sY25uaGpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzQzNDIsImV4cCI6MjA3ODA1MDM0Mn0.wMENc8uiJFFC5lOYKrjZbump72us7hkaKH00DelAwrs";
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     document.getElementById("loginBtn").addEventListener("click", async () => {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
 
       if (error) {
         alert("❌ Login failed: " + error.message);
