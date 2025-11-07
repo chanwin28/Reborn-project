@@ -12,9 +12,7 @@
       text-align: center;
       padding-top: 100px;
     }
-    h1 {
-      font-size: 2rem;
-    }
+    h1 { font-size: 2rem; }
     button {
       margin-top: 20px;
       padding: 10px 20px;
@@ -25,9 +23,7 @@
       font-size: 16px;
       cursor: pointer;
     }
-    button:hover {
-      background: #e63946;
-    }
+    button:hover { background: #e63946; }
   </style>
 </head>
 <body>
@@ -35,11 +31,11 @@
   <p>You have successfully logged in using Supabase Auth!</p>
   <button id="logoutBtn">Logout</button>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
   <script>
-    const SUPABASE_URL = "https://YOUR-PROJECT-REF.supabase.co";
-    const SUPABASE_ANON_KEY = "YOUR-ANON-KEY";
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const SUPABASE_URL = "https://okwkibbvaonqolcnnhjr.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     document.getElementById("logoutBtn").addEventListener("click", async () => {
       await supabase.auth.signOut();
