@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔥 Reborn Chat</title>
+<title>🔥 Reborn Chat (Fixed)</title>
 <style>
   body {
     background: #0d0d0d;
@@ -53,6 +53,7 @@
     border-radius: 10px;
     display: flex;
     align-items: center;
+    word-break: break-word;
   }
   .msg img {
     width: 35px;
@@ -152,10 +153,17 @@ avatarInput.addEventListener("change", () => {
 });
 
 async function loadMessages() {
-  chatBox.innerHTML = "";
-  const { data, error } = await supabase.from("messages").select("*").order("created_at", { ascending: true });
-  if (error) console.error(error);
+  const { data, error } = await supabase
+    .from("messages")
+    .select("*")
+    .order("created_at", { ascending: true });
 
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  chatBox.innerHTML = "";
   data.forEach(msg => {
     if (chatMode.value === "group" || msg.receiver === userEmail || msg.sender === userEmail) {
       displayMessage(msg);
@@ -182,6 +190,7 @@ function displayMessage(msg) {
 sendBtn.onclick = async () => {
   const content = messageInput.value.trim();
   if (!content) return;
+
   const receiver = chatMode.value === "private" ? receiverInput.value.trim() : "group";
 
   const { error } = await supabase.from("messages").insert([{
@@ -195,7 +204,8 @@ sendBtn.onclick = async () => {
   messageInput.value = "";
 };
 
-supabase.channel('public:messages')
+supabase
+  .channel('realtime:messages')
   .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
     const msg = payload.new;
     if (chatMode.value === "group" || msg.receiver === userEmail || msg.sender === userEmail) {
@@ -204,13 +214,16 @@ supabase.channel('public:messages')
   })
   .subscribe();
 
-chatMode.onchange = loadMessages;
-loadMessages();
+chatMode.addEventListener("change", () => {
+  loadMessages();
+});
 
 logoutBtn.onclick = () => {
   localStorage.clear();
   location.reload();
 };
+
+loadMessages();
 </script>
 
 </body>
