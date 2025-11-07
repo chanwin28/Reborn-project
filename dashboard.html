@@ -1,169 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔥 Reborn Dashboard</title>
-<script type="module" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #1a2a6c, #fdbb2d);
-    height: 100vh;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-  }
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #333;
-    color: white;
-    padding: 15px 20px;
-  }
-  header h1 {
-    margin: 0;
-    font-size: 20px;
-  }
-  .chat-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    overflow-y: auto;
-    background: #fff;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-  }
-  .chat-box {
-    flex: 1;
-    overflow-y: auto;
-    margin-bottom: 10px;
-  }
-  .input-area {
-    display: flex;
-    padding: 10px;
-    background: #fafafa;
-    border-top: 1px solid #ddd;
-  }
-  input {
-    flex: 1;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-  }
-  button {
-    padding: 10px 15px;
-    margin-left: 8px;
-    background: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 10px;
-  }
-  button:hover {
-    background: #0056b3;
-  }
-  .msg {
-    margin: 6px 0;
-    padding: 8px 12px;
-    border-radius: 10px;
-    max-width: 75%;
-    display: inline-block;
-    word-wrap: break-word;
-  }
-  .mine {
-    background: #dcf8c6;
-    align-self: flex-end;
-  }
-  .other {
-    background: #f1f0f0;
-    align-self: flex-start;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🔥 Reborn Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0e0e0e;
+      color: white;
+      text-align: center;
+    }
+    header {
+      background: #222;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    h1 {
+      color: #00ffcc;
+    }
+    .chat-container {
+      width: 90%;
+      max-width: 600px;
+      margin: 20px auto;
+      border: 1px solid #444;
+      border-radius: 10px;
+      background: #1a1a1a;
+      padding: 15px;
+      height: 400px;
+      overflow-y: auto;
+    }
+    .input-area {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    input, select {
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      width: 70%;
+    }
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      background: #00ffcc;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .message {
+      text-align: left;
+      background: #333;
+      padding: 8px 10px;
+      border-radius: 8px;
+      margin: 5px 0;
+    }
+    .own {
+      background: #00ffcc;
+      color: black;
+      text-align: right;
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1>🔥 Reborn Dashboard</h1>
+    <h1>🔥 Reborn Chat</h1>
     <button id="logoutBtn">Logout</button>
   </header>
 
-  <div class="chat-container">
-    <div class="chat-box" id="chatBox"></div>
-
-    <div class="input-area">
-      <input id="messageInput" type="text" placeholder="Type a message..." />
-      <button id="sendBtn">Send</button>
-    </div>
+  <div>
+    <select id="chatMode">
+      <option value="group">🌍 Group Chat</option>
+      <option value="private">👤 Private Chat</option>
+    </select>
+    <input id="receiverInput" type="email" placeholder="Receiver email (for private)" />
   </div>
 
-<script type="module">
-  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+  <div class="chat-container" id="chatBox"></div>
 
-  // 🗝️ Supabase Setup
-  const supabaseUrl = 'https://okwkibbvaonqolcnnhjr.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rd2tpYmJ2YW9ucW9sY25uaGpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzQzNDIsImV4cCI6MjA3ODA1MDM0Mn0.wMENc8uiJFFC5lOYKrjZbump72us7hkaKH00DelAwrs';
-  const supabase = createClient(supabaseUrl, supabaseKey);
+  <div class="input-area">
+    <input id="messageInput" type="text" placeholder="Type a message..." />
+    <button id="sendBtn">Send</button>
+  </div>
 
-  // 🎯 HTML Elements
-  const chatBox = document.getElementById("chatBox");
-  const messageInput = document.getElementById("messageInput");
-  const sendBtn = document.getElementById("sendBtn");
-  const logoutBtn = document.getElementById("logoutBtn");
+  <!-- Supabase SDK -->
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-  // 🧑 User Email (from login)
-  let userEmail = localStorage.getItem("email");
-  if (!userEmail) {
-    userEmail = prompt("Enter your name or email:");
-    localStorage.setItem("email", userEmail);
-  }
+    // 🔑 Supabase setup
+    const supabaseUrl = "https://okwkibbvaonqolcnnhjr.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rd2tpYmJ2YW9ucW9sY25uaGpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzQzNDIsImV4cCI6MjA3ODA1MDM0Mn0.wMENc8uiJFFC5lOYKrjZbump72us7hkaKH00DelAwrs";
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-  // 📨 Load previous messages
-  async function loadMessages() {
-    const { data, error } = await supabase.from("chat_messages").select("*").order("created_at", { ascending: true });
-    if (error) console.error("Error loading messages:", error);
-    else {
+    const chatBox = document.getElementById("chatBox");
+    const messageInput = document.getElementById("messageInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const chatMode = document.getElementById("chatMode");
+    const receiverInput = document.getElementById("receiverInput");
+
+    const userEmail = localStorage.getItem("email") || "guest@example.com";
+
+    // 🚀 Load messages
+    async function loadMessages() {
       chatBox.innerHTML = "";
-      data.forEach(msg => displayMessage(msg));
+      let query = supabase.from("messages").select("*").order("created_at", { ascending: true });
+
+      if (chatMode.value === "private") {
+        const receiver = receiverInput.value.trim();
+        query = query.or(`sender.eq.${userEmail},receiver.eq.${userEmail}`).eq("receiver", receiver);
+      }
+
+      const { data, error } = await query;
+      if (error) return console.error(error);
+
+      data.forEach(msg => addMessage(msg));
     }
-  }
 
-  // 💬 Display message
-  function displayMessage(msg) {
-    const div = document.createElement("div");
-    div.classList.add("msg");
-    div.classList.add(msg.sender === userEmail ? "mine" : "other");
-    div.textContent = `${msg.sender}: ${msg.message}`;
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
+    function addMessage(msg) {
+      const div = document.createElement("div");
+      div.className = "message" + (msg.sender === userEmail ? " own" : "");
+      div.textContent = `${msg.sender}: ${msg.message}`;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
 
-  // 🚀 Send new message
-  sendBtn.addEventListener("click", async () => {
-    const text = messageInput.value.trim();
-    if (text === "") return;
-    const { error } = await supabase.from("chat_messages").insert([{ sender: userEmail, message: text }]);
-    if (error) alert("Error sending: " + error.message);
-    else messageInput.value = "";
-  });
+    // ✉️ Send message
+    sendBtn.addEventListener("click", async () => {
+      const message = messageInput.value.trim();
+      if (!message) return;
+      const receiver = chatMode.value === "private" ? receiverInput.value.trim() : "group";
 
-  // 🔄 Real-time updates
-  supabase
-    .channel("public:chat_messages")
-    .on("postgres_changes", { event: "INSERT", schema: "public", table: "chat_messages" }, (payload) => {
-      displayMessage(payload.new);
-    })
-    .subscribe();
+      const { error } = await supabase.from("messages").insert([
+        { sender: userEmail, receiver: receiver, message: message }
+      ]);
 
-  // 🚪 Logout
-  logoutBtn.addEventListener("click", async () => {
-    await supabase.auth.signOut();
-    localStorage.removeItem("email");
-    window.location.href = "index.html";
-  });
+      if (error) console.error(error);
+      else messageInput.value = "";
+    });
 
-  // Load all old messages
-  loadMessages();
-</script>
+    // 🔁 Listen for realtime messages
+    supabase.channel("public:messages")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "messages" },
+        payload => addMessage(payload.new)
+      )
+      .subscribe();
+
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("email");
+      window.location.href = "index.html";
+    });
+
+    // Load initial messages
+    loadMessages();
+  </script>
 </body>
 </html>
