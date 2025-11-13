@@ -3,90 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>💜 Firebase Login & Signup</title>
+  <title>💜 Reborn Project | Login</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container" id="login-container">
-    <h2>Login</h2>
-    <input type="email" id="loginEmail" placeholder="Enter email" required />
-    <input type="password" id="loginPassword" placeholder="Enter password" required />
-    <button id="loginBtn">Login</button>
-    <div class="switch">
-      Don’t have an account? <a id="showSignup">Sign up</a>
-    </div>
-  </div>
-
-  <div class="container" id="signup-container" style="display:none;">
-    <h2>Sign Up</h2>
-    <input type="email" id="signupEmail" placeholder="Enter email" required />
-    <input type="password" id="signupPassword" placeholder="Enter password" required />
-    <button id="signupBtn">Sign Up</button>
-    <div class="switch">
-      Already have an account? <a id="showLogin">Login</a>
+  <div class="container">
+    <div class="card">
+      <h1>💜 Reborn Project</h1>
+      <input type="email" id="email" placeholder="Enter email" required />
+      <input type="password" id="password" placeholder="Enter password" required />
+      <button id="loginBtn">Login</button>
+      <button id="signupBtn" class="secondary">Signup</button>
     </div>
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+    import { app, auth, db } from "./firebase.js";
+    import {
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+    } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
+    import { setDoc, doc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCkTRy0nhb_mUOmoaGQZwouMJPCC37uRRQ",
-      authDomain: "plexiform-being-471915-u1.firebaseapp.com",
-      projectId: "plexiform-being-471915-u1",
-      storageBucket: "plexiform-being-471915-u1.firebasestorage.app",
-      messagingSenderId: "477134304630",
-      appId: "1:477134304630:web:a7af00f276bdcfd2c77657",
-      measurementId: "G-VDCF2TGMET"
-    };
+    const signupBtn = document.getElementById("signupBtn");
+    const loginBtn = document.getElementById("loginBtn");
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    const loginContainer = document.getElementById("login-container");
-    const signupContainer = document.getElementById("signup-container");
-    const showSignup = document.getElementById("showSignup");
-    const showLogin = document.getElementById("showLogin");
-
-    showSignup.addEventListener("click", () => {
-      loginContainer.style.display = "none";
-      signupContainer.style.display = "block";
-    });
-
-    showLogin.addEventListener("click", () => {
-      signupContainer.style.display = "none";
-      loginContainer.style.display = "block";
-    });
-
-    // Signup
-    document.getElementById("signupBtn").addEventListener("click", () => {
-      const email = document.getElementById("signupEmail").value;
-      const password = document.getElementById("signupPassword").value;
-
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          alert("✅ Signup successful!");
-          window.location.href = "profile.html";
-        })
-        .catch((error) => {
-          alert("❌ " + error.message);
+    signupBtn.addEventListener("click", async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          displayName: "New User 💜",
+          photoURL: "",
+          joined: new Date().toLocaleDateString(),
         });
+        alert("🎉 Signup successful!");
+        window.location.href = "profile.html";
+      } catch (error) {
+        alert(error.message);
+      }
     });
 
-    // Login
-    document.getElementById("loginBtn").addEventListener("click", () => {
-      const email = document.getElementById("loginEmail").value;
-      const password = document.getElementById("loginPassword").value;
-
-      signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          alert("🎉 Login successful!");
-          window.location.href = "profile.html";
-        })
-        .catch((error) => {
-          alert("❌ " + error.message);
-        });
+    loginBtn.addEventListener("click", async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = "profile.html";
+      } catch (error) {
+        alert(error.message);
+      }
     });
   </script>
 </body>
