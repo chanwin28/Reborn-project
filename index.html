@@ -1,143 +1,124 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Reborn - Login & Sign Up</title>
-<style>
-:root {
-  --grad1: #7b61ff;
-  --grad2: #ff62a5;
-  font-family: 'Poppins', sans-serif;
-}
-body {
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #f8e3ff, #c8d6ff);
-}
-.container {
-  width: 360px;
-  background: rgba(255,255,255,0.6);
-  backdrop-filter: blur(25px);
-  border-radius: 24px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.12);
-  padding: 30px 24px;
-}
-h1 { text-align: center; color: #222; }
-p { text-align: center; color: #555; }
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.input { background:white; border-radius:12px; padding:10px 14px; }
-.input input { border:none; outline:none; width:100%; }
-
-button.primary {
-  background: linear-gradient(90deg,var(--grad1),var(--grad2));
-  border:none; color:white; padding:12px; border-radius:14px;
-  font-size:15px; font-weight:600; cursor:pointer;
-}
-.small { text-align:center; font-size:13px; margin-top:6px; color:#777; }
-.small a { color: var(--grad1); text-decoration:none; cursor:pointer; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reborn Login</title>
 </head>
 <body>
+  <h2>Reborn Login System</h2>
 
-<div class="container">
-  <h1 id="form-title">Create Account</h1>
-  <p id="form-sub">Start your journey with Reborn 💫</p>
-
-  <!-- Sign Up -->
-  <form id="signup-form">
-    <div class="input"><input id="signup-email" type="email" placeholder="Email" required></div>
-    <div class="input"><input id="signup-password" type="password" placeholder="Password" required></div>
-    <button type="submit" class="primary">Sign Up</button>
-    <div class="small">Already have an account? <a id="to-login">Login</a></div>
-  </form>
+  <!-- Signup -->
+  <div>
+    <h3>Signup</h3>
+    <input type="email" id="signup-email" placeholder="Email" />
+    <input type="password" id="signup-password" placeholder="Password" />
+    <button id="signup-btn">Sign Up</button>
+  </div>
 
   <!-- Login -->
-  <form id="login-form" style="display:none">
-    <div class="input"><input id="login-email" type="email" placeholder="Email" required></div>
-    <div class="input"><input id="login-password" type="password" placeholder="Password" required></div>
-    <button type="submit" class="primary">Login</button>
-    <div class="small">Don't have an account? <a id="to-signup">Sign up</a></div>
-  </form>
-</div>
+  <div>
+    <h3>Login</h3>
+    <input type="email" id="login-email" placeholder="Email" />
+    <input type="password" id="login-password" placeholder="Password" />
+    <button id="login-btn">Login</button>
+  </div>
 
-<!-- Firebase SDK -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword }
-    from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  <!-- Logout -->
+  <div>
+    <h3>Current User:</h3>
+    <p id="user-info">No user logged in</p>
+    <button id="logout-btn">Logout</button>
+  </div>
 
-  // 🔥 Your Firebase Config
-  const firebaseConfig = {
-    apiKey: "AIzaSyCDUS9TvpHfZTAecexpAjPNPZRAFfPJeqg",
-    authDomain: "reborn-4cdd7.firebaseapp.com",
-    projectId: "reborn-4cdd7",
-    storageBucket: "reborn-4cdd7.firebasestorage.app",
-    messagingSenderId: "712117536027",
-    appId: "1:712117536027:web:b9334e06c14403c7c43fbe",
-    measurementId: "G-MCFP30JYVV"
-  };
+  <!-- Firebase JS SDK -->
+  <script type="module">
+    // Firebase SDK imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
-  // DOM elements
-  const signupForm = document.getElementById('signup-form');
-  const loginForm = document.getElementById('login-form');
-  const toLogin = document.getElementById('to-login');
-  const toSignup = document.getElementById('to-signup');
-  const title = document.getElementById('form-title');
-  const subtitle = document.getElementById('form-sub');
+    // Firebase Config (replace with yours)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCDUS9TvpHfZTAecexpAjPNPZRAFfPJeqg",
+      authDomain: "reborn-4cdd7.firebaseapp.com",
+      projectId: "reborn-4cdd7",
+      storageBucket: "reborn-4cdd7.firebasestorage.app",
+      messagingSenderId: "712117536027",
+      appId: "1:712117536027:web:b9334e06c14403c7c43fbe",
+      measurementId: "G-MCFP30JYVV"
+    };
 
-  // Switch to Login
-  toLogin.addEventListener('click', () => {
-    signupForm.style.display = 'none';
-    loginForm.style.display = 'flex';
-    title.textContent = "Welcome back";
-    subtitle.textContent = "Log in to continue 💫";
-  });
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-  // Switch to SignUp
-  toSignup.addEventListener('click', () => {
-    loginForm.style.display = 'none';
-    signupForm.style.display = 'flex';
-    title.textContent = "Create Account";
-    subtitle.textContent = "Start your journey with Reborn 💫";
-  });
+    // Signup
+    document.getElementById("signup-btn").addEventListener("click", async () => {
+      const email = document.getElementById("signup-email").value;
+      const password = document.getElementById("signup-password").value;
 
-  // Sign Up
-  signupForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('signup-email').value;
-    const password = document.getElementById('signup-password').value;
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      alert(`🎉 Account Created: ${userCredential.user.email}`);
-    } catch (err) {
-      alert(`❌ ${err.message}`);
-    }
-  });
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        console.log("✅ Signup success:", user.email);
 
-  // Login
-  loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('login-email').value;
-    const password = document.getElementById('login-password').value;
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      alert(`✅ Logged in as: ${userCredential.user.email}`);
-    } catch (err) {
-      alert(`❌ ${err.message}`);
-    }
-  });
-</script>
+        // Save user data to Firestore
+        await addDoc(collection(db, "users"), {
+          email: user.email,
+          createdAt: serverTimestamp()
+        });
+        alert("Signup success and user added to Firestore!");
+      } catch (error) {
+        console.error("❌ Signup error:", error.message);
+        alert(error.message);
+      }
+    });
+
+    // Login
+    document.getElementById("login-btn").addEventListener("click", async () => {
+      const email = document.getElementById("login-email").value;
+      const password = document.getElementById("login-password").value;
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        console.log("✅ Login success:", user.email);
+        alert("Login successful!");
+      } catch (error) {
+        console.error("❌ Login error:", error.message);
+        alert(error.message);
+      }
+    });
+
+    // Logout
+    document.getElementById("logout-btn").addEventListener("click", async () => {
+      await signOut(auth);
+      alert("Logged out!");
+    });
+
+    // Auth state listener
+    onAuthStateChanged(auth, (user) => {
+      const userInfo = document.getElementById("user-info");
+      if (user) {
+        userInfo.textContent = user.email;
+      } else {
+        userInfo.textContent = "No user logged in";
+      }
+    });
+  </script>
 </body>
 </html>
