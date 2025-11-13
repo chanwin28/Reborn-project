@@ -3,122 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reborn Login</title>
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h2>Reborn Login System</h2>
-
-  <!-- Signup -->
-  <div>
-    <h3>Signup</h3>
-    <input type="email" id="signup-email" placeholder="Email" />
-    <input type="password" id="signup-password" placeholder="Password" />
-    <button id="signup-btn">Sign Up</button>
+  <div class="container">
+    <h2>Welcome Back!</h2>
+    <div class="input-group">
+      <input type="email" id="login-email" placeholder="Email Address" />
+    </div>
+    <div class="input-group">
+      <input type="password" id="login-password" placeholder="Password" />
+    </div>
+    <button id="login-btn">Log In</button>
+    <p>Don’t have an account? <a href="signup.html">Sign Up</a></p>
+    <p class="message" id="login-message"></p>
   </div>
 
-  <!-- Login -->
-  <div>
-    <h3>Login</h3>
-    <input type="email" id="login-email" placeholder="Email" />
-    <input type="password" id="login-password" placeholder="Password" />
-    <button id="login-btn">Login</button>
-  </div>
-
-  <!-- Logout -->
-  <div>
-    <h3>Current User:</h3>
-    <p id="user-info">No user logged in</p>
-    <button id="logout-btn">Logout</button>
-  </div>
-
-  <!-- Firebase JS SDK -->
-  <script type="module">
-    // Firebase SDK imports
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      signOut,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-
-    import {
-      getFirestore,
-      collection,
-      addDoc,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
-
-    // Firebase Config (replace with yours)
-    const firebaseConfig = {
-      apiKey: "AIzaSyCDUS9TvpHfZTAecexpAjPNPZRAFfPJeqg",
-      authDomain: "reborn-4cdd7.firebaseapp.com",
-      projectId: "reborn-4cdd7",
-      storageBucket: "reborn-4cdd7.firebasestorage.app",
-      messagingSenderId: "712117536027",
-      appId: "1:712117536027:web:b9334e06c14403c7c43fbe",
-      measurementId: "G-MCFP30JYVV"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    // Signup
-    document.getElementById("signup-btn").addEventListener("click", async () => {
-      const email = document.getElementById("signup-email").value;
-      const password = document.getElementById("signup-password").value;
-
-      try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-        console.log("✅ Signup success:", user.email);
-
-        // Save user data to Firestore
-        await addDoc(collection(db, "users"), {
-          email: user.email,
-          createdAt: serverTimestamp()
-        });
-        alert("Signup success and user added to Firestore!");
-      } catch (error) {
-        console.error("❌ Signup error:", error.message);
-        alert(error.message);
-      }
-    });
-
-    // Login
-    document.getElementById("login-btn").addEventListener("click", async () => {
-      const email = document.getElementById("login-email").value;
-      const password = document.getElementById("login-password").value;
-
-      try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-        console.log("✅ Login success:", user.email);
-        alert("Login successful!");
-      } catch (error) {
-        console.error("❌ Login error:", error.message);
-        alert(error.message);
-      }
-    });
-
-    // Logout
-    document.getElementById("logout-btn").addEventListener("click", async () => {
-      await signOut(auth);
-      alert("Logged out!");
-    });
-
-    // Auth state listener
-    onAuthStateChanged(auth, (user) => {
-      const userInfo = document.getElementById("user-info");
-      if (user) {
-        userInfo.textContent = user.email;
-      } else {
-        userInfo.textContent = "No user logged in";
-      }
-    });
-  </script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
