@@ -1,3 +1,4 @@
+// ✅ Import Firebase SDKs (v10.13.0)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import { 
   getAuth, 
@@ -12,9 +13,9 @@ import {
   serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
-// Firebase Config
+// ✅ Firebase Config (မင်း Firebase console ထဲကကို ထည့်)
 const firebaseConfig = {
-  apiKey: "AIzaSyCDUS9TvpHfZTAeecxpAjPNPZRAfFPJeqg",
+  apiKey: "AIzaSyCDUS9TypHfZTAeecxpAjPNPZRAfFPJeqg",
   authDomain: "reborn-4cdd7.firebaseapp.com",
   projectId: "reborn-4cdd7",
   storageBucket: "reborn-4cdd7.appspot.com",
@@ -23,103 +24,65 @@ const firebaseConfig = {
   measurementId: "G-MCFP30JYVV"
 };
 
-// Initialize Firebase
+// ✅ Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-console.log("🔥 Firebase Connected");
+console.log("✅ Firebase Connected");
 
-// Elements
-const title = document.getElementById("form-title");
-const fullname = document.getElementById("fullname");
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-const confirmPassword = document.getElementById("confirm-password");
-const message = document.getElementById("message");
-const actionBtn = document.getElementById("action-btn");
-const toggleLink = document.getElementById("toggle-link");
+// ✅ SIGN UP
+const signupBtn = document.getElementById("signup-btn");
+if (signupBtn) {
+  signupBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("fullname").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const message = document.getElementById("message");
 
-let isLogin = true;
-
-// Toggle between Login & Signup
-toggleLink.addEventListener("click", () => {
-  isLogin = !isLogin;
-  if (isLogin) {
-    title.textContent = "Login";
-    actionBtn.textContent = "Login";
-    toggleLink.textContent = "Sign up";
-    fullname.classList.add("hidden");
-    confirmPassword.classList.add("hidden");
-    message.textContent = "";
-  } else {
-    title.textContent = "Sign Up";
-    actionBtn.textContent = "Sign Up";
-    toggleLink.textContent = "Login";
-    fullname.classList.remove("hidden");
-    confirmPassword.classList.remove("hidden");
-    message.textContent = "";
-  }
-});
-
-// Main button (Login / Signup)
-actionBtn.addEventListener("click", async () => {
-  message.textContent = "";
-  const emailVal = email.value.trim();
-  const passVal = password.value.trim();
-
-  if (isLogin) {
-    // LOGIN
-    if (!emailVal || !passVal) {
-      message.textContent = "⚠️ Please enter email and password.";
-      message.style.color = "red";
+    if (!name || !email || !password) {
+      message.textContent = "Please fill all fields.";
       return;
     }
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, emailVal, passVal);
-      message.textContent = "✅ Login Successful!";
-      message.style.color = "green";
-      console.log("Login Success:", userCredential.user);
-    } catch (error) {
-      console.error("Login Error:", error);
-      message.textContent = error.message;
-      message.style.color = "red";
-    }
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(userCredential.user, { displayName: name });
 
-  } else {
-    // SIGNUP
-    const nameVal = fullname.value.trim();
-    const confirmVal = confirmPassword.value.trim();
-
-    if (!nameVal || !emailVal || !passVal || !confirmVal) {
-      message.textContent = "⚠️ Please fill all fields!";
-      message.style.color = "red";
-      return;
-    }
-
-    if (passVal !== confirmVal) {
-      message.textContent = "⚠️ Passwords do not match!";
-      message.style.color = "red";
-      return;
-    }
-
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, emailVal, passVal);
-      await updateProfile(userCredential.user, { displayName: nameVal });
       await addDoc(collection(db, "users"), {
-        name: nameVal,
-        email: emailVal,
+        name,
+        email,
         createdAt: serverTimestamp(),
       });
 
-      message.textContent = "✅ Account Created Successfully!";
-      message.style.color = "green";
-      console.log("Signup Success:", userCredential.user);
+      message.textContent = "🎉 Signup successful! Redirecting...";
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 1500);
     } catch (error) {
-      console.error("Signup Error:", error);
-      message.textContent = error.message;
-      message.style.color = "red";
+      message.textContent = "❌ " + error.message;
     }
-  }
-});
+  });
+}
+
+// ✅ LOGIN
+const loginBtn = document.getElementById("login-btn");
+if (loginBtn) {
+  loginBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value.trim();
+    const message = document.getElementById("login-message");
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      message.textContent = "✅ Login successful!";
+      setTimeout(() => {
+        window.location.href = "welcome.html";
+      }, 1500);
+    } catch (error) {
+      message.textContent = "❌ " + error.message;
+    }
+  });
+}
