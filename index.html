@@ -1,79 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reborn Project 💜</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-    body {
-      display: flex; justify-content: center; align-items: center;
-      height: 100vh; margin: 0; background: linear-gradient(135deg,#9b5de5,#f15bb5,#fee440,#00bbf9,#00f5d4);
-      background-size: 400% 400%; animation: gradientMove 10s ease infinite;
-    }
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    .container {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 20px;
-      padding: 30px 40px;
-      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-      text-align: center;
-      backdrop-filter: blur(10px);
-      color: white;
-      width: 320px;
-      transition: all 0.3s ease;
-    }
-    input {
-      width: 100%; padding: 10px; margin: 10px 0;
-      border: none; border-radius: 10px;
-      outline: none; font-size: 16px;
-    }
-    button {
-      width: 100%; padding: 10px;
-      border: none; border-radius: 10px;
-      background: #6a00f4; color: white; font-weight: 600;
-      cursor: pointer; transition: 0.3s;
-    }
-    button:hover { background: #7c2ae8; transform: scale(1.05); }
-    .toggle { margin-top: 15px; cursor: pointer; color: #fff; text-decoration: underline; }
-    #loader {
-      display: none;
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6);
-      justify-content: center; align-items: center;
-      color: white; font-size: 22px;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💜 Firebase Login & Signup</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="loader">⏳ Loading...</div>
-
-  <div class="container" id="loginContainer">
-    <h2>Reborn Login</h2>
-    <input type="email" id="loginEmail" placeholder="Enter email" required>
-    <input type="password" id="loginPassword" placeholder="Enter password" required>
-    <button onclick="login()">Login</button>
-    <div class="toggle" onclick="toggleForm()">Don’t have an account? Signup</div>
+  <div class="container" id="login-container">
+    <h2>Login</h2>
+    <input type="email" id="loginEmail" placeholder="Enter email" required />
+    <input type="password" id="loginPassword" placeholder="Enter password" required />
+    <button id="loginBtn">Login</button>
+    <div class="switch">
+      Don’t have an account? <a id="showSignup">Sign up</a>
+    </div>
   </div>
 
-  <div class="container" id="signupContainer" style="display:none;">
-    <h2>✨ Signup</h2>
-    <input type="text" id="signupName" placeholder="Enter name" required>
-    <input type="email" id="signupEmail" placeholder="Enter email" required>
-    <input type="password" id="signupPassword" placeholder="Enter password" required>
-    <button onclick="signup()">Signup</button>
-    <div class="toggle" onclick="toggleForm()">Already have an account? Login</div>
+  <div class="container" id="signup-container" style="display:none;">
+    <h2>Sign Up</h2>
+    <input type="email" id="signupEmail" placeholder="Enter email" required />
+    <input type="password" id="signupPassword" placeholder="Enter password" required />
+    <button id="signupBtn">Sign Up</button>
+    <div class="switch">
+      Already have an account? <a id="showLogin">Login</a>
+    </div>
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-    import { getFirestore, setDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCkTRy0nhb_mUOmoaGQZwouMJPCC37uRRQ",
@@ -87,52 +43,51 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getFirestore(app);
 
-    function showLoader(show) {
-      document.getElementById("loader").style.display = show ? "flex" : "none";
-    }
+    const loginContainer = document.getElementById("login-container");
+    const signupContainer = document.getElementById("signup-container");
+    const showSignup = document.getElementById("showSignup");
+    const showLogin = document.getElementById("showLogin");
 
-    window.toggleForm = function() {
-      document.getElementById("loginContainer").style.display =
-        document.getElementById("loginContainer").style.display === "none" ? "block" : "none";
-      document.getElementById("signupContainer").style.display =
-        document.getElementById("signupContainer").style.display === "none" ? "block" : "none";
-    }
+    showSignup.addEventListener("click", () => {
+      loginContainer.style.display = "none";
+      signupContainer.style.display = "block";
+    });
 
-    window.signup = async function() {
-      showLoader(true);
-      const name = document.getElementById("signupName").value;
+    showLogin.addEventListener("click", () => {
+      signupContainer.style.display = "none";
+      loginContainer.style.display = "block";
+    });
+
+    // Signup
+    document.getElementById("signupBtn").addEventListener("click", () => {
       const email = document.getElementById("signupEmail").value;
       const password = document.getElementById("signupPassword").value;
 
-      try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-        await setDoc(doc(db, "users", user.uid), { name, email });
-        alert("✅ Signup successful!");
-        window.location.href = "welcome.html";
-      } catch (error) {
-        alert("❌ " + error.message);
-      } finally {
-        showLoader(false);
-      }
-    }
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          alert("✅ Signup successful!");
+          window.location.href = "profile.html";
+        })
+        .catch((error) => {
+          alert("❌ " + error.message);
+        });
+    });
 
-    window.login = async function() {
-      showLoader(true);
+    // Login
+    document.getElementById("loginBtn").addEventListener("click", () => {
       const email = document.getElementById("loginEmail").value;
       const password = document.getElementById("loginPassword").value;
 
-      try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = "welcome.html";
-      } catch (error) {
-        alert("❌ " + error.message);
-      } finally {
-        showLoader(false);
-      }
-    }
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          alert("🎉 Login successful!");
+          window.location.href = "profile.html";
+        })
+        .catch((error) => {
+          alert("❌ " + error.message);
+        });
+    });
   </script>
 </body>
 </html>
