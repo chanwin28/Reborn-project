@@ -14,60 +14,63 @@
             <button class="tab-btn" id="show-login">Login</button>
         </div>
 
-        <div class="form-card" id="signup-card">
-            <h2 class="form-title">Create your account</h2>
-            <p class="subtitle">Start your journey with us</p>
-
-            <form id="signup-form">
-                <div class="input-group">
-                    <label for="signup-name">Full Name</label>
-                    <input type="text" id="signup-name" placeholder="Your full name" required>
-                </div>
-                <div class="input-group">
-                    <label for="signup-email">Email Address</label>
-                    <input type="email" id="signup-email" placeholder="your@email.com" required>
-                </div>
-                <div class="input-group">
-                    <label for="signup-password">Password</label>
-                    <input type="password" id="signup-password" placeholder="********" required>
-                </div>
-                <div class="input-group">
-                    <label for="signup-confirm-password">Confirm Password</label>
-                    <input type="password" id="signup-confirm-password" placeholder="********" required>
-                </div>
-
-                <button type="submit" class="submit-btn signup-btn">Sign Up</button>
-                
-                <div class="terms">
-                    <input type="checkbox" id="terms" required>
-                    <label for="terms">I agree to Terms & Privacy</label>
-                </div>
-            </form>
+        <div class="form-wrapper">
             
-            <p class="separator"><span>OR</span></p>
+            <div class="form-card" id="signup-card">
+                <h2 class="form-title">Create your account</h2>
+                <p class="subtitle">Start your journey with us</p>
 
-            <button class="social-btn google-btn">Continue with Google</button>
-            <button class="social-btn apple-btn">Continue with Apple</button>
+                <form id="signup-form">
+                    <div class="input-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" placeholder="Your full name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-email">Email Address</label>
+                        <input type="email" id="signup-email" placeholder="your@email.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" placeholder="********" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-confirm-password">Confirm Password</label>
+                        <input type="password" id="signup-confirm-password" placeholder="********" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn signup-btn">Sign Up</button>
+                    
+                    <div class="terms">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">I agree to Terms & Privacy</label>
+                    </div>
+                </form>
+                
+                <p class="separator"><span>OR</span></p>
+
+                <button class="social-btn google-btn">Continue with Google</button>
+                <button class="social-btn apple-btn">Continue with Apple</button>
+            </div>
+
+            <div class="form-card hidden" id="login-card">
+                <h2 class="form-title">Welcome Back</h2>
+                <p class="subtitle">Log in to continue</p>
+
+                <form id="login-form">
+                    <div class="input-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" id="login-email" placeholder="your@email.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="********" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn login-btn">Log In</button>
+                </form>
+            </div>
+            
         </div>
-
-        <div class="form-card hidden" id="login-card">
-            <h2 class="form-title">Welcome Back</h2>
-            <p class="subtitle">Log in to continue</p>
-
-            <form id="login-form">
-                <div class="input-group">
-                    <label for="login-email">Email Address</label>
-                    <input type="email" id="login-email" placeholder="your@email.com" required>
-                </div>
-                <div class="input-group">
-                    <label for="login-password">Password</label>
-                    <input type="password" id="login-password" placeholder="********" required>
-                </div>
-
-                <button type="submit" class="submit-btn login-btn">Log In</button>
-            </form>
-        </div>
-        
     </div>
 
     <script src="script.js"></script>
