@@ -35,8 +35,10 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+/* ⚠️ အရေးကြီးသည်: Login ကို ဖျောက်ထားရန် */
 .hidden {
-    display: none;
+    display: none !important; 
+    /* !important ကို ထည့်သွင်းခြင်းဖြင့် Tab Switching ကို ပိုမိုသေချာစေပါသည်။ */
 }
 
 .form-title {
@@ -93,8 +95,6 @@ body {
     cursor: pointer;
     margin-top: 15px;
     transition: transform 0.2s, box-shadow 0.2s;
-    /* Gradient Color */
-    background-image: linear-gradient(to right, #ee9ca7, #ffdde1); /* Sample soft gradient */
 }
 
 .signup-btn {
