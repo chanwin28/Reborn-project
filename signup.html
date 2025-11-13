@@ -3,29 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign Up</title>
+  <title>💗 Reborn Project | Signup</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="container">
-    <h2>Create your account</h2>
-    <div class="input-group">
-      <input type="text" id="fullname" placeholder="Full Name" />
-    </div>
-    <div class="input-group">
-      <input type="email" id="signup-email" placeholder="Email Address" />
-    </div>
-    <div class="input-group">
-      <input type="password" id="signup-password" placeholder="Password" />
-    </div>
-    <div class="input-group">
-      <input type="password" id="confirm-password" placeholder="Confirm Password" />
-    </div>
-    <button id="signup-btn">Sign Up</button>
-    <p>Already have an account? <a href="index.html">Log In</a></p>
-    <p class="message" id="message"></p>
+<body class="signup-page">
+
+  <div class="auth-card">
+    <h2>💗 Reborn Project</h2>
+    <input type="email" id="signupEmail" placeholder="Email" />
+    <input type="password" id="signupPassword" placeholder="Password" />
+    <button class="signup-btn" id="signupBtn">Signup</button>
+    <button class="login-btn" id="toLogin">Login</button>
   </div>
 
-  <script type="module" src="./app.js"></script>
+  <script type="module">
+    import { auth, db } from "./firebase.js";
+    import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    document.getElementById("signupBtn").addEventListener("click", async () => {
+      const email = document.getElementById("signupEmail").value;
+      const password = document.getElementById("signupPassword").value;
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          joined: new Date().toLocaleDateString(),
+          avatar: "",
+          name: ""
+        });
+
+        alert("✅ Account created successfully!");
+        window.location.href = "profile.html";
+      } catch (error) {
+        alert("❌ " + error.message);
+      }
+    });
+
+    document.getElementById("toLogin").addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
+  </script>
+
 </body>
 </html>
