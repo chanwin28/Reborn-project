@@ -1,18 +1,18 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  updateProfile
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  updateProfile 
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  serverTimestamp
+import { 
+  getFirestore, 
+  collection, 
+  addDoc, 
+  serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
-// 🔥 Firebase Config
+// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyCDUS9TvpHfZTAeecxpAjPNPZRAfFPJeqg",
   authDomain: "reborn-4cdd7.firebaseapp.com",
@@ -23,76 +23,103 @@ const firebaseConfig = {
   measurementId: "G-MCFP30JYVV"
 };
 
-// ✅ Initialize Firebase
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// ✅ SIGN UP
-const signupBtn = document.getElementById("signup-btn");
-if (signupBtn) {
-  signupBtn.addEventListener("click", async () => {
-    const name = document.getElementById("fullname").value.trim();
-    const email = document.getElementById("signup-email").value.trim();
-    const password = document.getElementById("signup-password").value;
-    const confirm = document.getElementById("confirm-password").value;
-    const message = document.getElementById("message");
+console.log("🔥 Firebase Connected");
 
-    if (!name || !email || !password) {
-      message.textContent = "⚠️ Please fill in all fields.";
-      return;
-    }
-    if (password !== confirm) {
-      message.textContent = "⚠️ Passwords do not match.";
+// Elements
+const title = document.getElementById("form-title");
+const fullname = document.getElementById("fullname");
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const confirmPassword = document.getElementById("confirm-password");
+const message = document.getElementById("message");
+const actionBtn = document.getElementById("action-btn");
+const toggleLink = document.getElementById("toggle-link");
+
+let isLogin = true;
+
+// Toggle between Login & Signup
+toggleLink.addEventListener("click", () => {
+  isLogin = !isLogin;
+  if (isLogin) {
+    title.textContent = "Login";
+    actionBtn.textContent = "Login";
+    toggleLink.textContent = "Sign up";
+    fullname.classList.add("hidden");
+    confirmPassword.classList.add("hidden");
+    message.textContent = "";
+  } else {
+    title.textContent = "Sign Up";
+    actionBtn.textContent = "Sign Up";
+    toggleLink.textContent = "Login";
+    fullname.classList.remove("hidden");
+    confirmPassword.classList.remove("hidden");
+    message.textContent = "";
+  }
+});
+
+// Main button (Login / Signup)
+actionBtn.addEventListener("click", async () => {
+  message.textContent = "";
+  const emailVal = email.value.trim();
+  const passVal = password.value.trim();
+
+  if (isLogin) {
+    // LOGIN
+    if (!emailVal || !passVal) {
+      message.textContent = "⚠️ Please enter email and password.";
+      message.style.color = "red";
       return;
     }
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+      const userCredential = await signInWithEmailAndPassword(auth, emailVal, passVal);
+      message.textContent = "✅ Login Successful!";
+      message.style.color = "green";
+      console.log("Login Success:", userCredential.user);
+    } catch (error) {
+      console.error("Login Error:", error);
+      message.textContent = error.message;
+      message.style.color = "red";
+    }
 
-      await updateProfile(user, { displayName: name });
+  } else {
+    // SIGNUP
+    const nameVal = fullname.value.trim();
+    const confirmVal = confirmPassword.value.trim();
 
+    if (!nameVal || !emailVal || !passVal || !confirmVal) {
+      message.textContent = "⚠️ Please fill all fields!";
+      message.style.color = "red";
+      return;
+    }
+
+    if (passVal !== confirmVal) {
+      message.textContent = "⚠️ Passwords do not match!";
+      message.style.color = "red";
+      return;
+    }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, emailVal, passVal);
+      await updateProfile(userCredential.user, { displayName: nameVal });
       await addDoc(collection(db, "users"), {
-        uid: user.uid,
-        name: name,
-        email: user.email,
-        createdAt: serverTimestamp()
+        name: nameVal,
+        email: emailVal,
+        createdAt: serverTimestamp(),
       });
 
-      message.textContent = "✅ Account created successfully!";
-      message.style.color = "#00ffcc";
-      setTimeout(() => (window.location.href = "index.html"), 1500);
+      message.textContent = "✅ Account Created Successfully!";
+      message.style.color = "green";
+      console.log("Signup Success:", userCredential.user);
     } catch (error) {
-      message.textContent = "❌ " + error.message;
-      message.style.color = "#ffcccc";
+      console.error("Signup Error:", error);
+      message.textContent = error.message;
+      message.style.color = "red";
     }
-  });
-}
-
-// ✅ LOGIN
-const loginBtn = document.getElementById("login-btn");
-if (loginBtn) {
-  loginBtn.addEventListener("click", async () => {
-    const email = document.getElementById("login-email").value.trim();
-    const password = document.getElementById("login-password").value;
-    const message = document.getElementById("login-message");
-
-    if (!email || !password) {
-      message.textContent = "⚠️ Please enter email and password.";
-      return;
-    }
-
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      message.textContent = "✅ Login Successful!";
-      message.style.color = "#00ffcc";
-      setTimeout(() => {
-        window.location.href = "home.html";
-      }, 1500);
-    } catch (error) {
-      message.textContent = "❌ " + error.message;
-      message.style.color = "#ffcccc";
-    }
-  });
-}
+  }
+});
