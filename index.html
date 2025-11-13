@@ -3,180 +3,141 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Animated Sign Up & Login</title>
+<title>Reborn - Login & Sign Up</title>
 <style>
 :root {
   --grad1: #7b61ff;
   --grad2: #ff62a5;
-  --muted: #8888a0;
   font-family: 'Poppins', sans-serif;
 }
-
 body {
   margin: 0;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(-45deg, #ffe3f1, #dcd5ff, #ffe7f0, #e5dfff);
-  background-size: 400% 400%;
-  animation: gradientMove 10s ease infinite;
+  background: linear-gradient(135deg, #f8e3ff, #c8d6ff);
 }
-
-@keyframes gradientMove {
-  0% {background-position: 0% 50%;}
-  50% {background-position: 100% 50%;}
-  100% {background-position: 0% 50%;}
-}
-
 .container {
   width: 360px;
-  max-width: 90%;
   background: rgba(255,255,255,0.6);
   backdrop-filter: blur(25px);
   border-radius: 24px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.12);
   padding: 30px 24px;
-  transition: 0.3s ease;
-  overflow: hidden;
-  position: relative;
 }
-
-h1 {
-  margin: 0;
-  font-size: 22px;
-  color: #111;
-  text-align: center;
-}
-
-p {
-  text-align: center;
-  font-size: 14px;
-  color: var(--muted);
-  margin-bottom: 18px;
-}
+h1 { text-align: center; color: #222; }
+p { text-align: center; color: #555; }
 
 form {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.5s ease, transform 0.5s ease;
 }
-
-form.hidden {
-  opacity: 0;
-  transform: translateY(20px);
-  pointer-events: none;
-  position: absolute;
-}
-
-.input {
-  display: flex;
-  align-items: center;
-  background: white;
-  border-radius: 12px;
-  padding: 10px 14px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
-}
-.input input {
-  border: none;
-  outline: none;
-  flex: 1;
-  font-size: 14px;
-  background: transparent;
-}
+.input { background:white; border-radius:12px; padding:10px 14px; }
+.input input { border:none; outline:none; width:100%; }
 
 button.primary {
-  background: linear-gradient(90deg, var(--grad1), var(--grad2));
-  border: none;
-  color: white;
-  padding: 12px;
-  border-radius: 14px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: linear-gradient(90deg,var(--grad1),var(--grad2));
+  border:none; color:white; padding:12px; border-radius:14px;
+  font-size:15px; font-weight:600; cursor:pointer;
 }
-button.primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(123,97,255,0.3);
-}
-
-.small {
-  text-align: center;
-  font-size: 13px;
-  color: var(--muted);
-  margin-top: 8px;
-}
-.small a {
-  color: var(--grad1);
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-.small a:hover {
-  color: var(--grad2);
-}
+.small { text-align:center; font-size:13px; margin-top:6px; color:#777; }
+.small a { color: var(--grad1); text-decoration:none; cursor:pointer; }
 </style>
 </head>
 <body>
 
 <div class="container">
-  <h1 id="form-title">Create your account</h1>
-  <p id="form-sub">Start your journey with us.</p>
+  <h1 id="form-title">Create Account</h1>
+  <p id="form-sub">Start your journey with Reborn 💫</p>
 
   <!-- Sign Up -->
   <form id="signup-form">
-    <div class="input"><input type="text" placeholder="Full name" required></div>
-    <div class="input"><input type="email" placeholder="Email address" required></div>
-    <div class="input"><input type="password" placeholder="Password" required></div>
-    <div class="input"><input type="password" placeholder="Confirm Password" required></div>
+    <div class="input"><input id="signup-email" type="email" placeholder="Email" required></div>
+    <div class="input"><input id="signup-password" type="password" placeholder="Password" required></div>
     <button type="submit" class="primary">Sign Up</button>
-    <div class="small">Already have an account? <a id="to-login">Log in</a></div>
+    <div class="small">Already have an account? <a id="to-login">Login</a></div>
   </form>
 
   <!-- Login -->
-  <form id="login-form" class="hidden">
-    <div class="input"><input type="email" placeholder="Email address" required></div>
-    <div class="input"><input type="password" placeholder="Password" required></div>
-    <button type="submit" class="primary">Log In</button>
-    <div class="small">Don’t have an account? <a id="to-signup">Sign up</a></div>
+  <form id="login-form" style="display:none">
+    <div class="input"><input id="login-email" type="email" placeholder="Email" required></div>
+    <div class="input"><input id="login-password" type="password" placeholder="Password" required></div>
+    <button type="submit" class="primary">Login</button>
+    <div class="small">Don't have an account? <a id="to-signup">Sign up</a></div>
   </form>
 </div>
 
-<script>
-const signupForm = document.getElementById('signup-form');
-const loginForm = document.getElementById('login-form');
-const title = document.getElementById('form-title');
-const subtitle = document.getElementById('form-sub');
-const toLogin = document.getElementById('to-login');
-const toSignup = document.getElementById('to-signup');
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword }
+    from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-toLogin.addEventListener('click', () => {
-  signupForm.classList.add('hidden');
-  loginForm.classList.remove('hidden');
-  title.textContent = "Welcome back";
-  subtitle.textContent = "Log in to continue.";
-});
+  // 🔥 Your Firebase Config
+  const firebaseConfig = {
+    apiKey: "AIzaSyCDUS9TvpHfZTAecexpAjPNPZRAFfPJeqg",
+    authDomain: "reborn-4cdd7.firebaseapp.com",
+    projectId: "reborn-4cdd7",
+    storageBucket: "reborn-4cdd7.firebasestorage.app",
+    messagingSenderId: "712117536027",
+    appId: "1:712117536027:web:b9334e06c14403c7c43fbe",
+    measurementId: "G-MCFP30JYVV"
+  };
 
-toSignup.addEventListener('click', () => {
-  loginForm.classList.add('hidden');
-  signupForm.classList.remove('hidden');
-  title.textContent = "Create your account";
-  subtitle.textContent = "Start your journey with us.";
-});
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-signupForm.addEventListener('submit', e => {
-  e.preventDefault();
-  alert("✅ Sign Up successful (demo)");
-});
-loginForm.addEventListener('submit', e => {
-  e.preventDefault();
-  alert("✅ Login successful (demo)");
-});
+  // DOM elements
+  const signupForm = document.getElementById('signup-form');
+  const loginForm = document.getElementById('login-form');
+  const toLogin = document.getElementById('to-login');
+  const toSignup = document.getElementById('to-signup');
+  const title = document.getElementById('form-title');
+  const subtitle = document.getElementById('form-sub');
+
+  // Switch to Login
+  toLogin.addEventListener('click', () => {
+    signupForm.style.display = 'none';
+    loginForm.style.display = 'flex';
+    title.textContent = "Welcome back";
+    subtitle.textContent = "Log in to continue 💫";
+  });
+
+  // Switch to SignUp
+  toSignup.addEventListener('click', () => {
+    loginForm.style.display = 'none';
+    signupForm.style.display = 'flex';
+    title.textContent = "Create Account";
+    subtitle.textContent = "Start your journey with Reborn 💫";
+  });
+
+  // Sign Up
+  signupForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('signup-email').value;
+    const password = document.getElementById('signup-password').value;
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      alert(`🎉 Account Created: ${userCredential.user.email}`);
+    } catch (err) {
+      alert(`❌ ${err.message}`);
+    }
+  });
+
+  // Login
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      alert(`✅ Logged in as: ${userCredential.user.email}`);
+    } catch (err) {
+      alert(`❌ ${err.message}`);
+    }
+  });
 </script>
 </body>
 </html>
