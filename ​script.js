@@ -6,32 +6,46 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
 // DOM Elements များကို ရယူခြင်း
-const signupForm = document.getElementById('signup-form');
-const loginForm = document.getElementById('login-form');
+// Tab Buttons
 const showSignupBtn = document.getElementById('show-signup');
 const showLoginBtn = document.getElementById('show-login');
+// Forms
 const signupCard = document.getElementById('signup-card');
 const loginCard = document.getElementById('login-card');
-const tabButtons = document.querySelectorAll('.tab-btn');
+// Forms
+const signupForm = document.getElementById('signup-form');
+const loginForm = document.getElementById('login-form');
 
 
 // ===================================
 // Tab Switching Logic (Signup / Login)
 // ===================================
 
-function switchTab(showCard, hideCard, activeBtn, inactiveBtn) {
-    hideCard.classList.add('hidden');
-    showCard.classList.remove('hidden');
-    inactiveBtn.classList.remove('active');
-    activeBtn.classList.add('active');
+function switchTab(target) {
+    if (target === 'signup') {
+        // Sign Up ကို ပြသ၊ Login ကို ဖျောက်
+        signupCard.classList.remove('hidden');
+        loginCard.classList.add('hidden');
+        // Button Active ပြောင်း
+        showSignupBtn.classList.add('active');
+        showLoginBtn.classList.remove('active');
+    } else if (target === 'login') {
+        // Login ကို ပြသ၊ Sign Up ကို ဖျောက်
+        signupCard.classList.add('hidden');
+        loginCard.classList.remove('hidden');
+        // Button Active ပြောင်း
+        showSignupBtn.classList.remove('active');
+        showLoginBtn.classList.add('active');
+    }
 }
 
+// Event Listeners များ
 showSignupBtn.addEventListener('click', () => {
-    switchTab(signupCard, loginCard, showSignupBtn, showLoginBtn);
+    switchTab('signup');
 });
 
 showLoginBtn.addEventListener('click', () => {
-    switchTab(loginCard, signupCard, showLoginBtn, showSignupBtn);
+    switchTab('login');
 });
 
 
@@ -47,20 +61,16 @@ signupForm.addEventListener('submit', async (e) => {
     const password = document.getElementById('signup-password').value;
     const confirmPassword = document.getElementById('signup-confirm-password').value;
 
-    // Password တူ/မတူ စစ်ဆေးခြင်း
     if (password !== confirmPassword) {
         alert('Password နှင့် Confirm Password မတူပါ! ပြန်စစ်ဆေးပေးပါ။');
         return;
     }
 
-    // Supabase Auth ဖြင့် စာရင်းသွင်းခြင်း
     const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
         options: {
-            data: {
-                full_name: name // Supabase ထဲမှာ full_name ကို သိမ်းဆည်းရန်
-            }
+            data: { full_name: name }
         }
     });
 
@@ -68,12 +78,10 @@ signupForm.addEventListener('submit', async (e) => {
         console.error('Sign Up Error:', error.message);
         alert('စာရင်းသွင်းရာတွင် အဆင်မပြေပါ: ' + error.message);
     } else if (data.user) {
-        // အောင်မြင်ပါက
-        console.log('Sign Up Success:', data);
         alert('စာရင်းသွင်းခြင်း အောင်မြင်ပါသည်။ ကျေးဇူးပြု၍ သင့် Email ကို စစ်ဆေးပြီး အတည်ပြုပါ။');
         signupForm.reset();
-        // အတည်ပြုပြီးသားဖြစ်အောင် login tab ကို ပြောင်းပေးနိုင်သည်
-        showLoginBtn.click();
+        // Sign Up ပြီးရင် Login Tab ကို အလိုအလျောက်ပြောင်း
+        switchTab('login'); 
     }
 });
 
@@ -88,7 +96,6 @@ loginForm.addEventListener('submit', async (e) => {
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
 
-    // Supabase Auth ဖြင့် ဝင်ရောက်ခြင်း
     const { data, error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password
@@ -98,11 +105,9 @@ loginForm.addEventListener('submit', async (e) => {
         console.error('Login Error:', error.message);
         alert('Login ဝင်ရာတွင် အဆင်မပြေပါ: ' + error.message);
     } else if (data.user) {
-        // Login အောင်မြင်ပါက
-        console.log('Login Success:', data);
         alert('Login အောင်မြင်ပါပြီ! Welcome, ' + data.user.email);
         loginForm.reset();
-        // ဝင်ရောက်ပြီးပါက အခြားစာမျက်နှာသို့ ပြောင်းလဲရန် ဥပမာ
-        // window.location.href = 'dashboard.html';
+        // Login အောင်မြင်ရင် Dashboard သို့ ပြောင်းနိုင်သည်
+        // window.location.href = 'dashboard.html'; 
     }
 });
