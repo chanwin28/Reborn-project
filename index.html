@@ -1,27 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reborn Project - Login & Signup</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firebase Login & Signup</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 320px;
+    }
+    h2 { text-align: center; }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover { background: #4338ca; }
+    .toggle { text-align: center; margin-top: 15px; cursor: pointer; color: #2563eb; }
+  </style>
 </head>
 <body>
+
   <div class="container">
-    <h1 id="form-title">Login</h1>
-    <div class="form">
-      <input type="text" id="fullname" placeholder="Full Name" class="input hidden">
-      <input type="email" id="email" placeholder="Email" class="input">
-      <input type="password" id="password" placeholder="Password" class="input">
-      <input type="password" id="confirm-password" placeholder="Confirm Password" class="input hidden">
-      <p id="message" class="message"></p>
-      <button id="action-btn">Login</button>
-      <p class="toggle-text">
-        Don't have an account? <span id="toggle-link">Sign up</span>
-      </p>
-    </div>
+    <h2 id="formTitle">Signup</h2>
+
+    <form id="authForm">
+      <div id="nameField">
+        <input type="text" id="name" placeholder="Enter your name" required />
+      </div>
+      <input type="email" id="email" placeholder="Enter email" required />
+      <input type="password" id="password" placeholder="Enter password" required />
+      <button type="submit" id="submitBtn">Signup</button>
+    </form>
+
+    <div class="toggle" id="toggleText">Already have an account? Login</div>
   </div>
 
-  <script type="module" src="app.js"></script>
+  <script type="module" src="./auth.js"></script>
 </body>
 </html>
