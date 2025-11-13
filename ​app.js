@@ -12,7 +12,7 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
-// Firebase Config (replace with your own)
+// 🔥 Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyCDUS9TvpHfZTAeecxpAjPNPZRAfFPJeqg",
   authDomain: "reborn-4cdd7.firebaseapp.com",
@@ -23,12 +23,12 @@ const firebaseConfig = {
   measurementId: "G-MCFP30JYVV"
 };
 
-// Initialize Firebase
+// ✅ Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// SIGN UP
+// ✅ SIGN UP
 const signupBtn = document.getElementById("signup-btn");
 if (signupBtn) {
   signupBtn.addEventListener("click", async () => {
@@ -50,6 +50,7 @@ if (signupBtn) {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+
       await updateProfile(user, { displayName: name });
 
       await addDoc(collection(db, "users"), {
@@ -61,10 +62,7 @@ if (signupBtn) {
 
       message.textContent = "✅ Account created successfully!";
       message.style.color = "#00ffcc";
-
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 1500);
+      setTimeout(() => (window.location.href = "index.html"), 1500);
     } catch (error) {
       message.textContent = "❌ " + error.message;
       message.style.color = "#ffcccc";
@@ -72,7 +70,7 @@ if (signupBtn) {
   });
 }
 
-// LOGIN
+// ✅ LOGIN
 const loginBtn = document.getElementById("login-btn");
 if (loginBtn) {
   loginBtn.addEventListener("click", async () => {
@@ -87,11 +85,10 @@ if (loginBtn) {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      message.textContent = "✅ Logged in successfully!";
+      message.textContent = "✅ Login Successful!";
       message.style.color = "#00ffcc";
-
       setTimeout(() => {
-        window.location.href = "home.html"; // redirect page
+        window.location.href = "home.html";
       }, 1500);
     } catch (error) {
       message.textContent = "❌ " + error.message;
