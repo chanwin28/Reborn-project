@@ -33,8 +33,9 @@
     } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
     import {
       getDoc,
-      setDoc,
+      updateDoc,
       doc,
+      setDoc,
     } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
     import {
       ref,
@@ -45,46 +46,74 @@
     const logoutBtn = document.getElementById("logoutBtn");
     const saveProfile = document.getElementById("saveProfile");
 
+    let currentUser = null;
+    let userData = {};
+
+    // ✅ Load user profile data
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        currentUser = user;
         const docRef = doc(db, "users", user.uid);
         const snap = await getDoc(docRef);
+
         if (snap.exists()) {
-          const data = snap.data();
-          document.getElementById("displayName").textContent = data.displayName;
-          document.getElementById("email").textContent = data.email;
-          document.getElementById("uid").textContent = "UID: " + user.uid;
-          document.getElementById("joined").textContent = "Joined: " + data.joined;
-          document.getElementById("profileImage").src = data.photoURL || "default-avatar.png";
+          userData = snap.data();
+        } else {
+          // If no data, create default
+          await setDoc(docRef, {
+            email: user.email,
+            displayName: "New User 💜",
+            photoURL: "",
+            joined: new Date().toLocaleDateString(),
+          });
+          userData = {
+            email: user.email,
+            displayName: "New User 💜",
+            photoURL: "",
+            joined: new Date().toLocaleDateString(),
+          };
         }
+
+        document.getElementById("displayName").textContent = userData.displayName;
+        document.getElementById("email").textContent = user.email;
+        document.getElementById("uid").textContent = "UID: " + user.uid;
+        document.getElementById("joined").textContent = "Joined: " + (userData.joined || "Unknown");
+        document.getElementById("profileImage").src = userData.photoURL || "default-avatar.png";
       } else {
         window.location.href = "index.html";
       }
     });
 
+    // ✅ Save profile changes
     saveProfile.addEventListener("click", async () => {
-      const user = auth.currentUser;
-      const newName = document.getElementById("newName").value;
-      const file = document.getElementById("uploadPhoto").files[0];
-      let photoURL = "";
+      try {
+        const user = currentUser;
+        const newName = document.getElementById("newName").value;
+        const file = document.getElementById("uploadPhoto").files[0];
+        let photoURL = userData.photoURL || "";
 
-      if (file) {
-        const storageRef = ref(storage, `profileImages/${user.uid}`);
-        await uploadBytes(storageRef, file);
-        photoURL = await getDownloadURL(storageRef);
+        // Upload new photo if selected
+        if (file) {
+          const storageRef = ref(storage, `profileImages/${user.uid}`);
+          await uploadBytes(storageRef, file);
+          photoURL = await getDownloadURL(storageRef);
+        }
+
+        // Update Firestore (don't overwrite joined date)
+        const userRef = doc(db, "users", user.uid);
+        await updateDoc(userRef, {
+          displayName: newName || userData.displayName,
+          photoURL: photoURL,
+        });
+
+        alert("💜 Profile updated successfully!");
+        location.reload();
+      } catch (error) {
+        alert("❌ Error: " + error.message);
       }
-
-      await setDoc(doc(db, "users", user.uid), {
-        email: user.email,
-        displayName: newName || "Anonymous",
-        photoURL: photoURL || "",
-        joined: new Date().toLocaleDateString(),
-      });
-
-      alert("💜 Profile updated successfully!");
-      location.reload();
     });
 
+    // ✅ Logout
     logoutBtn.addEventListener("click", async () => {
       await signOut(auth);
       window.location.href = "index.html";
