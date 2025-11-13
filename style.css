@@ -1,67 +1,76 @@
-* {
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
 body {
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0;
 }
+
 .container {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  padding: 30px;
+  background: white;
+  padding: 40px;
   border-radius: 20px;
-  width: 350px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-h2 {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  width: 320px;
   text-align: center;
-  color: #fff;
+  transition: all 0.3s ease;
+}
+
+h1 {
   margin-bottom: 20px;
+  color: #0072ff;
 }
-.input-group {
-  margin-bottom: 15px;
-}
-.input-group input {
+
+.input {
   width: 100%;
-  padding: 12px;
-  border: none;
+  padding: 10px;
+  margin: 10px 0;
+  border: 2px solid #ddd;
   border-radius: 10px;
-  outline: none;
-  background: rgba(255, 255, 255, 0.9);
-  font-size: 14px;
+  transition: 0.2s;
 }
+
+.input:focus {
+  border-color: #0072ff;
+  outline: none;
+}
+
 button {
   width: 100%;
-  padding: 12px;
+  background: #0072ff;
+  color: white;
   border: none;
+  padding: 12px;
   border-radius: 10px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
-  color: white;
-  font-size: 16px;
   cursor: pointer;
-  transition: 0.3s;
-}
-button:hover {
-  opacity: 0.85;
-}
-p {
-  text-align: center;
-  color: white;
-  font-size: 14px;
-}
-a {
-  color: #fff;
-  text-decoration: underline;
-}
-.message {
-  text-align: center;
-  color: #fff;
+  font-size: 16px;
   margin-top: 10px;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #005ee6;
+}
+
+.toggle-text {
+  margin-top: 15px;
   font-size: 14px;
+}
+
+.toggle-text span {
+  color: #0072ff;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.message {
+  font-size: 14px;
+  min-height: 18px;
+  margin-top: 8px;
+}
+
+.hidden {
+  display: none;
 }
