@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reborn Project - Login & Signup</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h2>Welcome Back!</h2>
-    <div class="input-group">
-      <input type="email" id="login-email" placeholder="Email" />
+    <h1 id="form-title">Login</h1>
+    <div class="form">
+      <input type="text" id="fullname" placeholder="Full Name" class="input hidden">
+      <input type="email" id="email" placeholder="Email" class="input">
+      <input type="password" id="password" placeholder="Password" class="input">
+      <input type="password" id="confirm-password" placeholder="Confirm Password" class="input hidden">
+      <p id="message" class="message"></p>
+      <button id="action-btn">Login</button>
+      <p class="toggle-text">
+        Don't have an account? <span id="toggle-link">Sign up</span>
+      </p>
     </div>
-    <div class="input-group">
-      <input type="password" id="login-password" placeholder="Password" />
-    </div>
-    <button id="login-btn">Log In</button>
-    <p>Don’t have an account? <a href="signup.html">Sign Up</a></p>
-    <p class="message" id="login-message"></p>
   </div>
 
-  <!-- ✅ script tag သေချာအောက်မှာပဲပါရမယ် -->
-  <script type="module" src="./app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
