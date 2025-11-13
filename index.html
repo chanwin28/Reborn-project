@@ -1,135 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Firebase Login & Signup</title>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reborn Project 💜</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
+    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
     body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
+      display: flex; justify-content: center; align-items: center;
+      height: 100vh; margin: 0; background: linear-gradient(135deg,#9b5de5,#f15bb5,#fee440,#00bbf9,#00f5d4);
+      background-size: 400% 400%; animation: gradientMove 10s ease infinite;
     }
-
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
     .container {
-      background: #fff;
-      padding: 40px 30px;
-      border-radius: 25px;
-      width: 350px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 30px 40px;
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
       text-align: center;
-      animation: floatUp 0.8s ease;
-    }
-
-    @keyframes floatUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    h2 {
-      font-weight: 600;
-      margin-bottom: 20px;
-      color: #333;
-    }
-
-    input {
-      width: 100%;
-      padding: 12px 15px;
-      margin: 8px 0;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      outline: none;
-      font-size: 15px;
+      backdrop-filter: blur(10px);
+      color: white;
+      width: 320px;
       transition: all 0.3s ease;
     }
-
-    input:focus {
-      border-color: #667eea;
-      box-shadow: 0 0 5px rgba(102,126,234,0.4);
+    input {
+      width: 100%; padding: 10px; margin: 10px 0;
+      border: none; border-radius: 10px;
+      outline: none; font-size: 16px;
     }
-
     button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 15px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: transform 0.2s ease, box-shadow 0.3s ease;
+      width: 100%; padding: 10px;
+      border: none; border-radius: 10px;
+      background: #6a00f4; color: white; font-weight: 600;
+      cursor: pointer; transition: 0.3s;
     }
-
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 15px rgba(102,126,234,0.4);
-    }
-
-    .toggle {
-      margin-top: 20px;
-      color: #764ba2;
-      cursor: pointer;
-      font-weight: 500;
-      transition: color 0.3s;
-    }
-
-    .toggle:hover {
-      color: #4c1d95;
-      text-decoration: underline;
-    }
-
-    .success {
-      color: #10b981;
-      margin-top: 15px;
-      font-size: 14px;
-    }
-
-    .error {
-      color: #ef4444;
-      margin-top: 15px;
-      font-size: 14px;
-    }
-
-    .logo {
-      font-size: 38px;
-      color: #667eea;
-      margin-bottom: 15px;
-      animation: bounce 1.5s infinite ease-in-out;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+    button:hover { background: #7c2ae8; transform: scale(1.05); }
+    .toggle { margin-top: 15px; cursor: pointer; color: #fff; text-decoration: underline; }
+    #loader {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      justify-content: center; align-items: center;
+      color: white; font-size: 22px;
     }
   </style>
 </head>
 <body>
+  <div id="loader">⏳ Loading...</div>
 
-  <div class="container">
-    <div class="logo">💜</div>
-    <h2 id="formTitle">Signup</h2>
-
-    <form id="authForm">
-      <div id="nameField">
-        <input type="text" id="name" placeholder="Enter your name" required />
-      </div>
-      <input type="email" id="email" placeholder="Enter email" required />
-      <input type="password" id="password" placeholder="Enter password" required />
-      <button type="submit" id="submitBtn">Signup</button>
-    </form>
-
-    <div class="toggle" id="toggleText">Already have an account? Login</div>
-    <div id="message"></div>
+  <div class="container" id="loginContainer">
+    <h2>Reborn Login</h2>
+    <input type="email" id="loginEmail" placeholder="Enter email" required>
+    <input type="password" id="loginPassword" placeholder="Enter password" required>
+    <button onclick="login()">Login</button>
+    <div class="toggle" onclick="toggleForm()">Don’t have an account? Signup</div>
   </div>
 
-  <script type="module" src="./auth.js"></script>
+  <div class="container" id="signupContainer" style="display:none;">
+    <h2>✨ Signup</h2>
+    <input type="text" id="signupName" placeholder="Enter name" required>
+    <input type="email" id="signupEmail" placeholder="Enter email" required>
+    <input type="password" id="signupPassword" placeholder="Enter password" required>
+    <button onclick="signup()">Signup</button>
+    <div class="toggle" onclick="toggleForm()">Already have an account? Login</div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    import { getFirestore, setDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCkTRy0nhb_mUOmoaGQZwouMJPCC37uRRQ",
+      authDomain: "plexiform-being-471915-u1.firebaseapp.com",
+      projectId: "plexiform-being-471915-u1",
+      storageBucket: "plexiform-being-471915-u1.firebasestorage.app",
+      messagingSenderId: "477134304630",
+      appId: "1:477134304630:web:a7af00f276bdcfd2c77657",
+      measurementId: "G-VDCF2TGMET"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    function showLoader(show) {
+      document.getElementById("loader").style.display = show ? "flex" : "none";
+    }
+
+    window.toggleForm = function() {
+      document.getElementById("loginContainer").style.display =
+        document.getElementById("loginContainer").style.display === "none" ? "block" : "none";
+      document.getElementById("signupContainer").style.display =
+        document.getElementById("signupContainer").style.display === "none" ? "block" : "none";
+    }
+
+    window.signup = async function() {
+      showLoader(true);
+      const name = document.getElementById("signupName").value;
+      const email = document.getElementById("signupEmail").value;
+      const password = document.getElementById("signupPassword").value;
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        await setDoc(doc(db, "users", user.uid), { name, email });
+        alert("✅ Signup successful!");
+        window.location.href = "welcome.html";
+      } catch (error) {
+        alert("❌ " + error.message);
+      } finally {
+        showLoader(false);
+      }
+    }
+
+    window.login = async function() {
+      showLoader(true);
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = "welcome.html";
+      } catch (error) {
+        alert("❌ " + error.message);
+      } finally {
+        showLoader(false);
+      }
+    }
+  </script>
 </body>
 </html>
