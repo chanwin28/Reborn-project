@@ -6,57 +6,37 @@
   <title>💜 Reborn Project | Login</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="container">
-    <div class="card">
-      <h1>💜 Reborn Project</h1>
-      <input type="email" id="email" placeholder="Enter email" required />
-      <input type="password" id="password" placeholder="Enter password" required />
-      <button id="loginBtn">Login</button>
-      <button id="signupBtn" class="secondary">Signup</button>
-    </div>
+<body class="login-page">
+
+  <div class="auth-card">
+    <h2>💜 Reborn Project</h2>
+    <input type="email" id="loginEmail" placeholder="Email" />
+    <input type="password" id="loginPassword" placeholder="Password" />
+    <button class="login-btn" id="loginBtn">Login</button>
+    <button class="signup-btn" id="toSignup">Signup</button>
   </div>
 
   <script type="module">
-    import { app, auth, db } from "./firebase.js";
-    import {
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-    } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
-    import { setDoc, doc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+    import { auth, db } from "./firebase.js";
+    import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-    const signupBtn = document.getElementById("signupBtn");
-    const loginBtn = document.getElementById("loginBtn");
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
 
-    signupBtn.addEventListener("click", async () => {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-        await setDoc(doc(db, "users", user.uid), {
-          email: user.email,
-          displayName: "New User 💜",
-          photoURL: "",
-          joined: new Date().toLocaleDateString(),
-        });
-        alert("🎉 Signup successful!");
-        window.location.href = "profile.html";
-      } catch (error) {
-        alert(error.message);
-      }
-    });
-
-    loginBtn.addEventListener("click", async () => {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
       try {
         await signInWithEmailAndPassword(auth, email, password);
+        alert("✅ Login successful!");
         window.location.href = "profile.html";
       } catch (error) {
-        alert(error.message);
+        alert("❌ " + error.message);
       }
     });
+
+    document.getElementById("toSignup").addEventListener("click", () => {
+      window.location.href = "signup.html";
+    });
   </script>
+
 </body>
 </html>
