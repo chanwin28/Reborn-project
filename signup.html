@@ -3,102 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reborn Sign Up</title>
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .container {
-      background: #fff;
-      border-radius: 25px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-      width: 350px;
-      padding: 40px;
-      text-align: center;
-    }
-    h2 {
-      color: #333;
-      margin-bottom: 25px;
-    }
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      font-size: 14px;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      background: #007bff;
-      color: #fff;
-      font-weight: bold;
-      border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #0056b3;
-    }
-    .footer {
-      margin-top: 20px;
-      font-size: 14px;
-    }
-    .footer a {
-      color: #007bff;
-      text-decoration: none;
-      font-weight: bold;
-    }
-  </style>
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h2>Hello,<br> <span style="color:#007bff">Sign Up!</span></h2>
-    <input type="text" id="username" placeholder="Enter Username" required />
-    <input type="email" id="email" placeholder="Enter Email Address" required />
-    <input type="password" id="password" placeholder="Enter Password" required />
-    <button id="signupBtn">Sign Up</button>
-    <div class="footer">
-      Already a member? <a href="index.html">Log In</a>
+    <h2>Create your account</h2>
+    <div class="input-group">
+      <input type="text" id="fullname" placeholder="Full Name" />
     </div>
+    <div class="input-group">
+      <input type="email" id="signup-email" placeholder="Email Address" />
+    </div>
+    <div class="input-group">
+      <input type="password" id="signup-password" placeholder="Password" />
+    </div>
+    <div class="input-group">
+      <input type="password" id="confirm-password" placeholder="Confirm Password" />
+    </div>
+    <button id="signup-btn">Sign Up</button>
+    <p>Already have an account? <a href="index.html">Log In</a></p>
+    <p class="message" id="message"></p>
   </div>
 
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const SUPABASE_URL = "https://okwkibbvaonqolcnnhjr.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rd2tpYmJ2YW9ucW9sY25uaGpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzQzNDIsImV4cCI6MjA3ODA1MDM0Mn0.wMENc8uiJFFC5lOYKrjZbump72us7hkaKH00DelAwrs";
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    document.getElementById("signupBtn").addEventListener("click", async () => {
-      const username = document.getElementById("username").value;
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { username }
-        }
-      });
-
-      if (error) {
-        alert("❌ Sign up failed: " + error.message);
-      } else {
-        alert("✅ Account created successfully! Please check your email to verify.");
-        window.location.href = "index.html";
-      }
-    });
-  </script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
