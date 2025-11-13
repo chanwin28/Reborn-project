@@ -6,118 +6,85 @@
   <title>💜 Profile | Reborn Project</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="profile-container">
-    <div class="profile-card">
-      <img id="profileImage" src="default-avatar.png" alt="Avatar" class="avatar" />
-      <h2 id="displayName">Loading...</h2>
-      <p id="email"></p>
-      <p id="uid"></p>
-      <p id="joined"></p>
+<body class="profile-page">
 
-      <div class="edit-section">
-        <input type="file" id="uploadPhoto" />
-        <input type="text" id="newName" placeholder="Enter new name" />
-        <button id="saveProfile">Save Profile</button>
-      </div>
+  <div class="profile-card">
+    <img id="avatarPreview" src="https://via.placeholder.com/100" alt="Avatar" />
+    <p id="email">Loading...</p>
+    <p id="uid"></p>
+    <p id="joined"></p>
 
-      <button id="logoutBtn" class="secondary">Logout</button>
-    </div>
+    <input type="file" id="avatar" />
+    <input type="text" id="name" placeholder="Your name" />
+    <button id="saveProfile">Save Profile</button>
+    <button id="logoutBtn">Logout</button>
   </div>
 
   <script type="module">
-    import { app, auth, db, storage } from "./firebase.js";
-    import {
-      onAuthStateChanged,
-      signOut,
-    } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
-    import {
-      getDoc,
-      updateDoc,
-      doc,
-      setDoc,
-    } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
-    import {
-      ref,
-      uploadBytes,
-      getDownloadURL,
-    } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
+    import { auth, db, storage } from "./firebase.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-    const logoutBtn = document.getElementById("logoutBtn");
-    const saveProfile = document.getElementById("saveProfile");
+    const avatarInput = document.getElementById("avatar");
+    const nameInput = document.getElementById("name");
+    const avatarPreview = document.getElementById("avatarPreview");
+    const emailField = document.getElementById("email");
+    const uidField = document.getElementById("uid");
+    const joinedField = document.getElementById("joined");
 
-    let currentUser = null;
-    let userData = {};
-
-    // ✅ Load user profile data
     onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        currentUser = user;
-        const docRef = doc(db, "users", user.uid);
-        const snap = await getDoc(docRef);
-
-        if (snap.exists()) {
-          userData = snap.data();
-        } else {
-          // If no data, create default
-          await setDoc(docRef, {
-            email: user.email,
-            displayName: "New User 💜",
-            photoURL: "",
-            joined: new Date().toLocaleDateString(),
-          });
-          userData = {
-            email: user.email,
-            displayName: "New User 💜",
-            photoURL: "",
-            joined: new Date().toLocaleDateString(),
-          };
-        }
-
-        document.getElementById("displayName").textContent = userData.displayName;
-        document.getElementById("email").textContent = user.email;
-        document.getElementById("uid").textContent = "UID: " + user.uid;
-        document.getElementById("joined").textContent = "Joined: " + (userData.joined || "Unknown");
-        document.getElementById("profileImage").src = userData.photoURL || "default-avatar.png";
-      } else {
+      if (!user) {
         window.location.href = "index.html";
+        return;
+      }
+
+      emailField.textContent = user.email;
+      uidField.textContent = "UID: " + user.uid;
+
+      const docRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(docRef);
+
+      if (userSnap.exists()) {
+        const data = userSnap.data();
+        nameInput.value = data.name || "";
+        if (data.avatar) avatarPreview.src = data.avatar;
+        joinedField.textContent = "Joined: " + (data.joined || "unknown");
       }
     });
 
-    // ✅ Save profile changes
-    saveProfile.addEventListener("click", async () => {
-      try {
-        const user = currentUser;
-        const newName = document.getElementById("newName").value;
-        const file = document.getElementById("uploadPhoto").files[0];
-        let photoURL = userData.photoURL || "";
+    document.getElementById("saveProfile").addEventListener("click", async () => {
+      const user = auth.currentUser;
+      if (!user) return alert("Please login first!");
 
-        // Upload new photo if selected
+      const file = avatarInput.files[0];
+      const name = nameInput.value;
+
+      try {
+        let avatarURL = "";
         if (file) {
-          const storageRef = ref(storage, `profileImages/${user.uid}`);
+          const storageRef = ref(storage, "avatars/" + user.uid);
           await uploadBytes(storageRef, file);
-          photoURL = await getDownloadURL(storageRef);
+          avatarURL = await getDownloadURL(storageRef);
         }
 
-        // Update Firestore (don't overwrite joined date)
-        const userRef = doc(db, "users", user.uid);
-        await updateDoc(userRef, {
-          displayName: newName || userData.displayName,
-          photoURL: photoURL,
+        await updateDoc(doc(db, "users", user.uid), {
+          name: name,
+          ...(avatarURL && { avatar: avatarURL })
         });
 
-        alert("💜 Profile updated successfully!");
-        location.reload();
-      } catch (error) {
-        alert("❌ Error: " + error.message);
+        alert("✅ Profile updated!");
+        window.location.reload();
+      } catch (err) {
+        alert("❌ Error: " + err.message);
       }
     });
 
-    // ✅ Logout
-    logoutBtn.addEventListener("click", async () => {
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
       await signOut(auth);
       window.location.href = "index.html";
     });
   </script>
+
 </body>
 </html>
