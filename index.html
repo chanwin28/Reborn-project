@@ -1,84 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="my">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reborn Login</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #1e3a8a, #dc2626);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .login-box {
-      background: white;
-      padding: 30px;
-      border-radius: 15px;
-      text-align: center;
-      width: 320px;
-    }
-    input {
-      width: 90%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-    button {
-      background: #2563eb;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    a { color: #2563eb; text-decoration: none; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Sign Up & Login</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <div class="login-box">
-    <h2>Welcome Back,<br><span style="color:#2563eb;">Log In!</span></h2>
-    <input id="email" type="email" placeholder="Enter Email Address" />
-    <input id="password" type="password" placeholder="Enter Password" />
-    <button id="loginBtn">Log In</button>
-    <p>Not a member yet? <a href="signup.html">Sign Up</a></p>
-  </div>
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active" id="show-signup">Sign Up</button>
+            <button class="tab-btn" id="show-login">Login</button>
+        </div>
 
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+        <div class="form-card" id="signup-card">
+            <h2 class="form-title">Create your account</h2>
+            <p class="subtitle">Start your journey with us</p>
 
-    const supabaseUrl = 'https://okwkibbvaonqolcnnhjr.supabase.co';
-    const supabaseKey =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rd2tpYmJ2YW9ucW9sY25uaGpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NzQzNDIsImV4cCI6MjA3ODA1MDM0Mn0.wMENc8uiJFFC5lOYKrjZbump72us7hkaKH00DelAwrs';
+            <form id="signup-form">
+                <div class="input-group">
+                    <label for="signup-name">Full Name</label>
+                    <input type="text" id="signup-name" placeholder="Your full name" required>
+                </div>
+                <div class="input-group">
+                    <label for="signup-email">Email Address</label>
+                    <input type="email" id="signup-email" placeholder="your@email.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" placeholder="********" required>
+                </div>
+                <div class="input-group">
+                    <label for="signup-confirm-password">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" placeholder="********" required>
+                </div>
 
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    const loginBtn = document.getElementById("loginBtn");
+                <button type="submit" class="submit-btn signup-btn">Sign Up</button>
+                
+                <div class="terms">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">I agree to Terms & Privacy</label>
+                </div>
+            </form>
+            
+            <p class="separator"><span>OR</span></p>
 
-    loginBtn.addEventListener("click", async () => {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
+            <button class="social-btn google-btn">Continue with Google</button>
+            <button class="social-btn apple-btn">Continue with Apple</button>
+        </div>
 
-      if (!email || !password) {
-        alert("Please fill in both fields!");
-        return;
-      }
+        <div class="form-card hidden" id="login-card">
+            <h2 class="form-title">Welcome Back</h2>
+            <p class="subtitle">Log in to continue</p>
 
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" placeholder="your@email.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="********" required>
+                </div>
 
-      if (error) {
-        alert("❌ Login failed: " + error.message);
-      } else {
-        localStorage.setItem("email", email);
-        alert("✅ Login success!");
-        window.location.href = "dashboard.html"; // ✅ အဓိက redirect ဖြစ်နေမယ်
-      }
-    });
-  </script>
+                <button type="submit" class="submit-btn login-btn">Log In</button>
+            </form>
+        </div>
+        
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
