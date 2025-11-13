@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💜 Profile | Reborn Project</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      overflow: hidden;
+    }
+
+    .profile-card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 4px 30px rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      animation: fadeIn 1.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+      margin: 0 auto 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 40px;
+      color: white;
+      animation: float 3s ease-in-out infinite;
+      box-shadow: 0 0 20px rgba(255,255,255,0.3);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+
+    p {
+      margin: 5px 0;
+      font-size: 16px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 25px;
+      background-color: white;
+      color: #6a11cb;
+      font-weight: bold;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(255,255,255,0.3);
+    }
+
+    button:hover {
+      background-color: #6a11cb;
+      color: white;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-card">
+    <div class="avatar" id="avatar">💜</div>
+    <h1 id="userEmail">Loading...</h1>
+    <p id="userUID">UID: ...</p>
+    <p id="joinDate">Joined: ...</p>
+    <button id="logoutBtn">Logout</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCkTRy0nhb_mUOmoaGQZwouMJPCC37uRRQ",
+      authDomain: "plexiform-being-471915-u1.firebaseapp.com",
+      projectId: "plexiform-being-471915-u1",
+      storageBucket: "plexiform-being-471915-u1.firebasestorage.app",
+      messagingSenderId: "477134304630",
+      appId: "1:477134304630:web:a7af00f276bdcfd2c77657",
+      measurementId: "G-VDCF2TGMET"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const userEmail = document.getElementById("userEmail");
+    const userUID = document.getElementById("userUID");
+    const joinDate = document.getElementById("joinDate");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        userEmail.textContent = user.email;
+        userUID.textContent = `UID: ${user.uid}`;
+        joinDate.textContent = `Joined: ${new Date(user.metadata.creationTime).toLocaleDateString()}`;
+      } else {
+        window.location.href = "index.html"; // redirect if not logged in
+      }
+    });
+
+    logoutBtn.addEventListener("click", () => {
+      signOut(auth).then(() => {
+        alert("🚪 Logged out successfully!");
+        window.location.href = "index.html";
+      });
+    });
+  </script>
+</body>
+</html>
