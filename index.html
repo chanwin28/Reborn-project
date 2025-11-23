@@ -13,9 +13,19 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, #9b5de5, #f15bb5, #fee440);
         background-size: 300% 300%;
         animation: gradientMove 8s ease infinite;
+        transition: background 0.6s ease;
+    }
+
+    /* LOGIN BG */
+    .login-bg {
+        background: linear-gradient(135deg, #ff758c, #ff7eb3, #fcb69f);
+    }
+
+    /* SIGNUP BG */
+    .signup-bg {
+        background: linear-gradient(135deg, #5f0a87, #7a1ea1, #b333d6);
     }
 
     @keyframes gradientMove {
@@ -28,9 +38,9 @@
         width: 330px;
         padding: 25px;
         border-radius: 20px;
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.25);
         backdrop-filter: blur(12px);
-        box-shadow: 0px 10px 35px rgba(0,0,0,0.2);
+        box-shadow: 0px 10px 35px rgba(0,0,0,0.15);
         text-align: center;
         color: white;
         animation: fadeIn 0.7s ease;
@@ -39,11 +49,6 @@
     @keyframes fadeIn {
         from {opacity: 0; transform: translateY(20px);}
         to {opacity: 1; transform: translateY(0);}
-    }
-
-    h2 {
-        margin-bottom: 20px;
-        font-weight: 600;
     }
 
     input {
@@ -68,7 +73,7 @@
     }
 
     button:hover {
-        background: #f1f1f1;
+        background: #f4f4f4;
     }
 
     .switch-text {
@@ -84,7 +89,7 @@
     }
 </style>
 </head>
-<body>
+<body class="login-bg" id="bodyBG">
 
 <div class="card" id="authCard">
     <h2 id="formTitle">Login</h2>
@@ -104,7 +109,6 @@
 <div class="card" id="welcomePage">
     <h2>Welcome 🎉</h2>
     <p id="welcomeEmail"></p>
-
     <button onclick="logout()">Logout</button>
 </div>
 
@@ -114,9 +118,16 @@ let isLogin = true;
 // Switch Login ↔ Signup
 function toggleForm() {
     isLogin = !isLogin;
+
     document.getElementById("formTitle").innerText = isLogin ? "Login" : "Sign Up";
     document.getElementById("switchText").innerText =
-        isLogin ? "Don't have an account? Sign up" : "Already have an account? Login";
+        isLogin ? "Don't have an account? Sign up" :
+                  "Already have an account? Login";
+
+    // Background colors change
+    let body = document.getElementById("bodyBG");
+    body.className = isLogin ? "login-bg" : "signup-bg";
+
     document.getElementById("err").innerText = "";
 }
 
@@ -155,6 +166,10 @@ function showWelcome(email) {
     document.getElementById("authCard").style.display = "none";
     document.getElementById("welcomePage").style.display = "block";
     document.getElementById("welcomeEmail").innerText = email;
+
+    // Welcome page background (warm gold)
+    document.getElementById("bodyBG").style.background =
+        "linear-gradient(135deg, #f9d423, #ff4e50)";
 }
 
 // Logout
@@ -163,6 +178,9 @@ function logout() {
     document.getElementById("welcomePage").style.display = "none";
     document.getElementById("email").value = "";
     document.getElementById("password").value = "";
+
+    // Back to login color
+    document.getElementById("bodyBG").className = "login-bg";
 }
 </script>
 
