@@ -1,475 +1,121 @@
-<!doctype html>
-<html lang="my">
+<!DOCTYPE html><html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Fancy Login / Signup</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Login / Signup</title>
 <style>
-  :root{
-    --bg1: #f7f6ff;
-    --bg2: #eef4ff;
-    --card: rgba(255,255,255,0.6);
-    --accent1: #6b46c1;
-    --accent2: #8b5cf6;
-    --danger: #ef4444;
-    --muted: #6b7280;
-  }
+    body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(180deg, #eef1ff, #ffffff);
+        height: 100vh;
+        overflow-x: hidden;
+    }/* Snow Effect */
+.snow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
 
-  html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;}
-  body{
-    background: linear-gradient(160deg,var(--bg1),var(--bg2));
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-  }
-
-  /* Floating stars background */
-  .star {
+.snow span {
     position: absolute;
-    width: 4px;
-    height: 4px;
+    top: -10px;
+    width: 6px;
+    height: 6px;
     background: white;
     border-radius: 50%;
-    box-shadow: 0 0 8px rgba(255,255,255,0.9);
-    opacity: .9;
-    transform: translateY(0);
-    animation-name: floatUp;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-  }
-  @keyframes floatUp {
-    0% { transform: translateY(0) scale(0.8); opacity: 0.9; }
-    50% { transform: translateY(-40vh) scale(1.4); opacity: 1; }
-    100% { transform: translateY(-80vh) scale(0.8); opacity: 0; }
-  }
+    opacity: 0.8;
+    animation: fall linear infinite;
+}
 
-  /* iPhone style container */
-  .mock {
-    width: 380px;
-    max-width: 95vw;
-    height: 800px;
-    border-radius: 34px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(248,247,255,0.8));
-    box-shadow: 0 20px 60px rgba(15,15,40,0.12);
-    padding: 18px;
-    position: relative;
-    overflow: hidden;
-    display:flex;
-    flex-direction:column;
-  }
+@keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(110vh) rotate(360deg); }
+}
 
-  .statusbar{
-    height: 44px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    color:var(--muted);
-    font-size:13px;
-    padding-left:8px;
-  }
+.card {
+    width: 90%;
+    max-width: 380px;
+    margin: 80px auto;
+    padding: 30px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(16px);
+    text-align: center;
+}
 
-  .screen{
-    flex:1;
-    padding:12px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
+h2 {
+    margin: 10px 0 5px;
+    font-size: 28px;
+    font-weight: 700;
+}
 
-  .card {
-    width: 92%;
-    max-width: 340px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));
-    border-radius: 24px;
-    padding: 18px;
-    box-shadow: 0 12px 30px rgba(75,63,199,0.08);
-    backdrop-filter: blur(10px);
-    position: relative;
-    transform: translateY(0);
-    transition: transform .35s ease, box-shadow .35s ease;
-  }
+p {
+    margin-top: -5px;
+    color: #555;
+    font-size: 14px;
+}
 
-  .card.float {
-    animation: bob 4s ease-in-out infinite;
-  }
-  @keyframes bob {
-    0%{ transform: translateY(0) }
-    50%{ transform: translateY(-6px) }
-    100%{ transform: translateY(0) }
-  }
-
-  .logo {
-    width:78px;height:78px;border-radius:16px;background:linear-gradient(180deg,#fff,#f6f5ff);
-    display:flex;align-items:center;justify-content:center;margin:0 auto 10px;
-    box-shadow: 0 10px 30px rgba(99,102,241,0.06);
-  }
-
-  h1 { font-size:20px; text-align:center; margin:6px 0 2px; color:#111827; }
-  p.subtitle { text-align:center; font-size:13px; color:var(--muted); margin:0 0 12px; }
-
-  form { display:flex; flex-direction:column; gap:10px; }
-
-  .input {
-    background: white;
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 18px;
     border-radius: 12px;
-    padding: 10px 12px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    box-shadow: 0 6px 18px rgba(99,102,241,0.06);
-    border:1px solid rgba(0,0,0,0.03);
-  }
+    border: none;
+    background: #f3f3f3;
+    font-size: 15px;
+}
 
-  .input input{ border:0; outline:none; font-size:15px; flex:1; background:transparent;}
-
-  .row { display:flex; gap:10px; }
-  .btn {
-    background: linear-gradient(90deg,var(--accent1), var(--accent2));
+.btn {
+    margin-top: 25px;
+    width: 100%;
+    padding: 13px;
+    background: linear-gradient(90deg, #7a42ff, #b072ff);
     color: white;
-    border: 0;
-    padding: 12px 14px;
+    border: none;
     border-radius: 12px;
-    font-weight:700;
-    cursor:pointer;
-    box-shadow: 0 10px 24px rgba(99,102,241,0.14);
-    transition: transform .15s ease;
-  }
-  .btn:active{ transform: translateY(2px); }
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+}
 
-  .ghost { background: transparent; border:1px solid rgba(0,0,0,0.06); box-shadow:none; color:var(--muted); }
+.small-links {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #6b4bff;
+}
 
-  .muted { font-size:13px; color:var(--muted); text-align:center; margin-top:8px; }
-
-  .links { display:flex; justify-content:space-between; align-items:center; font-size:13px; color:var(--muted); margin-top:6px; }
-  .linkBtn { color:var(--accent1); font-weight:600; cursor:pointer; }
-
-  /* hidden class */
-  .hidden{ display:none !important; opacity:0; }
-
-  /* welcome card */
-  .homeName { font-size:18px; color:#111; font-weight:600; text-align:center; margin-top:6px; }
-  .logoutBtn { background:#ef4444; color:white; border:0; padding:12px; border-radius:12px; width:100%; margin-top:14px; font-weight:700; cursor:pointer; }
-
-  /* password strength bar */
-  .strength { height:8px; border-radius:8px; background:rgba(0,0,0,0.06); overflow:hidden; margin-top:6px; }
-  .strength > i{ display:block; height:100%; width:0%; background:linear-gradient(90deg,#ff7a18,#ffb347); transition: width .3s ease; }
-
-  /* small screens */
-  @media (max-width:420px){
-    .mock{ height:92vh; width:92vw; border-radius:20px; padding:12px; }
-  }
 </style>
 </head>
-<body>
+<body><!-- Snow Container --><div class="snow"></div><div class="card">
+    <h2>Welcome Back</h2>
+    <p>Please enter your login details</p><input type="email" placeholder="Email" />
+<input type="password" placeholder="Password" />
 
-<!-- Floating stars will be injected by JS -->
-<div class="mock" role="application" aria-label="Auth mock">
-  <div class="statusbar">12:30 &nbsp; • &nbsp; Mock App UI</div>
+<button class="btn">Login</button>
 
-  <div class="screen">
-    <div class="card float" id="authCard">
+<div class="small-links">
+    <span>Forgot?</span>
+    <span>New? Sign up</span>
+</div>
 
-      <div class="logo" aria-hidden>
-        <!-- simple washing machine like svg from earlier -->
-        <svg width="46" height="46" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="2" y="3" width="20" height="18" rx="3" stroke="#6B46C1" stroke-width="1.2" fill="#fff"/>
-          <circle cx="12" cy="11" r="3.2" stroke="#6B46C1" stroke-width="1.2" fill="#f8f7ff"/>
-          <path d="M7 18h10" stroke="#6B46C1" stroke-width="1.2" stroke-linecap="round"/>
-        </svg>
-      </div>
-
-      <!-- Titles -->
-      <h1 id="pageTitle">Ayo sign up</h1>
-      <p class="subtitle" id="pageSubtitle">Buat akun baru dulu ya</p>
-
-      <!-- SIGNUP FORM -->
-      <form id="signupForm">
-        <div class="input">
-          <input id="su_name" type="text" placeholder="Full name (Aye Chan Phyo)" autocomplete="name" required />
-        </div>
-        <div class="input">
-          <input id="su_email" type="email" placeholder="Email" autocomplete="email" required />
-        </div>
-        <div class="input" style="align-items:center;">
-          <input id="su_password" type="password" placeholder="Create password" autocomplete="new-password" required />
-          <button type="button" id="su_show" style="border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:13px">Show</button>
-        </div>
-
-        <div class="strength" aria-hidden><i id="su_strength"></i></div>
-        <div style="display:flex;gap:8px;margin-top:6px;">
-          <button type="button" class="btn" id="signupBtn" style="flex:1">Sign up</button>
-          <button type="button" class="btn ghost" id="genBtn" title="Generate strong">Gen</button>
-        </div>
-
-        <div class="links">
-          <div style="display:flex;align-items:center;gap:8px;"><input id="su_remember" type="checkbox" /> <label for="su_remember" class="muted" style="margin:0">Remember</label></div>
-          <div class="linkBtn" id="toLogin">Have account? Login</div>
-        </div>
-        <div id="su_msg" class="muted" style="height:18px;margin-top:6px;color:var(--danger)"></div>
-      </form>
-
-      <!-- LOGIN FORM -->
-      <form id="loginForm" class="hidden">
-        <div class="input">
-          <input id="li_email" type="email" placeholder="Email" autocomplete="username" required />
-        </div>
-        <div class="input">
-          <input id="li_password" type="password" placeholder="Password" autocomplete="current-password" required />
-          <button type="button" id="li_show" style="border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:13px">Show</button>
-        </div>
-
-        <div style="display:flex;gap:8px;margin-top:6px;">
-          <button type="button" class="btn" id="loginBtn" style="flex:1">Login</button>
-          <button type="button" class="btn ghost" id="li_clear" title="Clear saved users">Clear</button>
-        </div>
-
-        <div class="links" style="margin-top:10px">
-          <div class="linkBtn" id="forgot">Forgot?</div>
-          <div class="linkBtn" id="toSignup">New? Sign up</div>
-        </div>
-        <div id="li_msg" class="muted" style="height:18px;margin-top:6px;color:var(--danger)"></div>
-      </form>
-
-      <!-- HOME / WELCOME VIEW -->
-      <div id="homeView" class="hidden" aria-live="polite" style="padding:6px 0">
-        <h1 style="margin-bottom:6px">Welcome!</h1>
-        <div class="homeName" id="homeName">Guest</div>
-        <button class="logoutBtn" id="logoutBtn">Logout</button>
-        <div class="muted" style="margin-top:8px">Or Login With</div>
-        <div style="display:flex;gap:12px;justify-content:center;margin-top:10px">
-          <button class="btn ghost" id="googleBtn" style="width:46%">Google</button>
-          <button class="btn ghost" id="appleBtn" style="width:46%">Apple</button>
-        </div>
-      </div>
-
-    </div><!-- card -->
-  </div><!-- screen -->
-</div><!-- mock -->
-
-<script>
-/* -------------------------
-  Floating stars creation
---------------------------*/
-(function createStars(){
-  const n = 36;
-  for(let i=0;i<n;i++){
-    const s = document.createElement('div');
-    s.className = 'star';
-    const left = Math.random() * 100;
-    const top = 70 + Math.random() * 50; // start lower to float up
-    s.style.left = left + 'vw';
-    s.style.top = top + 'vh';
-    s.style.opacity = 0.6 + Math.random() * 0.6;
-    s.style.transform = 'translateY(0)';
-    s.style.animationDuration = (6 + Math.random()*6) + 's';
-    s.style.animationDelay = (Math.random()*2) + 's';
-    document.body.appendChild(s);
-  }
-})();
-
-/* -------------------------
-  Storage helpers
---------------------------*/
-function loadUsers(){
-  const raw = localStorage.getItem('users_v2');
-  if(!raw) return {};
-  try { return JSON.parse(raw); } catch(e){ return {}; }
-}
-function saveUsers(obj){
-  localStorage.setItem('users_v2', JSON.stringify(obj));
-}
-function encode(str){ return btoa(unescape(encodeURIComponent(str))); }
-function decode(str){ try{ return decodeURIComponent(escape(atob(str))); }catch(e){ return ''; } }
-
-/* -------------------------
-  Elements
---------------------------*/
-const signupForm = document.getElementById('signupForm');
-const loginForm = document.getElementById('loginForm');
-const homeView = document.getElementById('homeView');
-
-const toLogin = document.getElementById('toLogin');
-const toSignup = document.getElementById('toSignup');
-
-const su_name = document.getElementById('su_name');
-const su_email = document.getElementById('su_email');
-const su_password = document.getElementById('su_password');
-const su_show = document.getElementById('su_show');
-const signupBtn = document.getElementById('signupBtn');
-const genBtn = document.getElementById('genBtn');
-const su_msg = document.getElementById('su_msg');
-const su_strength = document.getElementById('su_strength');
-
-const li_email = document.getElementById('li_email');
-const li_password = document.getElementById('li_password');
-const li_show = document.getElementById('li_show');
-const loginBtn = document.getElementById('loginBtn');
-const li_clear = document.getElementById('li_clear');
-const li_msg = document.getElementById('li_msg');
-
-const homeName = document.getElementById('homeName');
-const logoutBtn = document.getElementById('logoutBtn');
-
-/* -------------------------
-  UI navigation
---------------------------*/
-function showSignupView(){
-  document.getElementById('pageTitle').innerText = 'Ayo sign up';
-  document.getElementById('pageSubtitle').innerText = 'Buat akun baru dulu ya';
-  signupForm.classList.remove('hidden');
-  loginForm.classList.add('hidden');
-  homeView.classList.add('hidden');
-}
-function showLoginView(){
-  document.getElementById('pageTitle').innerText = 'Ayo login';
-  document.getElementById('pageSubtitle').innerText = 'Lengkapi data dirimu dulu ya';
-  signupForm.classList.add('hidden');
-  loginForm.classList.remove('hidden');
-  homeView.classList.add('hidden');
-}
-function showHomeView(user){
-  document.getElementById('pageTitle').innerText = 'Welcome';
-  document.getElementById('pageSubtitle').innerText = 'You are logged in';
-  signupForm.classList.add('hidden');
-  loginForm.classList.add('hidden');
-  homeView.classList.remove('hidden');
-  homeName.innerText = user.name || user.email || 'User';
-}
-
-/* -------------------------
-  Password strength (very simple)
---------------------------*/
-function calcStrength(p){
-  let score = 0;
-  if(p.length >= 8) score += 1;
-  if(/[A-Z]/.test(p)) score += 1;
-  if(/[0-9]/.test(p)) score += 1;
-  if(/[^A-Za-z0-9]/.test(p)) score += 1;
-  return score; // 0..4
-}
-function updateStrengthBar(p){
-  const s = calcStrength(p);
-  const percent = (s / 4) * 100;
-  su_strength.style.width = percent + '%';
-  if(s<=1) su_strength.style.background = '#ff6b6b';
-  else if(s==2) su_strength.style.background = '#ffb347';
-  else if(s==3) su_strength.style.background = 'linear-gradient(90deg,#7ed957,#16a34a)';
-  else su_strength.style.background = 'linear-gradient(90deg,#6b46c1,#8b5cf6)';
-}
-
-/* -------------------------
-  Show / Hide password
---------------------------*/
-su_show.addEventListener('click', ()=>{
-  if(su_password.type === 'password'){ su_password.type='text'; su_show.innerText='Hide'; }
-  else { su_password.type='password'; su_show.innerText='Show'; }
-});
-li_show.addEventListener('click', ()=>{
-  if(li_password.type === 'password'){ li_password.type='text'; li_show.innerText='Hide'; }
-  else { li_password.type='password'; li_show.innerText='Show'; }
-});
-
-/* -------------------------
-  Password generator
---------------------------*/
-function genPassword(len=12){
-  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~';
-  let out = '';
-  for(let i=0;i<len;i++) out += chars[Math.floor(Math.random()*chars.length)];
-  return out;
-}
-genBtn.addEventListener('click', ()=>{
-  const p = genPassword(12);
-  su_password.value = p;
-  updateStrengthBar(p);
-  su_msg.innerText = 'Generated strong password (copy it!)';
-  su_msg.style.color = '#16a34a';
-  setTimeout(()=>{ su_msg.innerText=''; su_msg.style.color='var(--danger)'; }, 3000);
-});
-
-/* -------------------------
-  Signup logic
---------------------------*/
-signupBtn.addEventListener('click', ()=>{
-  su_msg.innerText = '';
-  const name = su_name.value.trim();
-  const email = (su_email.value||'').trim().toLowerCase();
-  const pass = su_password.value;
-
-  if(!name || !email || !pass){ su_msg.innerText = 'ကျေးဇူးပြု၍ အချက်အလက် အကုန်ဖြည့်ပါ'; su_msg.style.color = 'var(--danger)'; return; }
-  const users = loadUsers();
-  if(users[email]){ su_msg.innerText = 'အဲဒီ email နဲ့ user ရှိပြီးသားပါ'; su_msg.style.color = 'var(--danger)'; return; }
-
-  // store: password encoded (demo)
-  users[email] = { name, email, password: encode(pass) };
-  saveUsers(users);
-
-  // auto-login
-  localStorage.setItem('currentUser', JSON.stringify({ name, email }));
-  showHomeView({ name, email });
-});
-
-/* live strength update */
-su_password.addEventListener('input', (e)=>{ updateStrengthBar(e.target.value); });
-
-/* -------------------------
-  Login logic
---------------------------*/
-loginBtn.addEventListener('click', ()=>{
-  li_msg.innerText = '';
-  const email = (li_email.value||'').trim().toLowerCase();
-  const pass = li_password.value;
-  if(!email || !pass){ li_msg.innerText = 'ကျေးဇူးပြု၍ အချက်အလက် ဖြည့်ပါ'; return; }
-  const users = loadUsers();
-  if(!users[email]){ li_msg.innerText = 'User မတွေ့ပါ'; return; }
-  const user = users[email];
-  if(decode(user.password) !== pass){ li_msg.innerText = 'Password မမှန်ပါ'; return; }
-
-  localStorage.setItem('currentUser', JSON.stringify({ name: user.name, email }));
-  showHomeView({ name: user.name, email });
-});
-
-/* -------------------------
-  Logout / Clear
---------------------------*/
-logoutBtn.addEventListener('click', ()=>{
-  localStorage.removeItem('currentUser');
-  showLoginView();
-});
-
-li_clear.addEventListener('click', ()=>{
-  if(confirm('Clear all saved users?')){ localStorage.removeItem('users_v2'); alert('Cleared'); }
-});
-
-/* -------------------------
-  Navigation & init
---------------------------*/
-toLogin.addEventListener('click', showLoginView);
-toSignup.addEventListener('click', showSignupView);
-document.getElementById('toLogin').addEventListener('click', showLoginView);
-document.getElementById('toSignup').addEventListener('click', showSignupView);
-document.getElementById('forgot').addEventListener('click', ()=>{
-  alert('Forgot password demo. Use Sign up to create a new account.');
-});
-
-/* check logged in */
-(function init(){
-  const cur = localStorage.getItem('currentUser');
-  if(cur){
-    try{
-      const u = JSON.parse(cur);
-      showHomeView(u);
-    }catch(e){
-      showSignupView();
+</div><script>
+    // Generate falling snow
+    const snowContainer = document.querySelector('.snow');
+    for (let i = 0; i < 50; i++) {
+        const snow = document.createElement('span');
+        snow.style.left = Math.random() * 100 + '%';
+        snow.style.animationDuration = 2 + Math.random() * 3 + 's';
+        snow.style.opacity = Math.random();
+        snow.style.width = snow.style.height = 4 + Math.random() * 4 + 'px';
+        snowContainer.appendChild(snow);
     }
-  } else {
-    // default show signup
-    showSignupView();
-  }
-})();
-</script>
-</body>
+</script></body>
 </html>
