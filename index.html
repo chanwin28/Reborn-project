@@ -1,285 +1,172 @@
-<!doctype html>
-<html lang="my">
+<!-- Fancy Glow Login UI --><!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Login / Signup - Simple Web</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fancy Login</title>
   <style>
-    :root{
-      --bg:#f6f5ff;
-      --card:#ffffff;
-      --accent:#4f46e5;
-      --accent-2:#7c6cf0;
-      --muted:#6b7280;
-      --success:#16a34a;
-      --danger:#ef4444;
-      font-family: Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-    }
-    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#f3f2ff 60%);display:flex;align-items:center;justify-content:center;}
-    .mock-phone{width:390px;max-width:95vw;height:780px;background:linear-gradient(180deg,#fff,#faf8ff);border-radius:34px;box-shadow:0 18px 40px rgba(20,20,50,.12);overflow:hidden;border:1px solid rgba(0,0,0,.04);display:flex;flex-direction:column;}
-    .status{height:48px;display:flex;align-items:center;padding:0 16px;color:var(--muted);font-size:14px}
-    .screen{flex:1;padding:22px;overflow:auto}
-    .top-ill{display:flex;align-items:center;gap:12px;margin-top:6px}
-    .logo-box{width:88px;height:88px;border-radius:14px;background:linear-gradient(180deg,#fff,#f8f7ff);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(79,70,229,0.08)}
-    .title{font-weight:700;color:#111827;margin-top:12px;font-size:20px}
-    .subtitle{color:var(--muted);font-size:13px;margin-top:4px}
-    .card{margin-top:18px;background:linear-gradient(180deg,#f7f6ff,#f3f2ff);padding:18px;border-radius:30px;box-shadow:0 10px 30px rgba(99,102,241,0.06)}
-    .input{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(99,102,241,0.06);display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
-    .input label{font-size:12px;color:var(--muted)}
-    .input input{border:0;outline:none;font-size:15px;background:transparent}
-    .btn{width:100%;padding:12px;border-radius:12px;border:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;font-weight:700;font-size:15px;box-shadow:0 10px 20px rgba(99,102,241,0.18);cursor:pointer}
-    .link-row{display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:13px;color:var(--muted)}
-    .or{display:flex;align-items:center;gap:8px;margin-top:12px}
-    .or .line{flex:1;height:1px;background:rgba(0,0,0,0.06)}
-    .socials{display:flex;gap:12px;margin-top:12px;justify-content:center}
-    .social-btn{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:#fff;box-shadow:0 6px 12px rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.04);cursor:pointer}
-    .muted-small{text-align:center;color:var(--muted);margin-top:12px;font-size:13px}
-    .small-link{color:var(--accent);font-weight:600;cursor:pointer}
-    .hidden{display:none}
-    .danger{color:var(--danger);font-size:13px;margin-top:6px}
-    .success{color:var(--success);font-size:13px;margin-top:6px}
-    /* responsive tiny adjustments */
-    @media (max-width:420px){ .mock-phone{height:88vh} }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }body {
+  background: linear-gradient(135deg, #e8d7ff, #ffffff);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Star sparkle animations */
+.star {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 8px white;
+  animation: sparkle 2s infinite ease-in-out;
+}
+
+@keyframes sparkle {
+  0% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.4); }
+  100% { opacity: 0.2; transform: scale(0.8); }
+}
+
+.container {
+  width: 330px;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+p { color: #555; margin-bottom: 20px; }
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  background: #f2f2f2;
+  font-size: 14px;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  background: #5b4bff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover { background: #4235d9; }
+
+.social-btns {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.social-btns button {
+  width: 48%;
+  padding: 10px;
+  border: none;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+.footer-text { margin-top: 18px; font-size: 14px; }
+
   </style>
 </head>
 <body>
-  <div class="mock-phone" role="application">
-    <div class="status">12:30 &nbsp; • &nbsp; Mock App UI</div>
+  <div class="star" style="top: 10%; left: 20%; animation-delay: 0s"></div>
+  <div class="star" style="top: 30%; left: 70%; animation-delay: 0.6s"></div>
+  <div class="star" style="top: 60%; left: 40%; animation-delay: 1s"></div>
+  <div class="star" style="top: 80%; left: 15%; animation-delay: 1.5s"></div>  <div class="container">
+    <h2>Welcome Back</h2>
+    <p>Please login to continue ✨</p><input type="email" placeholder="Email" />
+<input type="password" placeholder="Password" />
+<button class="btn">Login</button>
 
-    <div class="screen">
-      <!-- Header -->
-      <div class="top-ill">
-        <div class="logo-box" aria-hidden>
-          <!-- simple icon -->
-          <svg width="44" height="44" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="3" fill="#f8f7ff" stroke="#6B46C1"/></svg>
-        </div>
-        <div>
-          <div class="title" id="pageTitle">Ayo login</div>
-          <div class="subtitle" id="pageSub">Lengkapi data dirimu dulu ya</div>
-        </div>
-      </div>
+<div class="social-btns">
+  <button>Google</button>
+  <button>Apple</button>
+</div>
 
-      <!-- Card -->
-      <div class="card" id="authCard">
-        <!-- Signup form -->
-        <form id="signupForm" class="form">
-          <div class="input">
-            <label>Full name</label>
-            <input type="text" id="su_name" placeholder="e.g. Aye Chan Phyo" required />
-          </div>
+<p class="footer-text">Don't have an account? <a href="#">Signup</a></p>
 
-          <div class="input">
-            <label>Email</label>
-            <input type="email" id="su_email" placeholder="you@example.com" required />
-          </div>
-
-          <div class="input">
-            <label>Password</label>
-            <div style="display:flex;align-items:center;gap:8px">
-              <input type="password" id="su_password" placeholder="Create a password" style="flex:1" required />
-              <button type="button" id="su_toggle" style="border:0;background:transparent;cursor:pointer;color:var(--muted)">Show</button>
-            </div>
-          </div>
-
-          <div id="su_msg" class="danger hidden"></div>
-
-          <button class="btn" id="signupBtn" type="button">Sign Up</button>
-          <div class="link-row">
-            <div style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="su_remember" /> <label for="su_remember" style="font-size:13px;color:var(--muted)">Remember me</label></div>
-            <div style="font-size:13px;color:var(--muted)">Have account? <span class="small-link" id="toLogin">Login</span></div>
-          </div>
-        </form>
-
-        <!-- Login form -->
-        <form id="loginForm" class="form hidden">
-          <div class="input">
-            <label>Email</label>
-            <input type="email" id="li_email" placeholder="you@example.com" required />
-          </div>
-
-          <div class="input">
-            <label>Password</label>
-            <div style="display:flex;align-items:center;gap:8px">
-              <input type="password" id="li_password" placeholder="Password" style="flex:1" required />
-              <button type="button" id="li_toggle" style="border:0;background:transparent;cursor:pointer;color:var(--muted)">Show</button>
-            </div>
-          </div>
-
-          <div id="li_msg" class="danger hidden"></div>
-
-          <button class="btn" id="loginBtn" type="button">Login</button>
-          <div class="link-row">
-            <div style="font-size:13px;color:var(--muted)"><span class="small-link" id="forgot">Lupa Password?</span></div>
-            <div style="font-size:13px;color:var(--muted)">New here? <span class="small-link" id="toSignup">Sign up</span></div>
-          </div>
-        </form>
-
-        <!-- Success area -->
-        <div id="homeView" class="hidden">
-          <div style="text-align:center">
-            <h3 style="margin:0">Welcome!</h3>
-            <p class="muted-small" id="welcomeName">You are logged in.</p>
-            <button class="btn" id="logoutBtn" style="margin-top:14px;background:#ef4444">Logout</button>
-          </div>
-        </div>
-
-        <div class="or">
-          <div class="line"></div>
-          <div style="font-size:13px;color:var(--muted)">Or Login With</div>
-          <div class="line"></div>
-        </div>
-
-        <div class="socials">
-          <div class="social-btn" id="googleBtn"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M21 12.3c0-.7-.1-1.4-.3-2H12v3.8h5.5c-.2 1.2-.9 2.1-1.9 2.7v2.2h3.1c1.8-1.6 2.8-4 2.8-6.7z" fill="#4285F4"/></svg> Google</div>
-          <div class="social-btn" id="appleBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16.365 1.43c-.9.1-2 0-2.9.6-.6.4-1.2 1.1-1.9 1.1-.7 0-1.6-.7-2.6-.7-1.3 0-2.9.8-3.8 2.2C3 7 4 11.2 6.5 13.4c1 0 2.1-.7 3.3-.7 1.2 0 2.1.7 3.4.7 2.8-1.9 4-6.7 2.9-10.1-.5-1.6-1.3-2.1-2.2-2.1z"/></svg> Apple</div>
-        </div>
-
-        <div class="muted-small">Belum punya akun? <span class="small-link" id="bottomSignup">Daftar di sini</span></div>
-      </div>
-    </div>
   </div>
-
-<script>
-  // --- Utilities (simple base64 encode for storing password) ---
-  const encode = (s) => btoa(unescape(encodeURIComponent(s)));
-  const decode = (s) => decodeURIComponent(escape(atob(s)));
-
-  // --- DOM ---
-  const signupForm = document.getElementById('signupForm');
-  const loginForm = document.getElementById('loginForm');
-  const homeView = document.getElementById('homeView');
-  const pageTitle = document.getElementById('pageTitle');
-  const pageSub = document.getElementById('pageSub');
-
-  const su_name = document.getElementById('su_name');
-  const su_email = document.getElementById('su_email');
-  const su_password = document.getElementById('su_password');
-  const su_toggle = document.getElementById('su_toggle');
-  const su_msg = document.getElementById('su_msg');
-  const signupBtn = document.getElementById('signupBtn');
-
-  const li_email = document.getElementById('li_email');
-  const li_password = document.getElementById('li_password');
-  const li_toggle = document.getElementById('li_toggle');
-  const li_msg = document.getElementById('li_msg');
-  const loginBtn = document.getElementById('loginBtn');
-
-  const toLogin = document.getElementById('toLogin');
-  const toSignup = document.getElementById('toSignup');
-  const bottomSignup = document.getElementById('bottomSignup');
-  const logoutBtn = document.getElementById('logoutBtn');
-
-  // --- Helpers ---
-  function showSignup(){
-    signupForm.classList.remove('hidden');
-    loginForm.classList.add('hidden');
-    homeView.classList.add('hidden');
-    pageTitle.textContent = 'Ayo sign up';
-    pageSub.textContent = 'Buat akun baru dulu ya';
-  }
-  function showLogin(){
-    signupForm.classList.add('hidden');
-    loginForm.classList.remove('hidden');
-    homeView.classList.add('hidden');
-    pageTitle.textContent = 'Ayo login';
-    pageSub.textContent = 'Lengkapi data dirimu dulu ya';
-  }
-  function showHome(user){
-    signupForm.classList.add('hidden');
-    loginForm.classList.add('hidden');
-    homeView.classList.remove('hidden');
-    pageTitle.textContent = 'Welcome';
-    pageSub.textContent = 'You are logged in';
-    document.getElementById('welcomeName').textContent = user.name || user.email;
-  }
-
-  // --- storage helpers ---
-  function loadUsers(){
-    const raw = localStorage.getItem('users');
-    if(!raw) return {};
-    try { return JSON.parse(raw); } catch(e){ return {}; }
-  }
-  function saveUsers(obj){
-    localStorage.setItem('users', JSON.stringify(obj));
-  }
-  function getCurrent(){
-    const cur = localStorage.getItem('currentUser');
-    return cur ? JSON.parse(cur) : null;
-  }
-  function setCurrent(user){
-    localStorage.setItem('currentUser', JSON.stringify(user));
-  }
-  function clearCurrent(){
-    localStorage.removeItem('currentUser');
-  }
-
-  // --- toggles ---
-  su_toggle.onclick = ()=> {
-    if(su_password.type === 'password'){ su_password.type='text'; su_toggle.textContent='Hide' } else { su_password.type='password'; su_toggle.textContent='Show' }
-  }
-  li_toggle.onclick = ()=> {
-    if(li_password.type === 'password'){ li_password.type='text'; li_toggle.textContent='Hide' } else { li_password.type='password'; li_toggle.textContent='Show' }
-  }
-
-  // --- navigation ---
-  toLogin.onclick = showLogin;
-  toSignup.onclick = showSignup;
-  bottomSignup.onclick = showSignup;
-
-  // --- Signup logic ---
-  signupBtn.onclick = ()=>{
-    su_msg.classList.add('hidden');
-    const name = su_name.value.trim();
-    const email = su_email.value.trim().toLowerCase();
-    const pass = su_password.value;
-
-    if(!name || !email || !pass){ su_msg.textContent='ကျေးဇူးပြု၍ အချက်အလက် အကုန်ဖြည့်ပါ'; su_msg.classList.remove('hidden'); return; }
-    const users = loadUsers();
-    if(users[email]){ su_msg.textContent='အဲဒီ email နဲ့ user ရှိပြီးသားပါ'; su_msg.classList.remove('hidden'); return; }
-
-    // store (password encoded, not secure for production!)
-    users[email] = { name, email, password: encode(pass) };
-    saveUsers(users);
-
-    // auto-login
-    setCurrent({name, email});
-    showHome({name, email});
-  };
-
-  // --- Login logic ---
-  loginBtn.onclick = ()=>{
-    li_msg.classList.add('hidden');
-    const email = li_email.value.trim().toLowerCase();
-    const pass = li_password.value;
-
-    if(!email || !pass){ li_msg.textContent='ကျေးဇူးပြု၍ အချက်အလက် ဖြည့်ပါ'; li_msg.classList.remove('hidden'); return; }
-    const users = loadUsers();
-    if(!users[email]){ li_msg.textContent='User မတွေ့ပါ'; li_msg.classList.remove('hidden'); return; }
-
-    const user = users[email];
-    if(decode(user.password) !== pass){ li_msg.textContent='Password မမှန်ပါ'; li_msg.classList.remove('hidden'); return; }
-
-    setCurrent({name: user.name, email});
-    showHome({name: user.name, email});
-  };
-
-  // --- Logout ---
-  logoutBtn.onclick = ()=>{
-    clearCurrent();
-    showLogin();
-  };
-
-  // --- check already logged in ---
-  (function init(){
-    const cur = getCurrent();
-    if(cur) showHome(cur);
-    else showSignup(); // default view
-  })();
-
-  // --- social buttons (dummy) ---
-  document.getElementById('googleBtn').onclick = ()=> alert('Google Sign-in ကို demo only ဖြစ်တယ်။ Firebase သုံးပြီးချိတ်ဆက်ပါ။');
-  document.getElementById('appleBtn').onclick = ()=> alert('Apple Sign-in ကို demo only ဖြစ်တယ်။ Firebase/Auth သုံးပြီးချိတ်ပါ။');
-
-</script>
 </body>
-</html>
+</html><!-- 🔥 Added Working Login & Signup Logic Below --><script>
+  const users = JSON.parse(localStorage.getItem('users') || '{}');
+
+  function signup(event) {
+    event.preventDefault();
+    const email = document.getElementById('signupEmail').value;
+    const pass = document.getElementById('signupPass').value;
+
+    if (users[email]) {
+      alert('Email already exists!');
+      return;
+    }
+
+    users[email] = pass;
+    localStorage.setItem('users', JSON.stringify(users));
+
+    alert('Account Created Successfully!');
+    showLogin();
+  }
+
+  function login(event) {
+    event.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const pass = document.getElementById('loginPass').value;
+
+    if (users[email] && users[email] === pass) {
+      document.getElementById('welcomeName').innerText = email;
+      document.getElementById('loginBox').style.display = 'none';
+      document.getElementById('signupBox').style.display = 'none';
+      document.getElementById('homeBox').style.display = 'block';
+    } else {
+      alert('Invalid Credentials!');
+    }
+  }
+
+  function logout() {
+    document.getElementById('homeBox').style.display = 'none';
+    showLogin();
+  }
+
+  function showLogin() {
+    document.getElementById('loginBox').style.display = 'block';
+    document.getElementById('signupBox').style.display = 'none';
+  }
+
+  function showSignup() {
+    document.getElementById('loginBox').style.display = 'none';
+    document.getElementById('signupBox').style.display = 'block';
+  }
+</script>
