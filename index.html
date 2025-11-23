@@ -1,172 +1,143 @@
-<!-- Fancy Glow Login UI --><!DOCTYPE html><html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fancy Login</title>
+  <title>Login / Signup UI</title>
   <style>
-    * {
+    body {
       margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }body {
-  background: linear-gradient(135deg, #e8d7ff, #ffffff);
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(145deg, #eef0ff, #ffffff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }.card {
+  width: 350px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 25px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: relative;
   overflow: hidden;
 }
 
-/* Star sparkle animations */
-.star {
+.glow {
   position: absolute;
-  width: 6px;
-  height: 6px;
-  background: white;
-  border-radius: 50%;
-  box-shadow: 0 0 8px white;
-  animation: sparkle 2s infinite ease-in-out;
+  top: -50px;
+  left: -50px;
+  width: 150px;
+  height: 150px;
+  background: rgba(120, 90, 255, 0.4);
+  filter: blur(60px);
+  animation: float 4s infinite ease-in-out;
 }
 
-@keyframes sparkle {
-  0% { opacity: 0.2; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.4); }
-  100% { opacity: 0.2; transform: scale(0.8); }
+@keyframes float {
+  0% { transform: translate(0,0); }
+  50% { transform: translate(20px,20px); }
+  100% { transform: translate(0,0); }
 }
 
-.container {
-  width: 330px;
-  padding: 30px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 25px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-  backdrop-filter: blur(10px);
-  text-align: center;
-  position: relative;
-  z-index: 10;
-}
-
-h2 {
-  font-size: 26px;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-
-p { color: #555; margin-bottom: 20px; }
+h2 { margin-bottom: 10px; }
 
 input {
   width: 100%;
   padding: 12px;
   margin: 10px 0;
-  border-radius: 12px;
-  border: none;
+  border-radius: 10px;
+  border: 1px solid #ccc;
   outline: none;
-  background: #f2f2f2;
   font-size: 14px;
 }
 
-.btn {
+button {
   width: 100%;
   padding: 12px;
-  background: #5b4bff;
-  color: white;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
+  background: #5b5bff;
+  color: #fff;
   font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.link {
   margin-top: 10px;
   cursor: pointer;
-  transition: 0.3s;
+  color: #4a4aff;
+  font-size: 14px;
 }
 
-.btn:hover { background: #4235d9; }
-
-.social-btns {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
+#welcome {
+  display: none;
 }
-
-.social-btns button {
-  width: 48%;
-  padding: 10px;
-  border: none;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  cursor: pointer;
-}
-
-.footer-text { margin-top: 18px; font-size: 14px; }
 
   </style>
 </head>
-<body>
-  <div class="star" style="top: 10%; left: 20%; animation-delay: 0s"></div>
-  <div class="star" style="top: 30%; left: 70%; animation-delay: 0.6s"></div>
-  <div class="star" style="top: 60%; left: 40%; animation-delay: 1s"></div>
-  <div class="star" style="top: 80%; left: 15%; animation-delay: 1.5s"></div>  <div class="container">
-    <h2>Welcome Back</h2>
-    <p>Please login to continue ✨</p><input type="email" placeholder="Email" />
-<input type="password" placeholder="Password" />
-<button class="btn">Login</button>
-
-<div class="social-btns">
-  <button>Google</button>
-  <button>Apple</button>
-</div>
-
-<p class="footer-text">Don't have an account? <a href="#">Signup</a></p>
-
+<body><div class="card">
+  <div class="glow"></div>  <!-- Login Form -->  <div id="loginForm">
+    <h2>Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email" />
+    <input type="password" id="loginPassword" placeholder="Password" />
+    <button onclick="login()">Login</button>
+    <div class="link" onclick="showSignup()">Don't have an account? Signup</div>
+  </div>  <!-- Signup Form -->  <div id="signupForm" style="display:none;">
+    <h2>Signup</h2>
+    <input type="text" id="signupName" placeholder="Your Name" />
+    <input type="email" id="signupEmail" placeholder="Email" />
+    <input type="password" id="signupPassword" placeholder="Password" />
+    <button onclick="signup()">Create Account</button>
+    <div class="link" onclick="showLogin()">Already have an account? Login</div>
+  </div>  <!-- Welcome Screen -->  <div id="welcome">
+    <h2>Welcome!</h2>
+    <p id="welcomeName"></p>
+    <button style="background:#ff4b4b;" onclick="logout()">Logout</button>
   </div>
-</body>
-</html><!-- 🔥 Added Working Login & Signup Logic Below --><script>
-  const users = JSON.parse(localStorage.getItem('users') || '{}');
+</div><script>
+  function showSignup(){
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("signupForm").style.display = "block";
+  }
 
-  function signup(event) {
-    event.preventDefault();
-    const email = document.getElementById('signupEmail').value;
-    const pass = document.getElementById('signupPass').value;
+  function showLogin(){
+    document.getElementById("signupForm").style.display = "none";
+    document.getElementById("loginForm").style.display = "block";
+  }
 
-    if (users[email]) {
-      alert('Email already exists!');
-      return;
-    }
+  function signup(){
+    const name = document.getElementById("signupName").value;
+    const email = document.getElementById("signupEmail").value;
+    const password = document.getElementById("signupPassword").value;
 
-    users[email] = pass;
-    localStorage.setItem('users', JSON.stringify(users));
+    if(!name || !email || !password){ alert("Fill all fields!"); return; }
 
-    alert('Account Created Successfully!');
+    localStorage.setItem("user", JSON.stringify({name, email, password}));
+    alert("Account Created!");
     showLogin();
   }
 
-  function login(event) {
-    event.preventDefault();
-    const email = document.getElementById('loginEmail').value;
-    const pass = document.getElementById('loginPass').value;
+  function login(){
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
 
-    if (users[email] && users[email] === pass) {
-      document.getElementById('welcomeName').innerText = email;
-      document.getElementById('loginBox').style.display = 'none';
-      document.getElementById('signupBox').style.display = 'none';
-      document.getElementById('homeBox').style.display = 'block';
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if(user && user.email === email && user.password === password){
+      document.getElementById("loginForm").style.display = "none";
+      document.getElementById("signupForm").style.display = "none";
+      document.getElementById("welcome").style.display = "block";
+      document.getElementById("welcomeName").innerText = user.name;
     } else {
-      alert('Invalid Credentials!');
+      alert("Wrong email or password!");
     }
   }
 
-  function logout() {
-    document.getElementById('homeBox').style.display = 'none';
+  function logout(){
+    document.getElementById("welcome").style.display = "none";
     showLogin();
   }
-
-  function showLogin() {
-    document.getElementById('loginBox').style.display = 'block';
-    document.getElementById('signupBox').style.display = 'none';
-  }
-
-  function showSignup() {
-    document.getElementById('loginBox').style.display = 'none';
-    document.getElementById('signupBox').style.display = 'block';
-  }
-</script>
+</script></body>
+</html>
