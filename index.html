@@ -1,190 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blue Green Auth UI</title>
-
-<style>
-    body {
-        margin: 0;
-        font-family: 'Poppins', sans-serif;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-size: 250% 250%;
-        animation: gradientMove 8s ease infinite;
-        transition: 0.7s ease;
-    }
-
-    /* LOGIN (Blue Gradient) */
-    .login-bg {
-        background: linear-gradient(135deg, #0072ff, #00c6ff);
-    }
-
-    /* SIGNUP (Green Gradient) */
-    .signup-bg {
-        background: linear-gradient(135deg, #38ef7d, #11998e);
-    }
-
-    @keyframes gradientMove {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-
-    .card {
-        width: 330px;
-        padding: 25px;
-        border-radius: 20px;
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(14px);
-        box-shadow: 0px 12px 40px rgba(0, 0, 0, 0.15);
-        text-align: center;
-        color: white;
-        animation: fadeIn 0.7s ease;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    input {
-        width: 90%;
-        padding: 13px;
-        margin-bottom: 15px;
-        border-radius: 12px;
-        border: none;
-        outline: none;
-        font-size: 15px;
-    }
-
-    button {
-        width: 90%;
-        padding: 13px;
-        border-radius: 12px;
-        border: none;
-        cursor: pointer;
-        background: white;
-        color: #333;
-        font-weight: bold;
-        font-size: 15px;
-        transition: 0.3s;
-    }
-
-    button:hover {
-        background: #e9e9e9;
-    }
-
-    .switch-text {
-        margin-top: 15px;
-        font-size: 14px;
-        cursor: pointer;
-        color: #fff;
-        text-decoration: underline;
-    }
-
-    #welcomePage {
-        display: none;
-    }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reborn</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="login-bg" id="bodyBG">
+<body>
 
-<div class="card" id="authCard">
-    <h2 id="formTitle">Login</h2>
+  <div class="container">
 
-    <input id="email" type="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
-
-    <button onclick="submitForm()">Continue</button>
-
-    <div class="switch-text" onclick="toggleForm()" id="switchText">
-        Don't have an account? Sign up
+    <!-- LOGIN -->
+    <div id="loginBox" class="card show">
+      <h2>Sign In</h2>
+      <input type="email" id="loginEmail" placeholder="Email" />
+      <input type="password" id="loginPassword" placeholder="Password" />
+      <button onclick="loginUser()">Sign In</button>
+      <p class="switch" onclick="showSignup()">Create new account</p>
+      <p id="loginError" class="error"></p>
     </div>
 
-    <p id="err" style="color: yellow; font-size: 13px;"></p>
-</div>
+    <!-- SIGNUP -->
+    <div id="signupBox" class="card">
+      <h2>Create Account</h2>
+      <input type="email" id="signupEmail" placeholder="Email" />
+      <input type="password" id="signupPassword" placeholder="Password" />
+      <button onclick="signupUser()">Sign Up</button>
+      <p class="switch" onclick="showLogin()">Already have an account?</p>
+      <p id="signupError" class="error"></p>
+    </div>
 
-<div class="card" id="welcomePage">
-    <h2>Welcome 🎉</h2>
-    <p id="welcomeEmail"></p>
-    <button onclick="logout()">Logout</button>
-</div>
+    <!-- WELCOME -->
+    <div id="welcomeBox" class="card">
+      <h2>Welcome 🎉</h2>
+      <p id="userEmail"></p>
+      <button onclick="logoutUser()">Logout</button>
+    </div>
 
-<script>
-let isLogin = true;
+  </div>
 
-// Switch Login <-> Signup
-function toggleForm() {
-    isLogin = !isLogin;
-
-    document.getElementById("formTitle").innerText = isLogin ? "Login" : "Sign Up";
-    document.getElementById("switchText").innerText =
-        isLogin ? "Don't have an account? Sign up" :
-                  "Already have an account? Login";
-
-    // Background switch
-    let body = document.getElementById("bodyBG");
-    body.className = isLogin ? "login-bg" : "signup-bg";
-
-    document.getElementById("err").innerText = "";
-}
-
-// Submit Login / Signup
-function submitForm() {
-    let email = document.getElementById("email").value.trim();
-    let pass = document.getElementById("password").value.trim();
-    let err = document.getElementById("err");
-
-    if (email === "" || pass === "") {
-        err.innerText = "Please fill all fields!";
-        return;
-    }
-
-    // Signup Save
-    if (!isLogin) {
-        localStorage.setItem("userEmail", email);
-        localStorage.setItem("userPass", pass);
-        showWelcome(email);
-        return;
-    }
-
-    // Login Check
-    let savedEmail = localStorage.getItem("userEmail");
-    let savedPass = localStorage.getItem("userPass");
-
-    if (email === savedEmail && pass === savedPass) {
-        showWelcome(email);
-    } else {
-        err.innerText = "Incorrect email or password!";
-    }
-}
-
-// Show Welcome Page
-function showWelcome(email) {
-    document.getElementById("authCard").style.display = "none";
-    document.getElementById("welcomePage").style.display = "block";
-    document.getElementById("welcomeEmail").innerText = email;
-
-    // Welcome page rainbow-ish gradient
-    document.getElementById("bodyBG").style.background =
-        "linear-gradient(135deg, #00c6ff, #0072ff)";
-}
-
-// Logout
-function logout() {
-    document.getElementById("authCard").style.display = "block";
-    document.getElementById("welcomePage").style.display = "none";
-    document.getElementById("email").value = "";
-    document.getElementById("password").value = "";
-
-    // Back to login (blue)
-    document.getElementById("bodyBG").className = "login-bg";
-}
-</script>
-
+  <script src="firebase.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
