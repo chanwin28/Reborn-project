@@ -1,121 +1,170 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Login / Signup</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beautiful Auth UI</title>
+
 <style>
     body {
         margin: 0;
-        font-family: "Poppins", sans-serif;
-        background: linear-gradient(180deg, #eef1ff, #ffffff);
+        font-family: 'Poppins', sans-serif;
         height: 100vh;
-        overflow-x: hidden;
-    }/* Snow Effect */
-.snow {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    overflow: hidden;
-}
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #9b5de5, #f15bb5, #fee440);
+        background-size: 300% 300%;
+        animation: gradientMove 8s ease infinite;
+    }
 
-.snow span {
-    position: absolute;
-    top: -10px;
-    width: 6px;
-    height: 6px;
-    background: white;
-    border-radius: 50%;
-    opacity: 0.8;
-    animation: fall linear infinite;
-}
+    @keyframes gradientMove {
+        0% {background-position: 0% 50%;}
+        50% {background-position: 100% 50%;}
+        100% {background-position: 0% 50%;}
+    }
 
-@keyframes fall {
-    0% { transform: translateY(0) rotate(0deg); }
-    100% { transform: translateY(110vh) rotate(360deg); }
-}
+    .card {
+        width: 330px;
+        padding: 25px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(12px);
+        box-shadow: 0px 10px 35px rgba(0,0,0,0.2);
+        text-align: center;
+        color: white;
+        animation: fadeIn 0.7s ease;
+    }
 
-.card {
-    width: 90%;
-    max-width: 380px;
-    margin: 80px auto;
-    padding: 30px;
-    border-radius: 25px;
-    background: rgba(255, 255, 255, 0.55);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(16px);
-    text-align: center;
-}
+    @keyframes fadeIn {
+        from {opacity: 0; transform: translateY(20px);}
+        to {opacity: 1; transform: translateY(0);}
+    }
 
-h2 {
-    margin: 10px 0 5px;
-    font-size: 28px;
-    font-weight: 700;
-}
+    h2 {
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
 
-p {
-    margin-top: -5px;
-    color: #555;
-    font-size: 14px;
-}
+    input {
+        width: 90%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border-radius: 12px;
+        border: none;
+        outline: none;
+    }
 
-input {
-    width: 100%;
-    padding: 12px;
-    margin-top: 18px;
-    border-radius: 12px;
-    border: none;
-    background: #f3f3f3;
-    font-size: 15px;
-}
+    button {
+        width: 90%;
+        padding: 12px;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        background: #fff;
+        color: #333;
+        font-weight: bold;
+        transition: 0.3s;
+    }
 
-.btn {
-    margin-top: 25px;
-    width: 100%;
-    padding: 13px;
-    background: linear-gradient(90deg, #7a42ff, #b072ff);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 17px;
-    font-weight: 600;
-    cursor: pointer;
-}
+    button:hover {
+        background: #f1f1f1;
+    }
 
-.small-links {
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    color: #6b4bff;
-}
+    .switch-text {
+        margin-top: 15px;
+        font-size: 14px;
+        cursor: pointer;
+        color: #fff;
+        text-decoration: underline;
+    }
 
+    #welcomePage {
+        display: none;
+    }
 </style>
 </head>
-<body><!-- Snow Container --><div class="snow"></div><div class="card">
-    <h2>Welcome Back</h2>
-    <p>Please enter your login details</p><input type="email" placeholder="Email" />
-<input type="password" placeholder="Password" />
+<body>
 
-<button class="btn">Login</button>
+<div class="card" id="authCard">
+    <h2 id="formTitle">Login</h2>
 
-<div class="small-links">
-    <span>Forgot?</span>
-    <span>New? Sign up</span>
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+
+    <button onclick="submitForm()">Continue</button>
+
+    <div class="switch-text" onclick="toggleForm()" id="switchText">
+        Don't have an account? Sign up
+    </div>
+
+    <p id="err" style="color: yellow; font-size: 13px;"></p>
 </div>
 
-</div><script>
-    // Generate falling snow
-    const snowContainer = document.querySelector('.snow');
-    for (let i = 0; i < 50; i++) {
-        const snow = document.createElement('span');
-        snow.style.left = Math.random() * 100 + '%';
-        snow.style.animationDuration = 2 + Math.random() * 3 + 's';
-        snow.style.opacity = Math.random();
-        snow.style.width = snow.style.height = 4 + Math.random() * 4 + 'px';
-        snowContainer.appendChild(snow);
+<div class="card" id="welcomePage">
+    <h2>Welcome 🎉</h2>
+    <p id="welcomeEmail"></p>
+
+    <button onclick="logout()">Logout</button>
+</div>
+
+<script>
+let isLogin = true;
+
+// Switch Login ↔ Signup
+function toggleForm() {
+    isLogin = !isLogin;
+    document.getElementById("formTitle").innerText = isLogin ? "Login" : "Sign Up";
+    document.getElementById("switchText").innerText =
+        isLogin ? "Don't have an account? Sign up" : "Already have an account? Login";
+    document.getElementById("err").innerText = "";
+}
+
+// Submit Login / Signup
+function submitForm() {
+    let email = document.getElementById("email").value.trim();
+    let pass = document.getElementById("password").value.trim();
+    let err = document.getElementById("err");
+
+    if (email === "" || pass === "") {
+        err.innerText = "Please fill all fields!";
+        return;
     }
-</script></body>
+
+    // Signup
+    if (!isLogin) {
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("userPass", pass);
+        showWelcome(email);
+        return;
+    }
+
+    // Login
+    let savedEmail = localStorage.getItem("userEmail");
+    let savedPass = localStorage.getItem("userPass");
+
+    if (email === savedEmail && pass === savedPass) {
+        showWelcome(email);
+    } else {
+        err.innerText = "Incorrect email or password!";
+    }
+}
+
+// Show Welcome Page
+function showWelcome(email) {
+    document.getElementById("authCard").style.display = "none";
+    document.getElementById("welcomePage").style.display = "block";
+    document.getElementById("welcomeEmail").innerText = email;
+}
+
+// Logout
+function logout() {
+    document.getElementById("authCard").style.display = "block";
+    document.getElementById("welcomePage").style.display = "none";
+    document.getElementById("email").value = "";
+    document.getElementById("password").value = "";
+}
+</script>
+
+</body>
 </html>
