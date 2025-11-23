@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Beautiful Auth UI</title>
+<title>Blue Green Auth UI</title>
 
 <style>
     body {
@@ -13,25 +13,25 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-size: 300% 300%;
+        background-size: 250% 250%;
         animation: gradientMove 8s ease infinite;
-        transition: background 0.6s ease;
+        transition: 0.7s ease;
     }
 
-    /* LOGIN BG */
+    /* LOGIN (Blue Gradient) */
     .login-bg {
-        background: linear-gradient(135deg, #ff758c, #ff7eb3, #fcb69f);
+        background: linear-gradient(135deg, #0072ff, #00c6ff);
     }
 
-    /* SIGNUP BG */
+    /* SIGNUP (Green Gradient) */
     .signup-bg {
-        background: linear-gradient(135deg, #5f0a87, #7a1ea1, #b333d6);
+        background: linear-gradient(135deg, #38ef7d, #11998e);
     }
 
     @keyframes gradientMove {
-        0% {background-position: 0% 50%;}
-        50% {background-position: 100% 50%;}
-        100% {background-position: 0% 50%;}
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
 
     .card {
@@ -39,41 +39,43 @@
         padding: 25px;
         border-radius: 20px;
         background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(12px);
-        box-shadow: 0px 10px 35px rgba(0,0,0,0.15);
+        backdrop-filter: blur(14px);
+        box-shadow: 0px 12px 40px rgba(0, 0, 0, 0.15);
         text-align: center;
         color: white;
         animation: fadeIn 0.7s ease;
     }
 
     @keyframes fadeIn {
-        from {opacity: 0; transform: translateY(20px);}
-        to {opacity: 1; transform: translateY(0);}
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     input {
         width: 90%;
-        padding: 12px;
+        padding: 13px;
         margin-bottom: 15px;
         border-radius: 12px;
         border: none;
         outline: none;
+        font-size: 15px;
     }
 
     button {
         width: 90%;
-        padding: 12px;
+        padding: 13px;
         border-radius: 12px;
         border: none;
         cursor: pointer;
-        background: #fff;
+        background: white;
         color: #333;
         font-weight: bold;
+        font-size: 15px;
         transition: 0.3s;
     }
 
     button:hover {
-        background: #f4f4f4;
+        background: #e9e9e9;
     }
 
     .switch-text {
@@ -115,7 +117,7 @@
 <script>
 let isLogin = true;
 
-// Switch Login ↔ Signup
+// Switch Login <-> Signup
 function toggleForm() {
     isLogin = !isLogin;
 
@@ -124,7 +126,7 @@ function toggleForm() {
         isLogin ? "Don't have an account? Sign up" :
                   "Already have an account? Login";
 
-    // Background colors change
+    // Background switch
     let body = document.getElementById("bodyBG");
     body.className = isLogin ? "login-bg" : "signup-bg";
 
@@ -142,7 +144,7 @@ function submitForm() {
         return;
     }
 
-    // Signup
+    // Signup Save
     if (!isLogin) {
         localStorage.setItem("userEmail", email);
         localStorage.setItem("userPass", pass);
@@ -150,7 +152,7 @@ function submitForm() {
         return;
     }
 
-    // Login
+    // Login Check
     let savedEmail = localStorage.getItem("userEmail");
     let savedPass = localStorage.getItem("userPass");
 
@@ -167,9 +169,9 @@ function showWelcome(email) {
     document.getElementById("welcomePage").style.display = "block";
     document.getElementById("welcomeEmail").innerText = email;
 
-    // Welcome page background (warm gold)
+    // Welcome page rainbow-ish gradient
     document.getElementById("bodyBG").style.background =
-        "linear-gradient(135deg, #f9d423, #ff4e50)";
+        "linear-gradient(135deg, #00c6ff, #0072ff)";
 }
 
 // Logout
@@ -179,7 +181,7 @@ function logout() {
     document.getElementById("email").value = "";
     document.getElementById("password").value = "";
 
-    // Back to login color
+    // Back to login (blue)
     document.getElementById("bodyBG").className = "login-bg";
 }
 </script>
