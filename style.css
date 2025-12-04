@@ -1,144 +1,101 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-}
-
+/* 1. Global Reset & Background */
 body {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: 0.3s;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    /* လှပသော Gradient Background */
+    background: linear-gradient(135deg, #7F00FF, #E100FF);
+    color: #333;
 }
 
-/* Light mode background */
-body {
-  background: #f2f2f7;
-}
-
-/* Dark mode background */
-@media (prefers-color-scheme: dark) {
-  body {
-    background: #000;
-  }
-}
-
+/* 2. Container (Form တွေကို ထားရှိမယ့် နေရာ) */
 .container {
-  width: 100%;
-  max-width: 360px;
-  padding: 20px;
+    padding: 20px;
 }
 
-.card {
-  width: 100%;
-  padding: 30px;
-  border-radius: 22px;
-  backdrop-filter: blur(35px);
-  display: none;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-  animation: fade .4s ease;
+/* 3. Form Card ပုံစံ */
+.form-card {
+    background-color: #ffffff;
+    border-radius: 15px; /* အစွန်းဝိုင်းခြင်း */
+    padding: 40px;
+    width: 350px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* နူးညံ့သော အရိပ် */
+    text-align: center;
+    transition: all 0.5s ease-in-out; /* အကူးအပြောင်း လှပစေရန် */
 }
 
-/* Light mode card */
-.card {
-  background: rgba(255, 255, 255, 0.7);
+/* 4. ခေါင်းစဉ် */
+.form-card h3 {
+    color: #6A1B9A; /* ခရမ်းရောင်အငွေ့အသက် */
+    margin-bottom: 30px;
+    font-size: 1.8em;
+    font-weight: 600;
 }
 
-/* Dark mode card */
-@media (prefers-color-scheme: dark) {
-  .card {
-    background: rgba(40, 40, 45, 0.45);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-  }
+/* 5. Input နေရာများ */
+.input-group {
+    margin-bottom: 20px;
 }
 
-.show {
-  display: block;
+.input-group input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-weight: 600;
-  font-size: 22px;
+.input-group input:focus {
+    border-color: #9C27B0; /* Focus လုပ်တဲ့အခါ အရောင်ပြောင်းလဲခြင်း */
+    box-shadow: 0 0 8px rgba(156, 39, 176, 0.4);
 }
 
-/* Light mode text */
-h2, p, input, button {
-  color: #111;
-}
-
-/* Dark mode text */
-@media (prefers-color-scheme: dark) {
-  h2, p, input {
-    color: #fff;
-  }
-}
-
-input {
-  width: 100%;
-  padding: 14px;
-  margin: 10px 0;
-  border-radius: 14px;
-  border: 1px solid #d1d1d6;
-  background: #fff;
-  font-size: 15px;
-}
-
-/* Dark mode input */
-@media (prefers-color-scheme: dark) {
-  input {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
+/* 6. Button ပုံစံ */
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #9C27B0, #E91E63); /* ခရမ်း/ပန်းရောင် Gradient */
     color: white;
-  }
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s, transform 0.2s;
 }
 
-input::placeholder {
-  color: #999;
+.submit-btn:hover {
+    /* Hover လုပ်တဲ့အခါ Gradient ကို နည်းနည်းပြောင်းလိုက်ခြင်း */
+    background: linear-gradient(90deg, #E91E63, #9C27B0);
+    transform: translateY(-2px); /* အပေါ်ကို အနည်းငယ် ရွှေ့လိုက်ခြင်း */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Dark */
-@media (prefers-color-scheme: dark) {
-  input::placeholder {
-    color: #bbb;
-  }
+/* 7. Form အကူးအပြောင်း */
+.hidden {
+    display: none;
 }
 
-button {
-  width: 100%;
-  padding: 14px;
-  margin-top: 18px;
-  background: #007aff;
-  border: none;
-  border-radius: 14px;
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
+.switch-form {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #666;
 }
 
-button:active {
-  opacity: 0.7;
+.switch-form a {
+    color: #9C27B0;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
 }
 
-.switch {
-  margin-top: 15px;
-  text-align: center;
-  font-size: 14px;
-  color: #007aff;
-  cursor: pointer;
-}
-
-.error {
-  margin-top: 10px;
-  text-align: center;
-  color: #ff3b30;
-}
-
-@keyframes fade {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.switch-form a:hover {
+    color: #7B1FA2;
 }
