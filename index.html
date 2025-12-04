@@ -1,45 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="my">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reborn</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>လှပသော Login & Sign Up UI</title>
+    <link rel="stylesheet" href="styles.css"> </head>
 <body>
+    <div class="container">
+        <div class="form-card login-form">
+            <h3>အကောင့်ဝင်ရန် (Login)</h3>
+            <form>
+                <div class="input-group">
+                    <input type="text" placeholder="အီးမေးလ် သို့မဟုတ် အသုံးပြုသူအမည်" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" placeholder="လျှို့ဝှက်နံပါတ်" required>
+                </div>
+                <button type="submit" class="submit-btn">ဝင်ရောက်ပါ</button>
+            </form>
+            <p class="switch-form">အကောင့်မရှိဘူးလား? <a href="#" id="show-signup">အကောင့်ဖွင့်ရန်</a></p>
+        </div>
 
-  <div class="container">
-
-    <!-- LOGIN -->
-    <div id="loginBox" class="card show">
-      <h2>Sign In</h2>
-      <input type="email" id="loginEmail" placeholder="Email" />
-      <input type="password" id="loginPassword" placeholder="Password" />
-      <button onclick="loginUser()">Sign In</button>
-      <p class="switch" onclick="showSignup()">Create new account</p>
-      <p id="loginError" class="error"></p>
+        <div class="form-card signup-form hidden">
+            <h3>အကောင့်ဖွင့်ရန် (Sign Up)</h3>
+            <form>
+                <div class="input-group">
+                    <input type="text" placeholder="အသုံးပြုသူအမည်" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" placeholder="အီးမေးလ်" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" placeholder="လျှို့ဝှက်နံပါတ်" required>
+                </div>
+                <button type="submit" class="submit-btn">အကောင့်ဖွင့်ပါ</button>
+            </form>
+            <p class="switch-form">အကောင့်ရှိပြီးသားလား? <a href="#" id="show-login">ဝင်ရောက်ရန်</a></p>
+        </div>
     </div>
+    
+    <script>
+        // Form အကူးအပြောင်းအတွက် ရိုးရှင်းသော JavaScript
+        const loginForm = document.querySelector('.login-form');
+        const signupForm = document.querySelector('.signup-form');
+        const showSignupLink = document.getElementById('show-signup');
+        const showLoginLink = document.getElementById('show-login');
 
-    <!-- SIGNUP -->
-    <div id="signupBox" class="card">
-      <h2>Create Account</h2>
-      <input type="email" id="signupEmail" placeholder="Email" />
-      <input type="password" id="signupPassword" placeholder="Password" />
-      <button onclick="signupUser()">Sign Up</button>
-      <p class="switch" onclick="showLogin()">Already have an account?</p>
-      <p id="signupError" class="error"></p>
-    </div>
+        showSignupLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.classList.add('hidden');
+            signupForm.classList.remove('hidden');
+        });
 
-    <!-- WELCOME -->
-    <div id="welcomeBox" class="card">
-      <h2>Welcome 🎉</h2>
-      <p id="userEmail"></p>
-      <button onclick="logoutUser()">Logout</button>
-    </div>
-
-  </div>
-
-  <script src="firebase.js"></script>
-  <script src="script.js"></script>
+        showLoginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            signupForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+        });
+    </script>
 </body>
 </html>
