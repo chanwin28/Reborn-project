@@ -1,48 +1,22 @@
-function showSignup() {
-  loginBox.classList.remove('show');
-  signupBox.classList.add('show');
-}
+document.addEventListener('DOMContentLoaded', function() {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const formWrappers = document.querySelectorAll('.form-wrapper');
 
-function showLogin() {
-  signupBox.classList.remove('show');
-  loginBox.classList.add('show');
-}
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // လက်ရှိ active ဖြစ်နေတဲ့ Tab နဲ့ Form ကို ဖြုတ်ပါ
+            document.querySelector('.tab-button.active').classList.remove('active');
+            document.querySelector('.form-wrapper.active').classList.remove('active');
 
-function signupUser() {
-  const email = signupEmail.value;
-  const pass = signupPassword.value;
+            // နှိပ်လိုက်တဲ့ Tab ကို active လုပ်ပါ
+            this.classList.add('active');
 
-  auth.createUserWithEmailAndPassword(email, pass)
-    .then(() => {
-      signupError.textContent = "";
-      showWelcome(email);
-    })
-    .catch(e => signupError.textContent = e.message);
-}
+            // သက်ဆိုင်ရာ Form ကို ရှာပြီး active လုပ်ပါ
+            const targetFormId = this.getAttribute('data-form') + 'Form';
+            document.getElementById(targetFormId).classList.add('active');
+        });
+    });
 
-function loginUser() {
-  const email = loginEmail.value;
-  const pass = loginPassword.value;
-
-  auth.signInWithEmailAndPassword(email, pass)
-    .then(() => {
-      loginError.textContent = "";
-      showWelcome(email);
-    })
-    .catch(e => loginError.textContent = e.message);
-}
-
-function showWelcome(email) {
-  loginBox.classList.remove('show');
-  signupBox.classList.remove('show');
-
-  userEmail.textContent = email;
-  welcomeBox.classList.add('show');
-}
-
-function logoutUser() {
-  auth.signOut().then(() => {
-    welcomeBox.classList.remove('show');
-    loginBox.classList.add('show');
-  });
-}
+    // စစချင်းမှာ Login Form ကို စပြဖို့
+    document.getElementById('loginForm').classList.add('active');
+});
