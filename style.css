@@ -1,115 +1,181 @@
-/* Global Styles and Reset */
+/* Global Reset and Base Styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* မြန်မာစာ ဖတ်လို့ကောင်းအောင် စာလုံးပုံစံ (Font) ရွေးချယ်နိုင်ပါတယ်။ */
-    font-family: 'Arial', 'Tahoma', sans-serif; 
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
-    background-color: #f4f4f4; /* နူးညံ့တဲ့ နောက်ခံအရောင် */
-    padding: 20px;
-}
-
-/* Main Container - Mobile Screen ကို ကိုယ်စားပြုပါတယ်။ */
-.container {
-    max-width: 450px;
-    margin: 0 auto;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Section Titles */
-.section-title {
-    font-size: 18px;
-    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* လှပတဲ့ Gradient Background */
+    background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);
     color: #333;
-    margin-bottom: 20px;
-    padding-bottom: 5px;
-    border-bottom: 2px solid #ddd;
-    text-align: left;
 }
 
-/* Input Fields */
-.simple-input {
+/* Main Card Container */
+.card-container {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    padding: 30px;
     width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
+    max-width: 380px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* Tab Header Styles */
+.tab-header {
+    display: flex;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    background: #f0f0f0;
+    overflow: hidden;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 12px 0;
+    border: none;
+    background: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #666;
+}
+
+.tab-button.active {
+    background: linear-gradient(to right, #6dd5ed, #2193b0);
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Wrapper Styles */
+.form-wrapper {
+    display: none; /* JavaScript နဲ့ ပြောင်းနိုင်အောင် */
+    transition: opacity 0.4s ease;
+}
+
+.form-wrapper.active {
+    display: block;
+}
+
+.form-wrapper h2 {
+    margin-bottom: 25px;
+    font-weight: 700;
+    color: #444;
+}
+
+/* Input Group Styles */
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px 12px 45px; /* Icon နေရာချန်ရန် */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
     outline: none;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s ease;
 }
 
-.simple-input:focus {
-    border-color: #007bff; /* Focus လုပ်တဲ့အခါ ပြာရောင်ပြောင်းရန် */
+.input-group input:focus {
+    border-color: #2193b0;
+    box-shadow: 0 0 5px rgba(33, 147, 176, 0.3);
 }
 
-/* Action Buttons */
-.action-button {
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+/* Submit Button Styles */
+.submit-btn {
     width: 100%;
     padding: 12px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     color: white;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 5px;
-    margin-bottom: 15px;
+    transition: background 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
 }
 
-.login-button {
-    background-color: #28a745; /* စိမ်းပြာရောင် */
+.login-btn {
+    background: linear-gradient(to right, #6dd5ed, #2193b0);
 }
 
-.login-button:hover {
-    background-color: #218838;
+.signup-btn {
+    background: linear-gradient(to right, #43e97b, #38f9d7);
 }
 
-.signup-button {
-    background-color: #007bff; /* အပြာရောင် */
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
-.signup-button:hover {
-    background-color: #0056b3;
-}
-
-/* Toggle Text (အကောင့်ရှိ/မရှိ စာသားများ) */
-.toggle-text {
-    font-size: 14px;
-    color: #555;
+/* Forgot Password Link */
+.forgot-link {
+    display: block;
     margin-top: 15px;
-    margin-bottom: 30px; /* အောက် Form နဲ့ ခြားရန် */
-    text-align: left;
-}
-
-.toggle-link {
-    color: #007bff;
+    color: #2193b0;
     text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s;
+    font-size: 14px;
+    transition: color 0.3s ease;
 }
 
-.toggle-link:hover {
-    color: #0056b3;
-    text-decoration: underline;
+.forgot-link:hover {
+    color: #1a7e93;
 }
 
-/* Separator Line */
-.separator {
-    border: 0;
-    height: 1px;
-    background-color: #ddd;
-    margin: 30px 0;
+/* Social Login Styles */
+.social-login-separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 25px 0 20px 0;
+    color: #aaa;
+    font-size: 14px;
 }
 
-/* Remove default margin on the last section */
-.signup-section .toggle-text {
-    margin-bottom: 0;
+.social-login-separator hr {
+    flex-grow: 1;
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 0 10px;
+}
+
+.social-btn {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #555;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.google-btn:hover {
+    background-color: #f5f5f5;
+    transform: scale(1.01);
+}
+
+.social-btn i {
+    margin-right: 8px;
+    color: #DB4437; /* Google red */
 }
