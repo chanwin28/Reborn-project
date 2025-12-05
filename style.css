@@ -1,101 +1,213 @@
-/* 1. Global Reset & Background */
+/* Global Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    margin: 0;
-    /* လှပသော Gradient Background */
-    background: linear-gradient(135deg, #7F00FF, #E100FF);
+    /* Gradient Background */
+    background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
     color: #333;
 }
 
-/* 2. Container (Form တွေကို ထားရှိမယ့် နေရာ) */
+/* Container for the whole form area */
 .container {
-    padding: 20px;
-}
-
-/* 3. Form Card ပုံစံ */
-.form-card {
-    background-color: #ffffff;
-    border-radius: 15px; /* အစွန်းဝိုင်းခြင်း */
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
     padding: 40px;
-    width: 350px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* နူးညံ့သော အရိပ် */
+    width: 100%;
+    max-width: 400px;
     text-align: center;
-    transition: all 0.5s ease-in-out; /* အကူးအပြောင်း လှပစေရန် */
+    transition: all 0.3s ease;
 }
 
-/* 4. ခေါင်းစဉ် */
-.form-card h3 {
-    color: #6A1B9A; /* ခရမ်းရောင်အငွေ့အသက် */
+/* Tab Header for Login/Sign Up buttons */
+.tab-header {
+    display: flex;
     margin-bottom: 30px;
-    font-size: 1.8em;
-    font-weight: 600;
+    border-radius: 10px;
+    background: #f0f0f0;
+    overflow: hidden;
 }
 
-/* 5. Input နေရာများ */
+.tab-button {
+    flex: 1;
+    padding: 12px 0;
+    border: none;
+    background: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #666;
+}
+
+.tab-button.active {
+    background: linear-gradient(to right, #74ebd5, #9face6);
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Wrapper Styles */
+.form-wrapper h2 {
+    margin-bottom: 25px;
+    font-weight: 700;
+    color: #444;
+}
+
+/* Input Group Styles */
 .input-group {
+    position: relative;
     margin-bottom: 20px;
+    text-align: left;
 }
 
 .input-group input {
     width: 100%;
-    padding: 15px;
+    padding: 12px 15px 12px 45px; /* Icon နေရာချန်ရန် */
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-sizing: border-box;
-    font-size: 1em;
+    font-size: 15px;
     outline: none;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    transition: border-color 0.3s ease;
 }
 
 .input-group input:focus {
-    border-color: #9C27B0; /* Focus လုပ်တဲ့အခါ အရောင်ပြောင်းလဲခြင်း */
-    box-shadow: 0 0 8px rgba(156, 39, 176, 0.4);
+    border-color: #9face6;
+    box-shadow: 0 0 5px rgba(159, 172, 230, 0.5);
 }
 
-/* 6. Button ပုံစံ */
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    transition: color 0.3s ease;
+}
+
+.input-group input:focus + i {
+    color: #9face6;
+}
+
+/* Submit Button Styles */
 .submit-btn {
     width: 100%;
-    padding: 15px;
+    padding: 12px;
     border: none;
     border-radius: 8px;
-    background: linear-gradient(90deg, #9C27B0, #E91E63); /* ခရမ်း/ပန်းရောင် Gradient */
+    background: linear-gradient(to right, #74ebd5, #9face6);
     color: white;
-    font-size: 1.1em;
-    font-weight: bold;
+    font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     margin-top: 10px;
-    transition: background 0.3s, transform 0.2s;
 }
 
 .submit-btn:hover {
-    /* Hover လုပ်တဲ့အခါ Gradient ကို နည်းနည်းပြောင်းလိုက်ခြင်း */
-    background: linear-gradient(90deg, #E91E63, #9C27B0);
-    transform: translateY(-2px); /* အပေါ်ကို အနည်းငယ် ရွှေ့လိုက်ခြင်း */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(159, 172, 230, 0.4);
 }
 
-/* 7. Form အကူးအပြောင်း */
-.hidden {
-    display: none;
-}
-
-.switch-form {
-    margin-top: 20px;
-    font-size: 0.9em;
-    color: #666;
-}
-
-.switch-form a {
-    color: #9C27B0;
+/* Forgot Password Link */
+.forgot-password {
+    display: block;
+    margin-top: 15px;
+    color: #9face6;
     text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s;
+    font-size: 14px;
+    transition: color 0.3s ease;
 }
 
-.switch-form a:hover {
-    color: #7B1FA2;
+.forgot-password:hover {
+    color: #74ebd5;
+}
+
+/* Social Login Section */
+.social-login {
+    margin-top: 25px;
+}
+
+.social-login p {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.social-login p::before,
+.social-login p::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 35%;
+    height: 1px;
+    background: #ddd;
+}
+
+.social-login p::before {
+    left: 0;
+}
+
+.social-login p::after {
+    right: 0;
+}
+
+.social-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.social-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+    color: white;
+}
+
+.social-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+.facebook {
+    background-color: #4267B2;
+}
+
+.google {
+    background-color: #DB4437;
+}
+
+.social-btn i {
+    margin-right: 8px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 500px) {
+    .container {
+        margin: 20px;
+        padding: 30px 20px;
+    }
+
+    .social-buttons {
+        flex-direction: column;
+    }
+
+    .social-btn {
+        width: 100%;
+    }
 }
