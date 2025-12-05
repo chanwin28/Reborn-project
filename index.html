@@ -3,42 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>လွယ်ကူသော Login & Sign Up UI</title>
+    <title>Login & Sign Up Card UI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <div class="container">
-        <section class="form-section login-section">
-            <h2 class="section-title">အကောင့်ဝင်ရန် (Login)</h2>
-            <form action="#">
-                <input type="text" placeholder="အီးမေးလ် သို့မဟုတ် အသုံးပြုသူအမည်" class="simple-input" required>
-                <input type="password" placeholder="လျှို့ဝှက်နံပါတ်" class="simple-input" required>
-                <button type="submit" class="action-button login-button">ဝင်ရောက်ရန်</button>
-            </form>
+    <div class="card-container">
+        
+        <div class="tab-header">
+            <button class="tab-button active" data-form="login">အကောင့်ဝင်ရန်</button>
+            <button class="tab-button" data-form="signup">အကောင့်ဖွင့်ရန်</button>
+        </div>
+
+        <div class="form-body">
             
-            <p class="toggle-text">
-                အကောင့်မရှိဘူးလား? <a href="#" onclick="alert('Sign Up Form ကို နှိပ်ပါ')" class="toggle-link">အကောင့်ဖွင့်ရန်</a>
-            </p>
-        </section>
+            <div class="form-wrapper active" id="loginForm">
+                <h2>ပြန်လည်ကြိုဆိုပါ၏</h2>
+                <form action="#">
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" placeholder="အီးမေးလ်" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" placeholder="လျှို့ဝှက်နံပါတ်" required>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn login-btn">ဝင်ရောက်ရန်</button>
+                    <a href="#" class="forgot-link">လျှို့ဝှက်နံပါတ် မေ့နေပါသလား?</a>
+                </form>
+            </div>
 
-        <hr class="separator">
-
-        <section class="form-section signup-section">
-            <h2 class="section-title">အကောင့်ဖွင့်ရန် (Sign Up)</h2>
-            <form action="#">
-                <input type="text" placeholder="အမည် အပြည့်အစုံ" class="simple-input" required>
-                <input type="email" placeholder="အီးမေးလ်" class="simple-input" required>
-                <input type="password" placeholder="လျှို့ဝှက်နံပါတ်" class="simple-input" required>
-                <button type="submit" class="action-button signup-button">အကောင့်ဖွင့်ပါ</button>
-            </form>
+            <div class="form-wrapper" id="signupForm">
+                <h2>အကောင့်အသစ် ဖန်တီးပါ</h2>
+                <form action="#">
+                     <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" placeholder="အမည် အပြည့်အစုံ" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" placeholder="အီးမေးလ်" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" placeholder="လျှို့ဝှက်နံပါတ်" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" placeholder="လျှို့ဝှက်နံပါတ် အတည်ပြုပါ" required>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn signup-btn">အကောင့်ဖွင့်ပါ</button>
+                </form>
+            </div>
             
-            <p class="toggle-text">
-                အကောင့်ရှိပြီးသားလား? <a href="#" onclick="alert('Login Form ကို နှိပ်ပါ')" class="toggle-link">ဝင်ရောက်ရန်</a>
-            </p>
-        </section>
-
+            <div class="social-login-separator">
+                <hr> <span>သို့မဟုတ်</span> <hr>
+            </div>
+            <button class="social-btn google-btn"><i class="fab fa-google"></i> Google ဖြင့် ဝင်ရန်</button>
+        </div>
     </div>
 
+    <script src="script.js"></script>
 </body>
 </html>
